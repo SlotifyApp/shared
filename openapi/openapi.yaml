@@ -64,14 +64,16 @@ paths:
         "400":
           description: Bad request (e.g., invalid team ID)
 
-  /users/{userId}:
+  /users/{userID}:
     get:
+      operationId: GetUsersUserID
       summary: Get a user by id
       parameters:
         - in: path
-          name: userId
+          name: userID
           schema:
             type: integer
+            minimum: 1
           required: true
           description: Numeric ID of the user to get
       responses:
@@ -86,12 +88,14 @@ paths:
         "404":
           description: User not found
     delete:
+      operationId: DeleteUsersUserID
       summary: Delete a user by id
       parameters:
         - in: path
-          name: userId
+          name: userID
           schema:
             type: integer
+            minimum: 1
           required: true
           description: Numeric ID of the user to delete
       responses:
@@ -121,7 +125,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
 
         "400":
           description: Bad request (e.g., invalid team name)
@@ -146,14 +152,16 @@ paths:
         "400":
           description: Bad request (e.g., invalid team name)
 
-  /teams/{teamId}:
+  /teams/{teamID}:
     delete:
+      operationId: DeleteTeamsTeamID
       summary: Delete a team by id
       parameters:
         - in: path
-          name: teamId
+          name: teamID
           schema:
             type: integer
+            minimum: 1
           required: true
           description: Numeric ID of the team to delete
       responses:
@@ -168,12 +176,14 @@ paths:
         "404":
           description: Team not found
     get:
+      operationId: GetTeamsTeamID
       summary: Get a team by id
       parameters:
         - in: path
-          name: teamId
+          name: teamID
           schema:
             type: integer
+            minimum: 1
           required: true
           description: Numeric ID of the team to get
       responses:
@@ -188,15 +198,17 @@ paths:
         "404":
           description: Team not found
 
-  /teams/{teamId}/users:
+  /teams/{teamID}/users:
     get:
       summary: Get all members of a team
+      operationId: GetTeamsTeamIDUsers
       parameters:
         - in: path
-          name: teamId
+          name: teamID
           required: true
           schema:
             type: integer
+            minimum: 1
           description: ID of the team
       responses:
         "200":
@@ -212,21 +224,24 @@ paths:
         "404":
           description: User or team not found
 
-  /teams/{teamId}/users/{userId}:
+  /teams/{teamID}/users/{userID}:
     post:
+      operationId: PostTeamsTeamIDUsersUserID
       summary: Add a user to a team
       parameters:
         - in: path
-          name: userId
+          name: userID
           required: true
           schema:
             type: integer
+            minimum: 1
           description: ID of the user
         - in: path
-          name: teamId
+          name: teamID
           required: true
           schema:
             type: integer
+            minimum: 1
           description: ID of the team
       responses:
         "200":
@@ -266,6 +281,7 @@ components:
       properties:
         id:
           type: integer
+          minimum: 1
         email:
           type: string
           format: email
@@ -292,6 +308,7 @@ components:
       properties:
         id:
           type: integer
+          minimum: 1
         name:
           type: string
       required:
