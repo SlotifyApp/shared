@@ -7,9 +7,9 @@ services:
     environment:
       DB_HOST: mariadb
       DB_PORT: 3306
-      DB_USER: root
+      DB_USERNAME: root
       DB_PASSWORD: rootpassword
-      DB_NAME: mydatabase
+      DB_NAME: slotify
     ports:
       - "8080:8080"
     depends_on:
