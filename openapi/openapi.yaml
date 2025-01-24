@@ -35,7 +35,7 @@ paths:
           description: Last name of user
       responses:
         "200":
-          description: User got successfully
+          description: Users matching the query parameters
           content:
             application/json:
               schema:
@@ -44,8 +44,6 @@ paths:
                   $ref: "#/components/schemas/User"
         "400":
           description: Bad request (e.g., invalid team ID)
-        "404":
-          description: User not found
     post:
       summary: Create a new user
       requestBody:
@@ -121,7 +119,7 @@ paths:
           description: Team name
       responses:
         "200":
-          description: Got team successfully
+          description: Teams matching the query parameters
           content:
             application/json:
               schema:
@@ -131,8 +129,6 @@ paths:
 
         "400":
           description: Bad request (e.g., invalid team name)
-        "404":
-          description: Team not found
 
     post:
       summary: Create a new team
