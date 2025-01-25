@@ -13,4 +13,4 @@ RUN go mod download && go mod verify
 COPY . .
 
 # Run the tests
-CMD ["go", "test", "./...", "-v"]
+CMD ["go", "test", "./..."]

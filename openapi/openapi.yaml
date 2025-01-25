@@ -147,6 +147,10 @@ paths:
                 $ref: "#/components/schemas/Team"
         "400":
           description: Bad request (e.g., invalid team name)
+          content:
+            application/json:
+              schema:
+                type: string
 
   /teams/{teamID}:
     delete:
@@ -189,10 +193,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Team"
-        "400":
-          description: Bad request (e.g., invalid team id)
         "404":
           description: Team not found
+        "500":
+          description: Something went wrong internally
 
   /teams/{teamID}/users:
     get:
@@ -215,10 +219,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/User"
-        "400":
-          description: Bad request (e.g., invalid team ID)
-        "404":
-          description: User or team not found
+        "403":
+          description: Bad request, team id is invalid
+          content:
+            application/json:
+              schema:
+                type: string
+        "500":
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: string
 
   /teams/{teamID}/users/{userID}:
     post:
@@ -245,14 +257,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "User successfully joined the team."
+                type: string
         "400":
-          description: Bad request (e.g., invalid user ID or team ID)
-        "404":
+          description: Bad request
+        "403":
           description: User or team not found
 
 components:
