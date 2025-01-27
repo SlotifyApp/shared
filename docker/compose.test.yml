@@ -1,0 +1,36 @@
+services:
+  test:
+    build:
+      context: ../../
+      dockerfile: shared/docker/test.Dockerfile
+    container_name: slotify-test-container
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: rootpassword
+      DB_NAME: slotify
+    ports:
+      - "8080:8080"
+    depends_on:
+      mariadb:
+        # Wait until mariadb has started before starting tests
+        condition: service_healthy
+        restart: true
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb-test-container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: slotify
+    ports:
+      - "3307:3306"
+    volumes:
+      - ../sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"] # healthcheck.sh is part of the docker image
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3

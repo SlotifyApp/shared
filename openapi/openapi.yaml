@@ -5,10 +5,316 @@ info:
 paths:
   /healthcheck:
     get:
+      summary: Healthcheck route
       responses:
         "200":
-          description: healthcheck route
+          description: Healthcheck successful
           content:
             application/json:
               schema:
                 type: string
+  /users:
+    get:
+      summary: Get a user by query params
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+            format: email
+          description: Email of user
+        - in: query
+          name: firstName
+          schema:
+            type: string
+          description: First name of user
+        - in: query
+          name: lastName
+          schema:
+            type: string
+          description: Last name of user
+      responses:
+        "200":
+          description: Users matching the query parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request (e.g., invalid team ID)
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreate"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request (e.g., invalid team ID)
+
+  /users/{userID}:
+    get:
+      operationId: GetUsersUserID
+      summary: Get a user by id
+      parameters:
+        - in: path
+          name: userID
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        "200":
+          description: Got user successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request (e.g., invalid team ID)
+        "404":
+          description: User not found
+    delete:
+      operationId: DeleteUsersUserID
+      summary: Delete a user by id
+      parameters:
+        - in: path
+          name: userID
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          description: Numeric ID of the user to delete
+      responses:
+        "200":
+          description: Deleted user successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request (e.g., invalid user ID)
+        "404":
+          description: User not found
+
+  /teams:
+    get:
+      summary: Get a team by query params
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Team name
+      responses:
+        "200":
+          description: Teams matching the query parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+
+        "400":
+          description: Bad request (e.g., invalid team name)
+
+    post:
+      summary: Create a new team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamCreate"
+      responses:
+        "201":
+          description: Team created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request (e.g., invalid team name)
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /teams/{teamID}:
+    delete:
+      operationId: DeleteTeamsTeamID
+      summary: Delete a team by id
+      parameters:
+        - in: path
+          name: teamID
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          description: Numeric ID of the team to delete
+      responses:
+        "200":
+          description: Deleted team successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request (e.g., invalid team id)
+        "404":
+          description: Team not found
+    get:
+      operationId: GetTeamsTeamID
+      summary: Get a team by id
+      parameters:
+        - in: path
+          name: teamID
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          description: Numeric ID of the team to get
+      responses:
+        "200":
+          description: Got team successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "404":
+          description: Team not found
+        "500":
+          description: Something went wrong internally
+
+  /teams/{teamID}/users:
+    get:
+      summary: Get all members of a team
+      operationId: GetTeamsTeamIDUsers
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: ID of the team
+      responses:
+        "200":
+          description: Users successfully found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "403":
+          description: Bad request, team id is invalid
+          content:
+            application/json:
+              schema:
+                type: string
+        "500":
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /teams/{teamID}/users/{userID}:
+    post:
+      operationId: PostTeamsTeamIDUsersUserID
+      summary: Add a user to a team
+      parameters:
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: ID of the user
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: ID of the team
+      responses:
+        "200":
+          description: User successfully added to the team
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "403":
+          description: User or team not found
+
+components:
+  schemas:
+    UserCreate:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - email
+        - firstName
+        - lastName
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+
+    TeamCreate:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+      required:
+        - id
+        - name

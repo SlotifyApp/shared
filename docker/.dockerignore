@@ -1,0 +1,12 @@
+.git
+.gitmodules
+.golangci.yml
+.pre-commit-config.yml
+api_docs
+docker-compose.yml
+Makefile
+oapi_codegen_cfg_schema.json
+tools
+shared
+oapi_codegen_cfg.yaml
+README.md
