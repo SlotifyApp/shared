@@ -51,15 +51,15 @@ CREATE TABLE Equipment (
 	UNIQUE(name)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS RoomEquiment;
+DROP TABLE IF EXISTS RoomEquipment;
 
-CREATE TABLE RoomEquiment ( -- many-to-many
+CREATE TABLE RoomEquipment ( -- many-to-many
 	room_id INT UNSIGNED NOT NULL,
 	equipment_id INT UNSIGNED NOT NULL,
 	PRIMARY KEY(room_id, equipment_id),
 	INDEX(equipment_id, room_id),
 	CONSTRAINT fk_room_equipment FOREIGN KEY (room_id) REFERENCES Room(id) ON DELETE CASCADE,
-	CONSTRAINT fk_equipment_room FOREIGN KEY (equipment_id) REFERENCES Equipment(id) ON DELETE CASCADE,
+	CONSTRAINT fk_equipment_room FOREIGN KEY (equipment_id) REFERENCES Equipment(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS EventType;
@@ -71,9 +71,9 @@ CREATE TABLE EventType (
 
 DROP TABLE IF EXISTS PublicEvent;
 
-CREATE TABLE PublicEvents (
+CREATE TABLE PublicEvent (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	public_event_name VARCHAR(225) NOT NULL,
+	public_event_name VARCHAR(255) NOT NULL,
 	public_event_description TEXT,
 	public_event_date DATE NOT NULL,
 	room_id INT UNSIGNED NOT NULL,
