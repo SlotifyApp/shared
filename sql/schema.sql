@@ -62,6 +62,13 @@ CREATE TABLE RoomEquiment ( -- many-to-many
 	CONSTRAINT fk_equipment_room FOREIGN KEY (equipment_id) REFERENCES Equipment(id) ON DELETE CASCADE,
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS EventType;
+
+CREATE TABLE EventType (
+	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE
+) ENGINE=InnoDB
+
 DROP TABLE IF EXISTS PublicEvent;
 
 CREATE TABLE PublicEvents (
@@ -73,7 +80,9 @@ CREATE TABLE PublicEvents (
 	starting_time TIME NOT NULL,
 	ending_time TIME NOT NULL,
 	organizer_id INT UNSIGNED NOT NULL,
+	event_type_id INT UNSIGNED NOT NULL,
 	event_type ENUM('One-to-One','Small Department Meeting','Public Meeting','Manager Meeting','Sponsor Meeting') NOT NULL,
 	CONSTRAINT fk_event_room FOREIGN KEY (room_id) REFERENCES Room(id) ON DELETE CASCADE,
-	CONSTRAINT fk_event_organizer FOREIGN KEY (organizer_id) REFERENCES Team(id) ON DELETE CASCADE
+	CONSTRAINT fk_event_organizer FOREIGN KEY (organizer_id) REFERENCES Team(id) ON DELETE CASCADE,
+	CONSTRAINT fk_event_type FOREIGN KEY (event_type_id) REFERENCES EventType(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
