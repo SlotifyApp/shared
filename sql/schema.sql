@@ -2,6 +2,15 @@ DROP DATABASE IF EXISTS slotify;
 CREATE DATABASE slotify;
 USE slotify;
 
+DROP TABLE IF EXISTS Role;
+
+CREATE TABLE Role (
+	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	`name` VARCHAR(255) NOT NULL,
+	`level` INT NOT NULL, -- lower is more important
+	`description` TEXT
+) ENGINE=InnoDB;
+
 DROP TABLE IF EXISTS User;
 
 CREATE TABLE User (
@@ -12,6 +21,15 @@ CREATE TABLE User (
 	UNIQUE(email)
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS UserToRole;
+
+CREATE TABLE UserToRole (
+	user_id INT UNSIGNED NOT NULL,
+	role_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY(user_id, role_id),
+	CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+	CONSTRAINT kf_role_id FOREIGN KEY (role_id) REFERENCES Role(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Team;
 
@@ -82,9 +100,11 @@ CREATE TABLE Meeting (
 	number_of_people INT UNSIGNED NOT NULL (number_of_people > 0),
 	organizer_id INT UNSIGNED NOT NULL,
 	meeting_type_id INT UNSIGNED NOT NULL,
+	highest_role_id INT UNSIGNED NOT NULL,
 	CONSTRAINT fk_meeting_room FOREIGN KEY (room_id) REFERENCES Room(id) ON DELETE CASCADE,
 	CONSTRAINT fk_meeting_organizer FOREIGN KEY (organizer_id) REFERENCES Team(id) ON DELETE CASCADE,
-	CONSTRAINT fk_meeting_type FOREIGN KEY (event_type_id) REFERENCES EventType(id) ON DELETE CASCADE
+	CONSTRAINT fk_meeting_type FOREIGN KEY (event_type_id) REFERENCES EventType(id) ON DELETE CASCADE,
+	CONSTRAINT fk_highet_role FOREIGN KEY (highest_role_id) REFERENCES Role(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS MeetingParticipant;
