@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS Team;
 
 CREATE TABLE Team ( -- A group of users form a team (eg. a council)
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	team_name VARCHAR(255) NOT NULL, -- team name
+	`name` VARCHAR(255) NOT NULL, -- team name
 	UNIQUE(name)
 ) ENGINE=InnoDB;
 
@@ -36,9 +36,9 @@ DROP TABLE IF EXISTS Room;
 
 CREATE TABLE Room (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	room_name VARCHAR(225) NOT NULL,
+	`name` VARCHAR(225) NOT NULL,
 	capacity INT NOT NULL,
-	room_location VARCHAR(225),
+	`location` VARCHAR(225),
 	UNIQUE(name)
 ) ENGINE=InnoDB;
 
@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS Equipment;
 
 CREATE TABLE Equipment (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	equipment_name VARCHAR(225) NOT NULL,
+	`name` VARCHAR(225) NOT NULL,
 	quantity INT NOT NULL,
 	UNIQUE(name)
 ) ENGINE=InnoDB;
