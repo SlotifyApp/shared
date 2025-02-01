@@ -31,6 +31,33 @@ CREATE TABLE UserToRole (
 	CONSTRAINT kf_role_id FOREIGN KEY (role_id) REFERENCES Role(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS UserPreferenceDays;
+
+CREATE TABLE UserPreferenceDays ( -- null = all for sets
+	user_id INT UNSIGNED NOT NULL,
+	`days` SET('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') DEFAULT NULL,
+	PRIMARY KEY(user_id, days),
+	CONSTRAINT fk_user_days FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS UserPreferenceMeetingTypes;
+
+CREATE TABLE UserPreferenceMeetingTypes ( -- null = all for sets
+	user_id INT UNSIGNED NOT NULL,
+	meeting_types SET("one-to-one", "small-department", "public", "manager", "sponsor") DEFAULT NULL,
+	PRIMARY KEY(user_id, meeting_types),
+	CONSTRAINT fk_user_meeting_types FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS UserPreferenceBuffer;
+
+CREATE TABLE UserPreferenceBuffer ( -- null = all for sets
+	user_id INT UNSIGNED NOT NULL,
+	`buffer` INT UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY(user_id, buffer),
+	CONSTRAINT fk_user_buffer FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 DROP TABLE IF EXISTS Team;
 
 CREATE TABLE Team ( -- A group of users form a team (eg. a council)
