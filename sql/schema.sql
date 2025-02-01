@@ -36,7 +36,7 @@ DROP TABLE IF EXISTS UserPreferenceDays;
 CREATE TABLE UserPreferenceDays ( -- null = all for sets
 	user_id INT UNSIGNED NOT NULL,
 	`days` SET('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') DEFAULT NULL,
-	PRIMARY KEY(user_id, days),
+	PRIMARY KEY(user_id),
 	CONSTRAINT fk_user_days FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -45,7 +45,7 @@ DROP TABLE IF EXISTS UserPreferenceMeetingTypes;
 CREATE TABLE UserPreferenceMeetingTypes ( -- null = all for sets
 	user_id INT UNSIGNED NOT NULL,
 	meeting_types SET("one-to-one", "small-department", "public", "manager", "sponsor") DEFAULT NULL,
-	PRIMARY KEY(user_id, meeting_types),
+	PRIMARY KEY(user_id),
 	CONSTRAINT fk_user_meeting_types FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -81,9 +81,9 @@ DROP TABLE IF EXISTS Room;
 
 CREATE TABLE Room (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	`name` VARCHAR(225) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
 	capacity INT NOT NULL,
-	`location` VARCHAR(225),
+	`location` VARCHAR(255),
 	UNIQUE(name)
 ) ENGINE=InnoDB;
 
@@ -91,7 +91,7 @@ DROP TABLE IF EXISTS Equipment;
 
 CREATE TABLE Equipment (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	`name` VARCHAR(225) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
 	quantity INT NOT NULL,
 	UNIQUE(name)
 ) ENGINE=InnoDB;
@@ -124,14 +124,14 @@ CREATE TABLE Meeting (
 	room_id INT UNSIGNED NOT NULL,
 	starting_time TIME NOT NULL,
 	ending_time TIME NOT NULL,
-	number_of_people INT UNSIGNED NOT NULL (number_of_people > 0),
+	number_of_people INT UNSIGNED NOT NULL CHECK (number_of_people > 0),
 	organizer_id INT UNSIGNED NOT NULL,
 	meeting_type_id INT UNSIGNED NOT NULL,
 	highest_role_id INT UNSIGNED NOT NULL,
 	CONSTRAINT fk_meeting_room FOREIGN KEY (room_id) REFERENCES Room(id) ON DELETE CASCADE,
 	CONSTRAINT fk_meeting_organizer FOREIGN KEY (organizer_id) REFERENCES Team(id) ON DELETE CASCADE,
-	CONSTRAINT fk_meeting_type FOREIGN KEY (event_type_id) REFERENCES EventType(id) ON DELETE CASCADE,
-	CONSTRAINT fk_highet_role FOREIGN KEY (highest_role_id) REFERENCES Role(id) ON DELETE CASCADE
+	CONSTRAINT fk_meeting_type FOREIGN KEY (meeting_type_id) REFERENCES MeetingType(id) ON DELETE CASCADE,
+	CONSTRAINT fk_highest_role FOREIGN KEY (highest_role_id) REFERENCES Role(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS MeetingParticipant;
