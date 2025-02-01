@@ -364,8 +364,6 @@ paths:
           description: Meeting not found
 
   /meetings/{meetingID}/participants:
-    # delete:
-    #   operationId: 
     get:
       operationId: GetParticipantsMeetingID
       summary: Get participants of a meeting by meeting ID
@@ -550,17 +548,17 @@ components:
         highestRoleID:
           type: integer
           minimum: 1
-        required:
-          - id
-          - name
-          - date
-          - roomID
-          - startingTime
-          - endingTime
-          - numberOfPeople
-          - organizerID
-          - meetingTypeID
-          - highestRoleID
+      required:
+        - id
+        - name
+        - date
+        - roomID
+        - startingTime
+        - endingTime
+        - numberOfPeople
+        - organizerID
+        - meetingTypeID
+        - highestRoleID
 
     MeetingType:
       type: object
@@ -570,11 +568,90 @@ components:
           minimum: 1
         name:
           type: string
-        required:
-          - id
-          - name
+      required:
+        - id
+        - name
 
-    MeetingParticipantCreate:
+    MeetingReschedule:
+      type: object
+      properties:
+        newMeetingDate:
+          type: string
+          format: date
+          description: New date for meeting
+        newStartingTime:
+          type: string
+          format: time
+          description: New starting time for meeting
+        newEndingTime:
+          type: string
+          format: time
+          description: New ending time for meeting
+        roomID:
+          type: integer
+          minimum: 1
+          description: New room ID
+        numberOfPeople:
+          type: integer
+          minimum: 1
+          description: Updated number of participants
+        meetingTypeID:
+          type: integer
+          minimum: 1
+          description: Updated meeting type ID
+        highestRoleID:
+          type: integer
+          minimum: 1
+          description: Highest role required for meeting
+      required:
+        - newMeetingDate
+        - newStartingTime
+        - newEndingTime
+        - roomID
+  
+    MeetingParticipants:
+      type: object
+      required:
+        - meetingID
+        - participants
+      properties:
+        meetingID:
+          type: integer
+          minimum: 1
+          description: Numeric ID of meeting
+        participants:
+          type: array
+          description: List of participants in meeting
+          items:
+            type: object
+            required:
+              - userID
+              - mandatory
+            properties:
+              userID:
+                type: integer
+                minimum: 1
+                description: Numeric ID of participant
+              mandatory:
+                type: boolean
+                description: Whether participant is mandatory for the meeting
+              userRoleID:
+                type: integer
+                minimum: 1
+                description: Role ID of participant in meeting
+              email:
+                type: string
+                format: email
+                description: Email of participant
+              firstName:
+                type: string
+                description: First name of participant
+              lastName:
+                type: string
+                description: Last name of participant
+
+
+    MeetingParticipantsCreate:
       type: object
       properties:
         userID:
