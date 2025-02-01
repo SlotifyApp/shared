@@ -37,7 +37,7 @@ CREATE TABLE UserToMSFTRefreshToken (-- Stores a user's microsoft refresh token
         user_id INT UNSIGNED NOT NULL,
         token TEXT NOT NULL, -- At least 500 chars, may increase
 	UNIQUE(user_id),
-	CONSTRAINT fk_User_UserToMicrosoftRefreshToken FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+	CONSTRAINT fk_User_UserToMSFTRefreshToken FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 
