@@ -3,6 +3,48 @@ info:
   version: 1.0.0
   title: Slotify Backend API
 paths:
+  /refresh:
+    post:
+      summary: Create new Slotify access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshBody"
+      responses:
+        "201":
+          description: Successfully refreshed access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RefreshResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /api/auth/callback:
+    get:
+      summary: Auth route for authorisation code flow
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: state
+          schema:
+            type: string
+          required: true
+      responses:
+        "302":
+          description: Successful auth
+          headers:
+            Location:
+              description: The URL to redirect to after successful authentication
+              schema:
+                type: string
+                example: "http://localhost:3000/dashboard"
   /healthcheck:
     get:
       summary: Healthcheck route
@@ -61,6 +103,24 @@ paths:
                 $ref: "#/components/schemas/User"
         "400":
           description: Bad request (e.g., invalid team ID)
+  /user:
+    get:
+      summary: Get a user by id passed by JWT
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Got user successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request (e.g., invalid team ID)
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
 
   /users/{userID}:
     get:
@@ -264,7 +324,33 @@ paths:
           description: User or team not found
 
 components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
   schemas:
+    RefreshBody:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        userID:
+          type: integer
+      required:
+        - accessToken
+        - refreshToken
+        - userID
+    RefreshResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+      required:
+        - accessToken
+        - refreshToken
     UserCreate:
       type: object
       properties:
@@ -318,3 +404,8 @@ components:
       required:
         - id
         - name
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
