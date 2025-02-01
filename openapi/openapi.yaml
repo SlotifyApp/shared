@@ -288,7 +288,7 @@ paths:
           description: Bad request (e.g., invalid meeting)
           content:
             application/json:
-              schemas:
+              schema:
                 type: string
     
   /meetings/{meetingID}:
@@ -409,13 +409,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schema/MeetingParticipants"
+                $ref: "#/components/schemas/MeetingParticipants"
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                typeL: string
+                type: string
 
 
 components:
@@ -505,16 +505,16 @@ components:
         highestRoleID:
           type: integer
           minimum: 1
-        required:
-          - name
-          - date
-          - roomID
-          - startingTime
-          - endingTime
-          - numberOfPeople
-          - organizerID
-          - meetingTypeID
-          - highestRoleID
+      required:
+        - name
+        - date
+        - roomID
+        - startingTime
+        - endingTime
+        - numberOfPeople
+        - organizerID
+        - meetingTypeID
+        - highestRoleID
 
     Meeting:
       type: object
@@ -534,10 +534,10 @@ components:
           minimum: 1
         startingTime:
           type: string
-          format: date
+          format: time
         endingTime:
           type: string
-          format: date
+          format: time
         numberOfPeople:
           type: integer
           minimum: 1
