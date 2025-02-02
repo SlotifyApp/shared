@@ -363,10 +363,6 @@ components:
           type: string
         endTime:
           type: string
-      required:
-        - subject
-        - startTime
-        - endTime
     UserCreate:
       type: object
       properties:
