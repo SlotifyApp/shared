@@ -47,7 +47,6 @@ CREATE TABLE RefreshToken( -- RefreshToken stores details about Slotify's Refres
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	user_id INT UNSIGNED NOT NULL,
 	token TEXT NOT NULL,
-	expires_at TIMESTAMP NOT NULL,
 	revoked BOOLEAN DEFAULT FALSE,
 	UNIQUE(user_id),
 	UNIQUE(token),

@@ -15,25 +15,20 @@ paths:
                 type: string
   /refresh:
     post:
-      summary: Create new Slotify access token
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RefreshBody"
+      summary: Create new Slotify access token and refresh token
       responses:
         "201":
           description: Successfully refreshed access token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RefreshResponse"
+                type: string
         "401":
           $ref: "#/components/responses/UnauthorizedError"
 
   /api/auth/callback:
     get:
+      operationId: GetAPIAuthCallback
       summary: Auth route for authorisation code flow
       parameters:
         - in: query
@@ -336,29 +331,6 @@ components:
     UnauthorizedError:
       description: Access token is missing or invalid
   schemas:
-    RefreshBody:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type: string
-        userID:
-          type: integer
-      required:
-        - accessToken
-        - refreshToken
-        - userID
-    RefreshResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type: string
-      required:
-        - accessToken
-        - refreshToken
     UserCreate:
       type: object
       properties:
