@@ -2,6 +2,11 @@ openapi: "3.0.0"
 info:
   version: 1.0.0
   title: Slotify Backend API
+
+servers:
+  - url: /api
+
+    description: Sandbox server (uses test data)
 paths:
   /calendar/me:
     get:
@@ -26,19 +31,9 @@ paths:
               schema:
                 type: string
 
-  /user/logout:
-    post:
-      summary: Logout user
-      responses:
-        "200":
-          description: Successfully logged out on backend
-          content:
-            application/json:
-              schema:
-                type: string
   /refresh:
     post:
-      summary: Create new Slotify access token and refresh token
+      summary: Refresh Slotify access token and refresh token
       responses:
         "201":
           description: Successfully refreshed access token
@@ -49,7 +44,7 @@ paths:
         "401":
           $ref: "#/components/responses/UnauthorizedError"
 
-  /api/auth/callback:
+  /auth/callback:
     get:
       operationId: GetAPIAuthCallback
       summary: Auth route for authorisation code flow
@@ -83,6 +78,33 @@ paths:
             application/json:
               schema:
                 type: string
+
+  /users/me/logout:
+    post:
+      summary: Logout user
+      responses:
+        "200":
+          description: Successfully logged out on backend
+          content:
+            application/json:
+              schema:
+                type: string
+  /users/me:
+    get:
+      summary: Get the user by id passed by JWT
+      responses:
+        "200":
+          description: Got user successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request (e.g., invalid team ID)
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
   /users:
     get:
       summary: Get a user by query params
@@ -131,22 +153,6 @@ paths:
                 $ref: "#/components/schemas/User"
         "400":
           description: Bad request (e.g., invalid team ID)
-  /user:
-    get:
-      summary: Get a user by id passed by JWT
-      responses:
-        "200":
-          description: Got user successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "400":
-          description: Bad request (e.g., invalid team ID)
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          description: User not found
 
   /users/{userID}:
     get:
