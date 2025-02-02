@@ -9,6 +9,7 @@ CREATE TABLE User (-- Stores user details
 	email VARCHAR(255) NOT NULL,
 	first_name VARCHAR(255) NOT NULL,
 	last_name VARCHAR(255) NOT NULL,
+	msft_home_account_id VARCHAR(255),
 	UNIQUE(email)
 ) ENGINE=InnoDB;
 
@@ -30,16 +31,6 @@ CREATE TABLE UserToTeam ( -- Many-to-many table linking users to teams
 	CONSTRAINT fk_User_UserToTeam FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
 	CONSTRAINT fk_Team_UserToTeam FOREIGN KEY (team_id) REFERENCES Team(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS UserToMSFTRefreshToken;
-
-CREATE TABLE UserToMSFTRefreshToken (-- Stores a user's microsoft refresh token
-        user_id INT UNSIGNED NOT NULL,
-        token TEXT NOT NULL, -- At least 500 chars, may increase
-	UNIQUE(user_id),
-	CONSTRAINT fk_User_UserToMSFTRefreshToken FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
 
 DROP TABLE IF EXISTS RefreshToken;
 
