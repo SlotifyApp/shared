@@ -1,12 +1,10 @@
-openapi: "3.0.0"
+openapi: "3.1.0"
 info:
-  version: 1.0.0
-  title: Slotify Backend API
-
+  title: Slotify API
+  version: "1.0.0"
+  description: API to communicate and schedule meetings with Microsoft.
 servers:
   - url: /api
-
-    description: Sandbox server (uses test data)
 paths:
   /calendar/me:
     get:
