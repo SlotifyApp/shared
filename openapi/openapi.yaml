@@ -1,10 +1,75 @@
 openapi: "3.0.0"
 info:
-  version: 1.0.0
-  title: Slotify Backend API
+  title: Slotify API
+  version: "1.0.0"
+  description: API to communicate and schedule meetings with Microsoft.
+
 paths:
-  /healthcheck:
+  /api/calendar/me:
     get:
+      operationId: GetAPICalendarMe
+      summary: get a user's calendar events
+      responses:
+        "200":
+          description: Successfully got user calendar events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarEvent"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /api/refresh:
+    post:
+      operationId: PostAPIRefresh
+      summary: Refresh Slotify access token and refresh token
+      responses:
+        "201":
+          description: Successfully refreshed access token
+          content:
+            application/json:
+              schema:
+                type: string
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /api/auth/callback:
+    get:
+      operationId: GetAPIAuthCallback
+      summary: Auth route for authorisation code flow
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: state
+          schema:
+            type: string
+          required: true
+      responses:
+        "302":
+          description: Successful auth
+          headers:
+            Location:
+              description: The URL to redirect to after successful authentication
+              schema:
+                type: string
+                example: "http://localhost:3000/dashboard"
+  /api/healthcheck:
+    get:
+      operationId: GetAPIHealthcheck
       summary: Healthcheck route
       responses:
         "200":
@@ -13,8 +78,38 @@ paths:
             application/json:
               schema:
                 type: string
-  /users:
+
+  /api/users/me/logout:
+    post:
+      operationId: PostAPIUsersMeLogout
+      summary: Logout user
+      responses:
+        "200":
+          description: Successfully logged out on backend
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/users/me:
     get:
+      operationId: GetAPIUsersMe
+      summary: Get the user by id passed by JWT
+      responses:
+        "200":
+          description: Got user successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request (e.g., invalid team ID)
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
+  /api/users:
+    get:
+      operationId: GetAPIUsers
       summary: Get a user by query params
       parameters:
         - in: query
@@ -45,6 +140,7 @@ paths:
         "400":
           description: Bad request (e.g., invalid team ID)
     post:
+      operationId: PostAPIUsers
       summary: Create a new user
       requestBody:
         required: true
@@ -62,9 +158,9 @@ paths:
         "400":
           description: Bad request (e.g., invalid team ID)
 
-  /users/{userID}:
+  /api/users/{userID}:
     get:
-      operationId: GetUsersUserID
+      operationId: GetAPIUsersUserID
       summary: Get a user by id
       parameters:
         - in: path
@@ -86,7 +182,7 @@ paths:
         "404":
           description: User not found
     delete:
-      operationId: DeleteUsersUserID
+      operationId: DeleteAPIUsersUserID
       summary: Delete a user by id
       parameters:
         - in: path
@@ -108,8 +204,29 @@ paths:
         "404":
           description: User not found
 
-  /teams:
+  /api/teams/me:
     get:
+      operationId: GetAPITeamsMe
+      summary: Get all teams for user by id passed by JWT
+      responses:
+        "200":
+          description: Got all user's teams successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
+
+  /api/teams:
+    get:
+      operationId: GetAPITeams
       summary: Get a team by query params
       parameters:
         - in: query
@@ -131,6 +248,7 @@ paths:
           description: Bad request (e.g., invalid team name)
 
     post:
+      operationId: PostAPITeams
       summary: Create a new team
       requestBody:
         required: true
@@ -152,9 +270,9 @@ paths:
               schema:
                 type: string
 
-  /teams/{teamID}:
+  /api/teams/{teamID}:
     delete:
-      operationId: DeleteTeamsTeamID
+      operationId: DeleteAPITeamsTeamID
       summary: Delete a team by id
       parameters:
         - in: path
@@ -176,7 +294,7 @@ paths:
         "404":
           description: Team not found
     get:
-      operationId: GetTeamsTeamID
+      operationId: GetAPITeamsTeamID
       summary: Get a team by id
       parameters:
         - in: path
@@ -198,10 +316,10 @@ paths:
         "500":
           description: Something went wrong internally
 
-  /teams/{teamID}/users:
+  /api/teams/{teamID}/users:
     get:
       summary: Get all members of a team
-      operationId: GetTeamsTeamIDUsers
+      operationId: GetAPITeamsTeamIDUsers
       parameters:
         - in: path
           name: teamID
@@ -232,9 +350,9 @@ paths:
               schema:
                 type: string
 
-  /teams/{teamID}/users/{userID}:
+  /api/teams/{teamID}/users/{userID}:
     post:
-      operationId: PostTeamsTeamIDUsersUserID
+      operationId: PostAPITeamsTeamIDUsersUserID
       summary: Add a user to a team
       parameters:
         - in: path
@@ -264,7 +382,19 @@ paths:
           description: User or team not found
 
 components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
   schemas:
+    CalendarEvent:
+      type: object
+      properties:
+        subject:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
     UserCreate:
       type: object
       properties:
@@ -318,3 +448,8 @@ components:
       required:
         - id
         - name
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
