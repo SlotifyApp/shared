@@ -1,5 +1,4 @@
-DROP DATABASE IF EXISTS slotify;
-CREATE DATABASE slotify;
+CREATE DATABASE IF NOT EXISTS slotify;
 USE slotify;
 
 DROP TABLE IF EXISTS User;
@@ -38,7 +37,7 @@ CREATE TABLE RefreshToken( -- RefreshToken stores details about Slotify's Refres
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	user_id INT UNSIGNED NOT NULL,
 	token TEXT NOT NULL,
-	revoked BOOLEAN DEFAULT FALSE,
+	revoked BOOLEAN DEFAULT FALSE NOT NULL,
 	UNIQUE(user_id),
 	UNIQUE(token),
 	CONSTRAINT fk_User_RefreshToken FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
