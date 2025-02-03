@@ -167,7 +167,7 @@ paths:
           name: userID
           schema:
             type: integer
-            minimum: 1
+            format: uint32
           required: true
           description: Numeric ID of the user to get
       responses:
@@ -189,7 +189,7 @@ paths:
           name: userID
           schema:
             type: integer
-            minimum: 1
+            format: uint32
           required: true
           description: Numeric ID of the user to delete
       responses:
@@ -279,7 +279,7 @@ paths:
           name: teamID
           schema:
             type: integer
-            minimum: 1
+            format: uint32
           required: true
           description: Numeric ID of the team to delete
       responses:
@@ -301,7 +301,7 @@ paths:
           name: teamID
           schema:
             type: integer
-            minimum: 1
+            format: uint32
           required: true
           description: Numeric ID of the team to get
       responses:
@@ -326,7 +326,7 @@ paths:
           required: true
           schema:
             type: integer
-            minimum: 1
+            format: uint32
           description: ID of the team
       responses:
         "200":
@@ -360,14 +360,14 @@ paths:
           required: true
           schema:
             type: integer
-            minimum: 1
+            format: uint32
           description: ID of the user
         - in: path
           name: teamID
           required: true
           schema:
             type: integer
-            minimum: 1
+            format: uint32
           description: ID of the team
       responses:
         "200":
@@ -415,7 +415,7 @@ components:
       properties:
         id:
           type: integer
-          minimum: 1
+          format: uint32
         email:
           type: string
           format: email
@@ -442,7 +442,7 @@ components:
       properties:
         id:
           type: integer
-          minimum: 1
+          format: uint32
         name:
           type: string
       required:
