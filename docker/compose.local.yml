@@ -21,7 +21,6 @@ services:
       mariadb:
         # Wait until mariadb has started before starting API
         condition: service_healthy
-        restart: true
 
   mariadb:
     image: mariadb:latest
