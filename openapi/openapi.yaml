@@ -35,6 +35,28 @@ paths:
                 type: string
               description: The MIME type of this stream is text/event-stream.
 
+  /api/users/me/notifications:
+    get:
+      summary: get user's unread notifications
+      responses:
+        "200":
+          description: Successfully updated notification.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          description: Notification not found.
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
   /api/notifications/{notificationID}/read:
     options:
       summary: CORS preflight for marking a notification as read
@@ -497,6 +519,10 @@ components:
         created:
           type: string
           format: date-time
+      required:
+        - id
+        - message
+        - created
     UserCreate:
       type: object
       properties:
