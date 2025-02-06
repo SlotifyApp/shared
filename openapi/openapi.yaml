@@ -36,6 +36,39 @@ paths:
               description: The MIME type of this stream is text/event-stream.
 
   /api/notifications/{notificationID}/read:
+    options:
+      summary: CORS preflight for marking a notification as read
+      parameters:
+        - in: path
+          name: notificationID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
     patch:
       summary: mark a notification as being read
       parameters:
@@ -440,12 +473,6 @@ paths:
           description: User or team not found
 
 components:
-  securitySchemes:
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: access_token
-
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
@@ -523,6 +550,3 @@ components:
       required:
         - id
         - name
-
-security:
-  - cookieAuth: []
