@@ -382,8 +382,8 @@ paths:
           description: User or team not found
 
   /api/algo:
-    get:
-      operationID: GetAPIAlgo
+    post:
+      operationID: PostAPIAlgo
       requestBody:
         required: true
         content:
@@ -484,7 +484,7 @@ components:
         eventName:
           type: string
         eventDuration:
-          type: string
+          type: integer
         participants:
           type: array
           items:
