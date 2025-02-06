@@ -42,3 +42,25 @@ CREATE TABLE RefreshToken( -- RefreshToken stores details about Slotify's Refres
 	UNIQUE(token),
 	CONSTRAINT fk_User_RefreshToken FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Notification;
+
+CREATE TABLE Notification ( -- Notification stores details about a notification
+	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	message TEXT NOT NULL,
+	created TIMESTAMP NOT NULL
+) ENGINE=InnoDB;
+
+
+DROP TABLE IF EXISTS UserToNotification;
+
+-- Many-to-many table linking users to notifications, users can share a notification eg. reschedule
+CREATE TABLE UserToNotification (
+        user_id INT UNSIGNED NOT NULL,
+        notification_id INT UNSIGNED NOT NULL,
+	is_read BOOL DEFAULT FALSE NOT NULL,
+	PRIMARY KEY(user_id, notification_id), -- When starting with User
+        INDEX      (notification_id, user_id), -- When starting with Notification
+	CONSTRAINT fk_User_UserToNotification FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+	CONSTRAINT fk_Notification_UserToNotification FOREIGN KEY (notification_id) REFERENCES Notification(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
