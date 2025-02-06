@@ -8,18 +8,16 @@ paths:
   /api/events:
     get:
       summary: Subscribe to notifications
-      description: |
-        Establishes a stream connection to receive real-time updates about rendering tasks via Server-Sent Events (SSE).
+      description: Establishes a stream connection to receive real-time updates about rendering tasks via Server-Sent Events (SSE).
       operationId: renderEvent
       responses:
         "200":
-          description: |
-            A continuous stream of server-sent events.
+          description: A continuous stream of server-sent events.
           content:
             text/event-stream:
               schema:
                 type: string
-              example: |
+              example:
                 data: Render update at 2023-03-29T12:34:56Z
           headers:
             Cache-Control:
@@ -59,6 +57,7 @@ paths:
                 type: string
   /api/notifications/{notificationID}/read:
     options:
+      operationId: OptionsAPINotificationsNotificationIDRead
       summary: CORS preflight for marking a notification as read
       parameters:
         - in: path
@@ -378,7 +377,33 @@ paths:
 
         "400":
           description: Bad request (e.g., invalid team name)
-
+    options:
+      operationId: OptionsAPITeams
+      summary: CORS preflight for teams
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
     post:
       operationId: PostAPITeams
       summary: Create a new team
