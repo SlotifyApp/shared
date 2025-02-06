@@ -16,9 +16,10 @@ paths:
           content:
             text/event-stream:
               schema:
-                type: string
-              example:
-                data: Render update at 2023-03-29T12:34:56Z
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Notification"
           headers:
             Cache-Control:
               schema:
@@ -291,7 +292,7 @@ paths:
                 $ref: "#/components/schemas/User"
         "400":
           description: Bad request (e.g., invalid team ID)
-        "404":
+        "403":
           description: User not found
     delete:
       operationId: DeleteAPIUsersUserID
@@ -519,7 +520,7 @@ paths:
             format: uint32
           description: ID of the team
       responses:
-        "200":
+        "201":
           description: User successfully added to the team
           content:
             application/json:
@@ -552,7 +553,7 @@ paths:
             format: uint32
           description: ID of the team
       responses:
-        "200":
+        "201":
           description: User successfully added to the team
           content:
             application/json:
