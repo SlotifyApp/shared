@@ -36,6 +36,7 @@ paths:
 
   /api/users/me/notifications:
     get:
+      operationId: GetAPIUsersMeNotifications
       summary: get user's unread notifications
       responses:
         "200":
@@ -93,6 +94,7 @@ paths:
                 example: "true"
     patch:
       summary: mark a notification as being read
+      operationId: PatchAPINotificationsNotificationIDRead
       parameters:
         - in: path
           name: notificationID
@@ -319,6 +321,7 @@ paths:
 
   /api/teams/joinable/me:
     get:
+      operationId: GetAPITeamsJoinableMe
       summary: Get all joinable teams for a user excluding teams they are already a part of
       responses:
         "200":
@@ -510,6 +513,7 @@ paths:
 
   /api/teams/{teamID}/users/me:
     post:
+      operationId: PostAPITeamsTeamIDUsersMe
       summary: Add current user to a team
       parameters:
         - in: path
