@@ -389,16 +389,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TeamCreate"
+              $ref: "#/components/schemas/AlgoBody"
       responses:
         "201":
-          description: Team created successfully
+          description: Algorithm ran successfully and returns the valid time slots and their respective ratings.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                $ref: "#/components/schemas/AlgoResponse"
         "400":
-          description: Bad request (e.g., invalid team name)
+          description: Bad request (e.g., invalid event data)
           content:
             application/json:
               schema:
@@ -471,6 +471,59 @@ components:
       required:
         - id
         - name
+  
+    AlgoBody:
+      type: object
+      properties:
+        startDate: 
+          type: date
+        endDate: 
+          type: date
+        eventName:
+          type: string
+        eventDuration:
+          type: string
+        participants:
+          type: array
+          items:
+            type: int
+            format: uint32
+        host:
+          type: array
+          items:
+            type: int
+            format: uint32
+        location:
+          type: string
+
+    AlgoResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            type: date
+          startTime:
+            type: time
+          endTime:
+            type: time
+          overallRating:
+            type: float
+          reschedulingRequired:
+            type: boolean
+          ratingDistribution:
+            type: array
+            items:
+              type: object
+              properties:
+                userID:
+                  type: int
+                  format: uint32
+                rating:
+                  type: float
+
+
+
   securitySchemes:
     bearerAuth:
       type: http
