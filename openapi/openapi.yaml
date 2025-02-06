@@ -381,6 +381,29 @@ paths:
         "403":
           description: User or team not found
 
+  /api/algo:
+    get:
+      operationID: GetAPIAlgo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamCreate"
+      responses:
+        "201":
+          description: Team created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request (e.g., invalid team name)
+          content:
+            application/json:
+              schema:
+                type: string
+  
 components:
   responses:
     UnauthorizedError:
