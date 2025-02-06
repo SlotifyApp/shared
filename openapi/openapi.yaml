@@ -383,7 +383,7 @@ paths:
 
   /api/algo:
     post:
-      operationID: PostAPIAlgo
+      operationId: PostAPIAlgo
       requestBody:
         required: true
         content:
