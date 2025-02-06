@@ -476,9 +476,11 @@ components:
       type: object
       properties:
         startDate: 
-          type: date
+          type: string
+          format: date
         endDate: 
-          type: date
+          type: string
+          format: date-time
         eventName:
           type: string
         eventDuration:
@@ -486,12 +488,12 @@ components:
         participants:
           type: array
           items:
-            type: int
+            type: integer
             format: uint32
         host:
           type: array
           items:
-            type: int
+            type: integer
             format: uint32
         location:
           type: string
@@ -502,13 +504,17 @@ components:
         type: object
         properties:
           date:
-            type: date
+            type: string
+            format: date-time
           startTime:
-            type: time
+            type: string
+            format: date-time
           endTime:
-            type: time
+            type: string
+            format: date-time
           overallRating:
-            type: float
+            type: number
+            format: float
           reschedulingRequired:
             type: boolean
           ratingDistribution:
@@ -517,10 +523,11 @@ components:
               type: object
               properties:
                 userID:
-                  type: int
+                  type: integer
                   format: uint32
                 rating:
-                  type: float
+                  type: number
+                  format: float
 
 
 
