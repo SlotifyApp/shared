@@ -12,5 +12,4 @@ RUN go mod download && go mod verify
 
 COPY . .
 
-# Run the tests
-CMD ["go", "test", "./..."]
+CMD ["go", "test","-shuffle=on","-v","-cover", "./..."]
