@@ -124,6 +124,19 @@ paths:
     get:
       operationId: GetAPICalendarMe
       summary: get a user's calendar events
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: string
+            format: date-time
+          required: true
+        - in: query
+          name: end
+          schema:
+            type: string
+            format: date-time
+          required: true
       responses:
         "200":
           description: Successfully got user calendar events
@@ -576,15 +589,105 @@ components:
     UnauthorizedError:
       description: Access token is missing or invalid
   schemas:
+    # Microsoft Attendee
+    # see: https://learn.microsoft.com/en-us/graph/api/resources/responsestatus?view=graph-rest-1.0#properties
+    Attendee:
+      type: object
+      properties:
+        # Attendee -> emailAddress
+        email:
+          type: string
+          format: email
+        # Attendee -> type
+        type:
+          type: string
+          enum: [required, optional, resource]
+        # Attendee -> status
+        responseStatus:
+          type: string
+          enum:
+            [
+              none,
+              organizer,
+              entativelyAccepted,
+              accepted,
+              declined,
+              notResponded,
+            ]
+
+    # Microsoft Calendar Event
+    # see: https://learn.microsoft.com/en-us/graph/api/resources/event?view=graph-rest-1.0#properties
     CalendarEvent:
       type: object
       properties:
-        subject:
+        id:
           type: string
-        startTime:
+        attendees:
+          type: array
+          items:
+            $ref: "#/components/schemas/Attendee"
+        # custom field: bodyPreview, not to be confused with MSFT body
+        body:
           type: string
+        # custom field: createdDateTime
+        created:
+          type: string
+          format: date-time
+        # custom field: end
         endTime:
           type: string
+        isCancelled:
+          type: boolean
+        # OPTIONAL custom field: OnlineMeetingInfo->joinURL
+        # see: https://learn.microsoft.com/en-us/graph/api/resources/onlinemeetinginfo?view=graph-rest-1.0#json-representation
+        joinURL:
+          type: string
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Location"
+        # custom field: Recipient -> emailAddress
+        organizer:
+          type: string
+          format: email
+        # custom field: start
+        startTime:
+          type: string
+        subject:
+          type: string
+        webLink:
+          type: string
+
+    # Microsoft Location
+    # See: https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0
+    Location:
+      type: object
+      properties:
+        id:
+          type: string
+        # custom field -> Location.displayName
+        name:
+          type: string
+        # Location->locationType
+        roomType:
+          type: string
+          enum:
+            [
+              default,
+              conferenceRoom,
+              homeAddress,
+              businessAddress,
+              geoCoordinates,
+              streetAddress,
+              hotel,
+              restaurant,
+              localBusiness,
+              postalAddress,
+            ]
+        # custom field -> physicalAddress.street
+        street:
+          type: string
+
     Notification:
       type: object
       properties:
