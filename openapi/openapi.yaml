@@ -488,8 +488,8 @@ components:
         participants:
           type: array
           items:
-            type: integer
-            format: uint32
+            type: string
+            format: email
         host:
           type: array
           items:
