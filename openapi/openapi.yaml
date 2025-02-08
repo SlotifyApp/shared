@@ -590,7 +590,7 @@ components:
       description: Access token is missing or invalid
   schemas:
     # Microsoft Attendee
-    # see: https://learn.microsoft.com/en-us/graph/api/resources/responsestatus?view=graph-rest-1.0#properties
+    # see: https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0#properties
     Attendee:
       type: object
       properties:
@@ -616,7 +616,7 @@ components:
             ]
 
     # Microsoft Calendar Event
-    # see: https://learn.microsoft.com/en-us/graph/api/resources/event?view=graph-rest-1.0#properties
+    # see: https://learn.microsoft.com/en-us/graph/api/resources/responsestatus?view=graph-rest-1.0#properties
     CalendarEvent:
       type: object
       properties:
