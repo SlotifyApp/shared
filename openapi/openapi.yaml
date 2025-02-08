@@ -124,6 +124,19 @@ paths:
     get:
       operationId: GetAPICalendarMe
       summary: get a user's calendar events
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: string
+            format: date-time
+          required: true
+        - in: query
+          name: end
+          schema:
+            type: string
+            format: date-time
+          required: true
       responses:
         "200":
           description: Successfully got user calendar events
