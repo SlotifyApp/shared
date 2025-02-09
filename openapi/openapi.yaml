@@ -156,8 +156,6 @@ paths:
             application/json:
               schema:
                 type: string
-
-  /api/calendar/event:
     post:
       operationId: PostAPICalendarEvent
       summary: create a new calendar event
