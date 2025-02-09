@@ -161,14 +161,14 @@ paths:
                 type: string
     post:
       operationId: PostAPICalendarMe
-      summary: create a new calendar event
+      summary: Create a new calendar event.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/CalendarEvent"
-        responses:
+      responses:
         "201":
           description: Event successfully created
           content:
