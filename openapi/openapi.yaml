@@ -159,6 +159,12 @@ paths:
             application/json:
               schema:
                 type: string
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
     post:
       operationId: PostAPICalendarMe
       summary: Create a new calendar event.
@@ -185,6 +191,13 @@ paths:
             application/json:
               schema:
                 type: string
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
+
     options:
       operationId: OptionsAPICalendarMe
       summary: CORS preflight for creating an event
