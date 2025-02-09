@@ -160,7 +160,7 @@ paths:
               schema:
                 type: string
     post:
-      operationId: PostAPICalendarEvent
+      operationId: PostAPICalendarMe
       summary: create a new calendar event
       requestBody:
         required: true
@@ -181,12 +181,37 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         "500":
           description: Something went wrong internally
-        "502":
-          description: Something went wrong with an external API eg. MSFT graph
           content:
             application/json:
               schema:
                 type: string
+    options:
+      operationId: OptionsAPICalendarMe
+      summary: CORS preflight for creating an event
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
 
   /api/refresh:
     post:
