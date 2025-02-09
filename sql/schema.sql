@@ -14,7 +14,7 @@ CREATE TABLE User (-- Stores user details
 
 DROP TABLE IF EXISTS Team;
 
-CREATE TABLE Team ( -- A group of users form a team (eg. a council)
+CREATE TABLE Team ( -- A group of users form a team
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	name VARCHAR(255) NOT NULL, -- team name
 	UNIQUE(name)

@@ -10,7 +10,7 @@ servers:
 paths:
   /api/events:
     get:
-      summary: Subscribe to notifications
+      summary: Subscribe to notifications eventstream.
       description: Establishes a stream connection to receive real-time updates about rendering tasks via Server-Sent Events (SSE).
       operationId: renderEvent
       responses:
@@ -40,7 +40,7 @@ paths:
   /api/users/me/notifications:
     get:
       operationId: GetAPIUsersMeNotifications
-      summary: get user's unread notifications
+      summary: Get user's unread notifications.
       responses:
         "200":
           description: Successfully updated notification.
@@ -63,7 +63,7 @@ paths:
   /api/notifications/{notificationID}/read:
     options:
       operationId: OptionsAPINotificationsNotificationIDRead
-      summary: CORS preflight for marking a notification as read
+      summary: Satisfy CORS preflight for marking a notification as read.
       parameters:
         - in: path
           name: notificationID
@@ -96,7 +96,7 @@ paths:
                 type: string
                 example: "true"
     patch:
-      summary: mark a notification as being read
+      summary: Mark a notification as being read.
       operationId: PatchAPINotificationsNotificationIDRead
       parameters:
         - in: path
@@ -126,7 +126,7 @@ paths:
   /api/calendar/me:
     get:
       operationId: GetAPICalendarMe
-      summary: get a user's calendar events
+      summary: Get a user's calendar events for a given time range.
       parameters:
         - in: query
           name: start
@@ -181,6 +181,8 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         "500":
           description: Something went wrong internally
+        "502":
+          description: Something went wrong with an external API eg. MSFT graph
           content:
             application/json:
               schema:
@@ -189,7 +191,7 @@ paths:
   /api/refresh:
     post:
       operationId: PostAPIRefresh
-      summary: Refresh Slotify access token and refresh token
+      summary: Refresh Slotify access token and refresh token.
       responses:
         "201":
           description: Successfully refreshed access token
@@ -203,7 +205,7 @@ paths:
   /api/auth/callback:
     get:
       operationId: GetAPIAuthCallback
-      summary: Auth route for authorisation code flow
+      summary: Auth route for authorisation code flow.
       parameters:
         - in: query
           name: code
@@ -227,7 +229,7 @@ paths:
   /api/healthcheck:
     get:
       operationId: GetAPIHealthcheck
-      summary: Healthcheck route
+      summary: Healthcheck route.
       responses:
         "200":
           description: Healthcheck successful
@@ -239,7 +241,7 @@ paths:
   /api/users/me/logout:
     post:
       operationId: PostAPIUsersMeLogout
-      summary: Logout user
+      summary: Logout user.
       responses:
         "200":
           description: Successfully logged out on backend
@@ -250,7 +252,7 @@ paths:
   /api/users/me:
     get:
       operationId: GetAPIUsersMe
-      summary: Get the user by id passed by JWT
+      summary: Get current user's details.
       responses:
         "200":
           description: Got user successfully
@@ -267,7 +269,7 @@ paths:
   /api/users:
     get:
       operationId: GetAPIUsers
-      summary: Get a user by query params
+      summary: Get users by query params.
       parameters:
         - in: query
           name: email
@@ -298,7 +300,7 @@ paths:
           description: Bad request (e.g., invalid team ID)
     post:
       operationId: PostAPIUsers
-      summary: Create a new user
+      summary: Create a new user.
       requestBody:
         required: true
         content:
@@ -318,7 +320,7 @@ paths:
   /api/users/{userID}:
     get:
       operationId: GetAPIUsersUserID
-      summary: Get a user by id
+      summary: Get a user by id.
       parameters:
         - in: path
           name: userID
@@ -340,7 +342,7 @@ paths:
           description: User not found
     delete:
       operationId: DeleteAPIUsersUserID
-      summary: Delete a user by id
+      summary: Delete a user by id.
       parameters:
         - in: path
           name: userID
@@ -364,7 +366,7 @@ paths:
   /api/teams/joinable/me:
     get:
       operationId: GetAPITeamsJoinableMe
-      summary: Get all joinable teams for a user excluding teams they are already a part of
+      summary: Get all joinable teams for a user excluding teams they are already a part of.
       responses:
         "200":
           description: Got all user's teams successfully
@@ -384,7 +386,7 @@ paths:
   /api/teams/me:
     get:
       operationId: GetAPITeamsMe
-      summary: Get all teams for user by id passed by JWT
+      summary: Get all teams for current user.
       responses:
         "200":
           description: Got all user's teams successfully
@@ -404,7 +406,7 @@ paths:
   /api/teams:
     get:
       operationId: GetAPITeams
-      summary: Get a team by query params
+      summary: Get a team by query params.
       parameters:
         - in: query
           name: name
@@ -425,7 +427,7 @@ paths:
           description: Bad request (e.g., invalid team name)
     options:
       operationId: OptionsAPITeams
-      summary: CORS preflight for teams
+      summary: Satisfy CORS preflight for creatingteams.
       responses:
         "204":
           description: Successful CORS preflight
@@ -452,7 +454,7 @@ paths:
                 example: "true"
     post:
       operationId: PostAPITeams
-      summary: Create a new team
+      summary: Create a new team.
       requestBody:
         required: true
         content:
@@ -476,7 +478,7 @@ paths:
   /api/teams/{teamID}:
     delete:
       operationId: DeleteAPITeamsTeamID
-      summary: Delete a team by id
+      summary: Delete a team by id.
       parameters:
         - in: path
           name: teamID
@@ -498,7 +500,7 @@ paths:
           description: Team not found
     get:
       operationId: GetAPITeamsTeamID
-      summary: Get a team by id
+      summary: Get a team by id.
       parameters:
         - in: path
           name: teamID
@@ -521,7 +523,7 @@ paths:
 
   /api/teams/{teamID}/users:
     get:
-      summary: Get all members of a team
+      summary: Get all members of a team.
       operationId: GetAPITeamsTeamIDUsers
       parameters:
         - in: path
@@ -556,7 +558,7 @@ paths:
   /api/teams/{teamID}/users/me:
     post:
       operationId: PostAPITeamsTeamIDUsersMe
-      summary: Add current user to a team
+      summary: Add current user to a team.
       parameters:
         - in: path
           name: teamID
@@ -582,7 +584,7 @@ paths:
   /api/teams/{teamID}/users/{userID}:
     post:
       operationId: PostAPITeamsTeamIDUsersUserID
-      summary: Add a user to a team
+      summary: Add a user to a team.
       parameters:
         - in: path
           name: userID
