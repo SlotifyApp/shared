@@ -299,7 +299,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid team ID)
+          description: Bad request (e.g., invalid group ID)
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
@@ -335,7 +335,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid team ID)
+          description: Bad request (e.g., invalid group ID)
     post:
       operationId: PostAPIUsers
       summary: Create a new user.
@@ -353,7 +353,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid team ID)
+          description: Bad request (e.g., invalid group ID)
 
   /api/users/{userID}:
     get:
@@ -375,7 +375,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid team ID)
+          description: Bad request (e.g., invalid group ID)
         "403":
           description: User not found
     delete:
@@ -401,19 +401,19 @@ paths:
         "404":
           description: User not found
 
-  /api/teams/joinable/me:
+  /api/groups/joinable/me:
     get:
-      operationId: GetAPITeamsJoinableMe
-      summary: Get all joinable teams for a user excluding teams they are already a part of.
+      operationId: GetAPIGroupsJoinableMe
+      summary: Get all joinable groups for a user excluding groups they are already a part of.
       responses:
         "200":
-          description: Got all user's teams successfully
+          description: Got all user's groups successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Team"
+                  $ref: "#/components/schemas/Group"
         "400":
           description: Bad request
         "401":
@@ -421,51 +421,50 @@ paths:
         "404":
           description: User not found
 
-  /api/teams/me:
+  /api/groups/me:
     get:
-      operationId: GetAPITeamsMe
-      summary: Get all teams for current user.
+      operationId: GetAPIgroupsMe
+      summary: Get all groups for current user.
       responses:
         "200":
-          description: Got all user's teams successfully
+          description: Got all user's groups successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Team"
+                  $ref: "#/components/schemas/Group"
         "400":
           description: Bad request
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
           description: User not found
-
-  /api/teams:
+  /api/groups:
     get:
-      operationId: GetAPITeams
-      summary: Get a team by query params.
+      operationId: GetAPIGroups
+      summary: Get a group by query params.
       parameters:
         - in: query
           name: name
           schema:
             type: string
-          description: Team name
+          description: Group name
       responses:
         "200":
-          description: Teams matching the query parameters
+          description: Groups matching the query parameters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Team"
+                  $ref: "#/components/schemas/Group"
 
         "400":
-          description: Bad request (e.g., invalid team name)
+          description: Bad request (e.g., invalid group name)
     options:
-      operationId: OptionsAPITeams
-      summary: Satisfy CORS preflight for creatingteams.
+      operationId: OptionsAPIGroups
+      summary: Satisfy CORS preflight for creatinggroups.
       responses:
         "204":
           description: Successful CORS preflight
@@ -491,42 +490,42 @@ paths:
                 type: string
                 example: "true"
 
-  /api/teams/{teamID}:
+  /api/groups/{groupID}:
     get:
-      operationId: GetAPITeamsTeamID
-      summary: Get a team by id.
+      operationId: GetAPIGroupsGroupID
+      summary: Get a group by id.
       parameters:
         - in: path
-          name: teamID
+          name: groupID
           schema:
             type: integer
             format: uint32
           required: true
-          description: Numeric ID of the team to get
+          description: Numeric ID of the group to get
       responses:
         "200":
-          description: Got team successfully
+          description: Got group successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                $ref: "#/components/schemas/Group"
         "404":
-          description: Team not found
+          description: Group not found
         "500":
           description: Something went wrong internally
 
-  /api/teams/{teamID}/users:
+  /api/groups/{groupID}/users:
     get:
-      summary: Get all members of a team.
-      operationId: GetAPITeamsTeamIDUsers
+      summary: Get all members of a group.
+      operationId: GetAPIGroupsGroupIDUsers
       parameters:
         - in: path
-          name: teamID
+          name: groupID
           required: true
           schema:
             type: integer
             format: uint32
-          description: ID of the team
+          description: ID of the group
       responses:
         "200":
           description: Users successfully found
@@ -537,7 +536,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/User"
         "403":
-          description: Bad request, team id is invalid
+          description: Bad request, group id is invalid
           content:
             application/json:
               schema:
@@ -938,8 +937,8 @@ components:
         - email
         - firstName
         - lastName
-        
-    Team:
+
+    Group:
       type: object
       properties:
         id:
