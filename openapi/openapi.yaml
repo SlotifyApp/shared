@@ -442,34 +442,7 @@ paths:
 
         "400":
           description: Bad request (e.g., invalid group name)
-    options:
-      operationId: OptionsAPIGroups
-      summary: Satisfy CORS preflight for creatinggroups.
-      responses:
-        "204":
-          description: Successful CORS preflight
-          headers:
-            Access-Control-Allow-Origin:
-              description: The allowed origin for cross-origin requests
-              schema:
-                type: string
-                example: "http://localhost:3000"
-            Access-Control-Allow-Methods:
-              description: Allowed HTTP methods
-              schema:
-                type: string
-                example: "GET, POST, PATCH, OPTIONS"
-            Access-Control-Allow-Headers:
-              description: Allowed headers in the actual request
-              schema:
-                type: string
-                example: "Content-Type, Authorization"
-            Access-Control-Allow-Credentials:
-              description: Whether credentials (cookies, HTTP authentication) are allowed
-              schema:
-                type: string
-                example: "true"
-
+          
   /api/groups/{groupID}:
     get:
       operationId: GetAPIGroupsGroupID
