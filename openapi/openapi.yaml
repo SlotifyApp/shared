@@ -401,26 +401,6 @@ paths:
         "404":
           description: User not found
 
-  /api/groups/joinable/me:
-    get:
-      operationId: GetAPIGroupsJoinableMe
-      summary: Get all joinable groups for a user excluding groups they are already a part of.
-      responses:
-        "200":
-          description: Got all user's groups successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Group"
-        "400":
-          description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          description: User not found
-
   /api/groups/me:
     get:
       operationId: GetAPIgroupsMe
