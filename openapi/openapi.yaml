@@ -490,52 +490,8 @@ paths:
               schema:
                 type: string
                 example: "true"
-    post:
-      operationId: PostAPITeams
-      summary: Create a new team.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TeamCreate"
-      responses:
-        "201":
-          description: Team created successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Team"
-        "400":
-          description: Bad request (e.g., invalid team name)
-          content:
-            application/json:
-              schema:
-                type: string
 
   /api/teams/{teamID}:
-    delete:
-      operationId: DeleteAPITeamsTeamID
-      summary: Delete a team by id.
-      parameters:
-        - in: path
-          name: teamID
-          schema:
-            type: integer
-            format: uint32
-          required: true
-          description: Numeric ID of the team to delete
-      responses:
-        "200":
-          description: Deleted team successfully
-          content:
-            application/json:
-              schema:
-                type: string
-        "400":
-          description: Bad request (e.g., invalid team id)
-        "404":
-          description: Team not found
     get:
       operationId: GetAPITeamsTeamID
       summary: Get a team by id.
@@ -592,66 +548,6 @@ paths:
             application/json:
               schema:
                 type: string
-
-  /api/teams/{teamID}/users/me:
-    post:
-      operationId: PostAPITeamsTeamIDUsersMe
-      summary: Add current user to a team.
-      parameters:
-        - in: path
-          name: teamID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the team
-      responses:
-        "201":
-          description: User successfully added to the team
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Team"
-        "400":
-          description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "403":
-          description: User or team not found
-
-  /api/teams/{teamID}/users/{userID}:
-    post:
-      operationId: PostAPITeamsTeamIDUsersUserID
-      summary: Add a user to a team.
-      parameters:
-        - in: path
-          name: userID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the user
-        - in: path
-          name: teamID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the team
-      responses:
-        "201":
-          description: User successfully added to the team
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Team"
-        "400":
-          description: Bad request
-
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "403":
-          description: User or team not found
 
 components:
   responses:
@@ -805,15 +701,7 @@ components:
         - email
         - firstName
         - lastName
-
-    TeamCreate:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
-
+        
     Team:
       type: object
       properties:
