@@ -655,7 +655,7 @@ paths:
 
   /api/groups/me:
     get:
-      operationId: GetAPIgroupsMe
+      operationId: GetAPIGroupsMe
       summary: Get all groups for current user.
       responses:
         "200":
