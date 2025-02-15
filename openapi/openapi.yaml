@@ -653,22 +653,23 @@ paths:
         "403":
           description: User or team not found
 
-  /api/algo:
+  /api/scheduling/slots:
     post:
-      operationId: PostAPIAlgo
+      operationId: PostAPISchedulingFree
+      summary: Doesn't create anything, just returns appropriate time slots along with their respective ratings.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AlgoBody"
+              $ref: "#/components/schemas/SchedulingBody"
       responses:
-        "201":
-          description: Algorithm ran successfully and returns the valid time slots and their respective ratings.
+        "200":
+          description: Scheduling algorithm returns the valid time slots and their respective ratings.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AlgoResponse"
+                $ref: "#/components/schemas/SchedulingResponse"
         "400":
           description: Bad request (e.g., invalid event data)
           content:
@@ -857,12 +858,12 @@ components:
         - id
         - name
 
-    AlgoBody:
+    SchedulingBody:
       type: object
       properties:
         startDate:
           type: string
-          format: date
+          format: date-time
         endDate:
           type: string
           format: date-time
@@ -870,20 +871,22 @@ components:
           type: string
         eventDuration:
           type: integer
+          format: uint32
         participants:
           type: array
           items:
             type: string
             format: email
-        host:
-          type: array
-          items:
-            type: integer
-            format: uint32
         location:
-          type: string
+          $ref: "#/components/schemas/Location"
+      required:
+        - startDate
+        - endDate
+        - eventName
+        - eventDuration
+        - participants
 
-    AlgoResponse:
+    SchedulingResponse:
       type: array
       items:
         type: object
