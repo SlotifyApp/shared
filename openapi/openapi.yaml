@@ -299,7 +299,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid group ID)
+          description: Bad request (e.g., invalid team ID)
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
@@ -335,7 +335,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid group ID)
+          description: Bad request (e.g., invalid team ID)
     post:
       operationId: PostAPIUsers
       summary: Create a new user.
@@ -353,7 +353,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid group ID)
+          description: Bad request (e.g., invalid team ID)
 
   /api/users/{userID}:
     get:
@@ -375,7 +375,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid group ID)
+          description: Bad request (e.g., invalid team ID)
         "403":
           description: User not found
     delete:
@@ -400,6 +400,258 @@ paths:
           description: Bad request (e.g., invalid user ID)
         "404":
           description: User not found
+
+  /api/teams/joinable/me:
+    get:
+      operationId: GetAPITeamsJoinableMe
+      summary: Get all joinable teams for a user excluding teams they are already a part of.
+      responses:
+        "200":
+          description: Got all user's teams successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
+
+  /api/teams/me:
+    get:
+      operationId: GetAPITeamsMe
+      summary: Get all teams for current user.
+      responses:
+        "200":
+          description: Got all user's teams successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
+
+  /api/teams:
+    get:
+      operationId: GetAPITeams
+      summary: Get a team by query params.
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Team name
+      responses:
+        "200":
+          description: Teams matching the query parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+
+        "400":
+          description: Bad request (e.g., invalid team name)
+    options:
+      operationId: OptionsAPITeams
+      summary: Satisfy CORS preflight for creatingteams.
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+    post:
+      operationId: PostAPITeams
+      summary: Create a new team.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamCreate"
+      responses:
+        "201":
+          description: Team created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request (e.g., invalid team name)
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /api/teams/{teamID}:
+    delete:
+      operationId: DeleteAPITeamsTeamID
+      summary: Delete a team by id.
+      parameters:
+        - in: path
+          name: teamID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the team to delete
+      responses:
+        "200":
+          description: Deleted team successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request (e.g., invalid team id)
+        "404":
+          description: Team not found
+    get:
+      operationId: GetAPITeamsTeamID
+      summary: Get a team by id.
+      parameters:
+        - in: path
+          name: teamID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the team to get
+      responses:
+        "200":
+          description: Got team successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "404":
+          description: Team not found
+        "500":
+          description: Something went wrong internally
+
+  /api/teams/{teamID}/users:
+    get:
+      summary: Get all members of a team.
+      operationId: GetAPITeamsTeamIDUsers
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            format: uint32
+          description: ID of the team
+      responses:
+        "200":
+          description: Users successfully found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "403":
+          description: Bad request, team id is invalid
+          content:
+            application/json:
+              schema:
+                type: string
+        "500":
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /api/teams/{teamID}/users/me:
+    post:
+      operationId: PostAPITeamsTeamIDUsersMe
+      summary: Add current user to a team.
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            format: uint32
+          description: ID of the team
+      responses:
+        "201":
+          description: User successfully added to the team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          description: User or team not found
+
+  /api/teams/{teamID}/users/{userID}:
+    post:
+      operationId: PostAPITeamsTeamIDUsersUserID
+      summary: Add a user to a team.
+      parameters:
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: integer
+            format: uint32
+          description: ID of the user
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            format: uint32
+          description: ID of the team
+      responses:
+        "201":
+          description: User successfully added to the team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request
+
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          description: User or team not found
 
   /api/groups/me:
     get:
@@ -890,6 +1142,26 @@ components:
         - email
         - firstName
         - lastName
+
+    TeamCreate:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint32
+        name:
+          type: string
+      required:
+        - id
+        - name
 
     Group:
       type: object
