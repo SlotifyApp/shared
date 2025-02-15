@@ -4,11 +4,142 @@ info:
   version: "1.0.0"
   description: API to communicate and schedule meetings with Microsoft.
 
+servers:
+  - url: http://localhost:8080
+
 paths:
+  /api/events:
+    get:
+      summary: Subscribe to notifications eventstream.
+      description: Establishes a stream connection to receive real-time updates about rendering tasks via Server-Sent Events (SSE).
+      operationId: renderEvent
+      responses:
+        "200":
+          description: A continuous stream of server-sent events.
+          content:
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Notification"
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+              description: No caching is allowed for this stream.
+            Connection:
+              schema:
+                type: string
+              description: Advises the client to keep the connection open.
+            Content-Type:
+              schema:
+                type: string
+              description: The MIME type of this stream is text/event-stream.
+
+  /api/users/me/notifications:
+    get:
+      operationId: GetAPIUsersMeNotifications
+      summary: Get user's unread notifications.
+      responses:
+        "200":
+          description: Successfully updated notification.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          description: Notification not found.
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/notifications/{notificationID}/read:
+    options:
+      operationId: OptionsAPINotificationsNotificationIDRead
+      summary: Satisfy CORS preflight for marking a notification as read.
+      parameters:
+        - in: path
+          name: notificationID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+    patch:
+      summary: Mark a notification as being read.
+      operationId: PatchAPINotificationsNotificationIDRead
+      parameters:
+        - in: path
+          name: notificationID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+      responses:
+        "200":
+          description: Successfully updated notification
+          content:
+            application/json:
+              schema:
+                type: string
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          description: Notification not found.
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+
   /api/calendar/me:
     get:
       operationId: GetAPICalendarMe
-      summary: get a user's calendar events
+      summary: Get a user's calendar events for a given time range.
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: string
+            format: date-time
+          required: true
+        - in: query
+          name: end
+          schema:
+            type: string
+            format: date-time
+          required: true
       responses:
         "200":
           description: Successfully got user calendar events
@@ -28,11 +159,77 @@ paths:
             application/json:
               schema:
                 type: string
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
+    post:
+      operationId: PostAPICalendarMe
+      summary: Create a new calendar event.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalendarEvent"
+      responses:
+        "201":
+          description: Event successfully created
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
+
+    options:
+      operationId: OptionsAPICalendarMe
+      summary: CORS preflight for creating an event
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
 
   /api/refresh:
     post:
       operationId: PostAPIRefresh
-      summary: Refresh Slotify access token and refresh token
+      summary: Refresh Slotify access token and refresh token.
       responses:
         "201":
           description: Successfully refreshed access token
@@ -46,7 +243,7 @@ paths:
   /api/auth/callback:
     get:
       operationId: GetAPIAuthCallback
-      summary: Auth route for authorisation code flow
+      summary: Auth route for authorisation code flow.
       parameters:
         - in: query
           name: code
@@ -70,7 +267,7 @@ paths:
   /api/healthcheck:
     get:
       operationId: GetAPIHealthcheck
-      summary: Healthcheck route
+      summary: Healthcheck route.
       responses:
         "200":
           description: Healthcheck successful
@@ -82,7 +279,7 @@ paths:
   /api/users/me/logout:
     post:
       operationId: PostAPIUsersMeLogout
-      summary: Logout user
+      summary: Logout user.
       responses:
         "200":
           description: Successfully logged out on backend
@@ -93,7 +290,7 @@ paths:
   /api/users/me:
     get:
       operationId: GetAPIUsersMe
-      summary: Get the user by id passed by JWT
+      summary: Get current user's details.
       responses:
         "200":
           description: Got user successfully
@@ -110,7 +307,7 @@ paths:
   /api/users:
     get:
       operationId: GetAPIUsers
-      summary: Get a user by query params
+      summary: Get users by query params.
       parameters:
         - in: query
           name: email
@@ -141,7 +338,7 @@ paths:
           description: Bad request (e.g., invalid team ID)
     post:
       operationId: PostAPIUsers
-      summary: Create a new user
+      summary: Create a new user.
       requestBody:
         required: true
         content:
@@ -161,7 +358,7 @@ paths:
   /api/users/{userID}:
     get:
       operationId: GetAPIUsersUserID
-      summary: Get a user by id
+      summary: Get a user by id.
       parameters:
         - in: path
           name: userID
@@ -179,11 +376,11 @@ paths:
                 $ref: "#/components/schemas/User"
         "400":
           description: Bad request (e.g., invalid team ID)
-        "404":
+        "403":
           description: User not found
     delete:
       operationId: DeleteAPIUsersUserID
-      summary: Delete a user by id
+      summary: Delete a user by id.
       parameters:
         - in: path
           name: userID
@@ -204,10 +401,30 @@ paths:
         "404":
           description: User not found
 
+  /api/teams/joinable/me:
+    get:
+      operationId: GetAPITeamsJoinableMe
+      summary: Get all joinable teams for a user excluding teams they are already a part of.
+      responses:
+        "200":
+          description: Got all user's teams successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
+
   /api/teams/me:
     get:
       operationId: GetAPITeamsMe
-      summary: Get all teams for user by id passed by JWT
+      summary: Get all teams for current user.
       responses:
         "200":
           description: Got all user's teams successfully
@@ -227,7 +444,7 @@ paths:
   /api/teams:
     get:
       operationId: GetAPITeams
-      summary: Get a team by query params
+      summary: Get a team by query params.
       parameters:
         - in: query
           name: name
@@ -246,10 +463,36 @@ paths:
 
         "400":
           description: Bad request (e.g., invalid team name)
-
+    options:
+      operationId: OptionsAPITeams
+      summary: Satisfy CORS preflight for creatingteams.
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
     post:
       operationId: PostAPITeams
-      summary: Create a new team
+      summary: Create a new team.
       requestBody:
         required: true
         content:
@@ -273,7 +516,7 @@ paths:
   /api/teams/{teamID}:
     delete:
       operationId: DeleteAPITeamsTeamID
-      summary: Delete a team by id
+      summary: Delete a team by id.
       parameters:
         - in: path
           name: teamID
@@ -295,7 +538,7 @@ paths:
           description: Team not found
     get:
       operationId: GetAPITeamsTeamID
-      summary: Get a team by id
+      summary: Get a team by id.
       parameters:
         - in: path
           name: teamID
@@ -318,7 +561,7 @@ paths:
 
   /api/teams/{teamID}/users:
     get:
-      summary: Get all members of a team
+      summary: Get all members of a team.
       operationId: GetAPITeamsTeamIDUsers
       parameters:
         - in: path
@@ -350,10 +593,36 @@ paths:
               schema:
                 type: string
 
+  /api/teams/{teamID}/users/me:
+    post:
+      operationId: PostAPITeamsTeamIDUsersMe
+      summary: Add current user to a team.
+      parameters:
+        - in: path
+          name: teamID
+          required: true
+          schema:
+            type: integer
+            format: uint32
+          description: ID of the team
+      responses:
+        "201":
+          description: User successfully added to the team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          description: User or team not found
+
   /api/teams/{teamID}/users/{userID}:
     post:
       operationId: PostAPITeamsTeamIDUsersUserID
-      summary: Add a user to a team
+      summary: Add a user to a team.
       parameters:
         - in: path
           name: userID
@@ -370,14 +639,17 @@ paths:
             format: uint32
           description: ID of the team
       responses:
-        "200":
+        "201":
           description: User successfully added to the team
           content:
             application/json:
               schema:
-                type: string
+                $ref: "#/components/schemas/Team"
         "400":
           description: Bad request
+
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "403":
           description: User or team not found
 
@@ -403,21 +675,134 @@ paths:
             application/json:
               schema:
                 type: string
-  
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+
 components:
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
   schemas:
+    # Microsoft Attendee
+    # see: https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0#properties
+    Attendee:
+      type: object
+      properties:
+        # Attendee -> emailAddress
+        email:
+          type: string
+          format: email
+        # Attendee -> type
+        type:
+          type: string
+          enum: [required, optional, resource]
+        # Attendee -> status
+        responseStatus:
+          type: string
+          enum:
+            [
+              none,
+              organizer,
+              entativelyAccepted,
+              accepted,
+              declined,
+              notResponded,
+            ]
+
+    # Microsoft Calendar Event
+    # see: https://learn.microsoft.com/en-us/graph/api/resources/responsestatus?view=graph-rest-1.0#properties
     CalendarEvent:
       type: object
       properties:
-        subject:
+        id:
           type: string
-        startTime:
+        attendees:
+          type: array
+          items:
+            $ref: "#/components/schemas/Attendee"
+        # custom field: bodyPreview, not to be confused with MSFT body
+        body:
           type: string
+        # custom field: createdDateTime
+        created:
+          type: string
+          format: date-time
+        # custom field: end
         endTime:
           type: string
+        isCancelled:
+          type: boolean
+        # OPTIONAL custom field: OnlineMeetingInfo->joinURL
+        # see: https://learn.microsoft.com/en-us/graph/api/resources/onlinemeetinginfo?view=graph-rest-1.0#json-representation
+        joinURL:
+          type: string
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Location"
+        # custom field: Recipient -> emailAddress
+        organizer:
+          type: string
+          format: email
+        # custom field: start
+        startTime:
+          type: string
+        subject:
+          type: string
+        webLink:
+          type: string
+
+    # Microsoft Location
+    # See: https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0
+    Location:
+      type: object
+      properties:
+        id:
+          type: string
+        # custom field -> Location.displayName
+        name:
+          type: string
+        # Location->locationType
+        roomType:
+          type: string
+          enum:
+            [
+              default,
+              conferenceRoom,
+              homeAddress,
+              businessAddress,
+              geoCoordinates,
+              streetAddress,
+              hotel,
+              restaurant,
+              localBusiness,
+              postalAddress,
+            ]
+        # custom field -> physicalAddress.street
+        street:
+          type: string
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint32
+        message:
+          type: string
+        created:
+          type: string
+          format: date-time
+      required:
+        - id
+        - message
+        - created
     UserCreate:
       type: object
       properties:
@@ -471,14 +856,14 @@ components:
       required:
         - id
         - name
-  
+
     AlgoBody:
       type: object
       properties:
-        startDate: 
+        startDate:
           type: string
           format: date
-        endDate: 
+        endDate:
           type: string
           format: date-time
         eventName:
@@ -528,11 +913,3 @@ components:
                 rating:
                   type: number
                   format: float
-
-
-
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT

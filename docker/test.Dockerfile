@@ -1,5 +1,5 @@
 # Build the application from source
-FROM --platform=$BUILDPLATFORM golang:1.23 AS build-stage
+FROM --platform=$BUILDPLATFORM golang:1.24 AS build-stage
 
 # Set the working directory in the container
 WORKDIR /app
@@ -12,5 +12,4 @@ RUN go mod download && go mod verify
 
 COPY . .
 
-# Run the tests
-CMD ["go", "test", "./..."]
+CMD ["go", "test","-shuffle=on","-v","-cover", "./..."]
