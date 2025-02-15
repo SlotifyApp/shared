@@ -667,10 +667,12 @@ components:
         email:
           type: string
           format: email
+          nullable: true
         # Attendee -> type
         type:
           type: string
           enum: [required, optional, resource]
+          nullable: true
         # Attendee -> status
         responseStatus:
           type: string
@@ -683,6 +685,7 @@ components:
               declined,
               notResponded,
             ]
+          nullable: true
 
     # Microsoft Calendar Event
     # see: https://learn.microsoft.com/en-us/graph/api/resources/responsestatus?view=graph-rest-1.0#properties
@@ -705,12 +708,14 @@ components:
         # custom field: end
         endTime:
           type: string
+          nullable: true
         isCancelled:
           type: boolean
         # OPTIONAL custom field: OnlineMeetingInfo->joinURL
         # see: https://learn.microsoft.com/en-us/graph/api/resources/onlinemeetinginfo?view=graph-rest-1.0#json-representation
         joinURL:
           type: string
+          nullable: true
         locations:
           type: array
           items:
@@ -722,19 +727,25 @@ components:
         # custom field: start
         startTime:
           type: string
+          nullable: true
         subject:
           type: string
         webLink:
           type: string
+
+      required:
+        - attendees
+        - locations
 
     # Microsoft Location
     # See: https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0
     Location:
       type: object
       properties:
+        # non nullable
         id:
           type: string
-        # custom field -> Location.displayName
+        # non nullable custom field -> Location.displayName
         name:
           type: string
         # Location->locationType
@@ -753,9 +764,11 @@ components:
               localBusiness,
               postalAddress,
             ]
+          nullable: true
         # custom field -> physicalAddress.street
         street:
           type: string
+          nullable: true
 
     Notification:
       type: object
