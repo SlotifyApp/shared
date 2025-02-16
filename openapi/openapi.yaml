@@ -653,6 +653,38 @@ paths:
         "403":
           description: User or team not found
 
+  /api/scheduling/slots:
+    post:
+      operationId: PostAPISchedulingFree
+      summary: Doesn't create anything, just returns appropriate time slots along with their respective ratings.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SchedulingBody"
+      responses:
+        "200":
+          description: Scheduling algorithm returns the valid time slots and their respective ratings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchedulingResponse"
+        "400":
+          description: Bad request (e.g., invalid event data)
+          content:
+            application/json:
+              schema:
+                type: string
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+
 components:
   responses:
     UnauthorizedError:
@@ -838,3 +870,62 @@ components:
       required:
         - id
         - name
+
+    SchedulingBody:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        eventName:
+          type: string
+        eventDuration:
+          type: integer
+          format: uint32
+        participants:
+          type: array
+          items:
+            type: string
+            format: email
+        location:
+          $ref: "#/components/schemas/Location"
+      required:
+        - startDate
+        - endDate
+        - eventName
+        - eventDuration
+        - participants
+
+    SchedulingResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            type: string
+            format: date-time
+          startTime:
+            type: string
+            format: date-time
+          endTime:
+            type: string
+            format: date-time
+          overallRating:
+            type: number
+            format: float
+          reschedulingRequired:
+            type: boolean
+          ratingDistribution:
+            type: array
+            items:
+              type: object
+              properties:
+                userID:
+                  type: integer
+                  format: uint32
+                rating:
+                  type: number
+                  format: float
