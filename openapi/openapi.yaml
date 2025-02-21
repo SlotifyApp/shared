@@ -656,20 +656,12 @@ paths:
   /api/scheduling/slots:
     post:
       operationId: PostAPISchedulingFree
-      summary: Doesn't create anything, just returns appropriate time slots along with their respective ratings.
+      summary: Idempotent route, just returns appropriate time slots along with their respective ratings.
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SchedulingBody"
+        $ref: "#/components/requestBodies/SchedulingSlotsBody"
       responses:
         "200":
-          description: Scheduling algorithm returns the valid time slots and their respective ratings.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchedulingResponse"
+          $ref: "#/components/responses/SchedulingSlotsSuccessResponse"
         "400":
           description: Bad request (e.g., invalid event data)
           content:
@@ -687,6 +679,8 @@ paths:
 
 components:
   requestBodies:
+    # TODO: Add location constraint
+    # should we include minimumAttendeePercentage?
     SchedulingSlotsBody:
       description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
       required: true
@@ -722,11 +716,98 @@ components:
               - isOrganizerOptional
 
   responses:
+    SchedulingSlotsSuccessResponse:
+      description: Scheduling algorithm returns the valid time slots and their respective ratings.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SchedulingSlotsSuccessResponseBody"
+
     UnauthorizedError:
       description: Access token is missing or invalid
 
   schemas:
+    EmptySuggestionsReason:
+      description: Maps directly to [MSFT emptySuggestionsReason](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestionsresult?view=graph-rest-1.0)
+      type: string
+      enum:
+        - attendeesUnavailable
+        - attendeesUnavailableOrUnknown
+        - locationsUnavailable
+        - organizerUnavailable
+        - unknown
+
+    FreeBusyStatus:
+      description: Maps directly to [MSFT freebusyStatus](https://learn.microsoft.com/en-us/graph/api/resources/attendeeavailability?view=graph-rest-1.0)
+      type: string
+      enum:
+        - free
+        - tentative
+        - busy
+        - oof
+        - workingElsewhere
+        - unknown
+
+    AttendeeAvailability:
+      description: Maps roughly to [MSFT attendeeAvailability](https://learn.microsoft.com/en-us/graph/api/resources/attendeeavailability?view=graph-rest-1.0)
+      properties:
+        availability:
+          $ref: "#/components/schemas/FreeBusyStatus"
+        attendee:
+          $ref: "#/components/schemas/AttendeeBase"
+      required:
+        - availability
+        - attendee
+
+    MeetingTimeSlot:
+      description: Maps directly to [MSFT meetingTimeSlot](https://learn.microsoft.com/en-us/graph/api/resources/timeslot?view=graph-rest-1.0)
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+
+    MeetingTimeSuggestion:
+      description: Maps roughly to [MSFT meetingTimeSuggestion](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestion?view=graph-rest-1.0)
+      type: object
+      properties:
+        attendeeAvailability:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendeeAvailability"
+        confidence:
+          type: number
+          format: double
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Location"
+        meetingTimeSlot:
+          $ref: "#/components/schemas/MeetingTimeSlot"
+        order:
+          type: integer
+          format: int32
+        organizerAvailability:
+          type: string
+        suggestionReason:
+          type: string
+
+    SchedulingSlotsSuccessResponseBody:
+      description: Maps roughly to [MSFT meetingTimeSuggestionsResult](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestionsresult?view=graph-rest-1.0)
+      type: object
+      properties:
+        emptySuggestionsReason:
+          $ref: "#/components/schemas/EmptySuggestionsReason"
+        meetingTimeSuggestions:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeetingTimeSuggestion"
+
     AttendeeType:
+      description: Maps directly to [MSFT Attendee->type](https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0)
       type: string
       enum:
         - required
@@ -769,9 +850,8 @@ components:
           format: email
           nullable: true
         # Attendee -> type
-        type:
-          type: string
-          enum: [required, optional, resource]
+        attendeeType:
+          $ref: "#/components/schemas/AttendeeType"
           nullable: true
         # Attendee -> status
         responseStatus:
@@ -838,8 +918,9 @@ components:
         - locations
 
     # Microsoft Location
-    # See: https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0
+    # See:
     Location:
+      description: Maps roughly to [MSFT Location](https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0)
       type: object
       properties:
         # non nullable
