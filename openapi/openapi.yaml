@@ -686,10 +686,78 @@ paths:
                 type: string
 
 components:
+  requestBodies:
+    SchedulingSlotsBody:
+      description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              attendees:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttendeeBase"
+              meetingDuration:
+                type: string
+                description: >
+                  The length of the meeting, denoted in **ISO 8601** format.  
+                  - Example:  
+                    - **1 hour** → `'PT1H'`
+                    - **2 hours, 30 minutes** → `'PT2H30M'`
+                  - `'P'` is the duration designator.
+                  - `'T'` separates date and time components.
+                  - `'H'` (hours) and `'M'` (minutes) specify the time duration.
+                  - If omitted, the default duration is **30 minutes** (`'PT30M'`).
+                example: "PT2H30M"
+              isOrganizerOptional:
+                type: boolean
+              maxCandidates:
+                type: integer
+                format: uint32
+
+            required:
+              - attendees
+              - isOrganizerOptional
+
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
+
   schemas:
+    AttendeeType:
+      type: string
+      enum:
+        - required
+        - optional
+        - resource
+
+    EmailAddress:
+      type: object
+      description: directly maps to MSFT Email Address, see info here:[MSFT EmailAddress Struct Docs](https://learn.microsoft.com/en-us/graph/api/resources/emailaddress?view=graph-rest-1.0)
+      properties:
+        address:
+          type: string
+          format: email
+        name:
+          type: string
+      required:
+        - address
+        - name
+
+    AttendeeBase:
+      type: object
+      description: directly maps to MSFT attendeeBase, see info here:[MSFT attendeeBase Struct Docs](https://learn.microsoft.com/en-us/graph/api/resources/attendeebase?view=graph-rest-1.0)
+      properties:
+        emailAddress:
+          $ref: "#/components/schemas/EmailAddress"
+        attendeeType:
+          $ref: "#/components/schemas/AttendeeType"
+      required:
+        - emailAddress
+        - attendeeType
+
     # Microsoft Attendee
     # see: https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0#properties
     Attendee:
