@@ -658,7 +658,11 @@ paths:
       operationId: PostAPISchedulingFree
       summary: Idempotent route, just returns appropriate time slots along with their respective ratings.
       requestBody:
-        $ref: "#/components/requestBodies/SchedulingSlotsReqBody"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SchedulingSlotsBodySchema"
       responses:
         "200":
           $ref: "#/components/responses/SchedulingSlotsSuccessResponse"
@@ -678,15 +682,6 @@ paths:
                 type: string
 
 components:
-  requestBodies:
-    SchedulingSlotsReqBody:
-      description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/SchedulingSlotsBodySchema"
-
   responses:
     SchedulingSlotsSuccessResponse:
       description: Scheduling algorithm returns the valid time slots and their respective ratings.
@@ -700,6 +695,7 @@ components:
 
   schemas:
     SchedulingSlotsBodySchema:
+      description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
       type: object
       properties:
         attendees:
