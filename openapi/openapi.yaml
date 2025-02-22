@@ -694,6 +694,19 @@ components:
       description: Access token is missing or invalid
 
   schemas:
+    TimeConstraint:
+      description: Maps directly to [MSFT timeConstraint](https://learn.microsoft.com/en-us/graph/api/resources/timeconstraint?view=graph-rest-1.0)
+      type: object
+      properties:
+        activityDomain:
+          type: string
+        timeSlots:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeetingTimeSlot"
+      required:
+        - timeSlots
+
     SchedulingSlotsBodySchema:
       description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
       type: object
@@ -726,7 +739,9 @@ components:
           format: double
         maxCandidates:
           type: integer
-          format: uint32
+          format: int32
+        timeConstraint:
+          $ref: "#/components/schemas/TimeConstraint"
 
       required:
         - attendees
@@ -734,6 +749,7 @@ components:
         - locationConstraint
         - meetingDuration
         - meetingName
+        - timeConstraint
 
     PhysicalAddress:
       description: Maps directly to [MSFT physicalAddress](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraintitem?view=graph-rest-1.0)
@@ -826,6 +842,9 @@ components:
         start:
           type: string
           format: date-time
+      required:
+        - end
+        - start
 
     MeetingTimeSuggestion:
       description: Maps roughly to [MSFT meetingTimeSuggestion](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestion?view=graph-rest-1.0)
