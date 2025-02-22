@@ -658,7 +658,7 @@ paths:
       operationId: PostAPISchedulingFree
       summary: Idempotent route, just returns appropriate time slots along with their respective ratings.
       requestBody:
-        $ref: "#/components/requestBodies/SchedulingSlotsBody"
+        $ref: "#/components/requestBodies/SchedulingSlotsReqBody"
       responses:
         "200":
           $ref: "#/components/responses/SchedulingSlotsSuccessResponse"
@@ -679,41 +679,13 @@ paths:
 
 components:
   requestBodies:
-    # TODO: Add location constraint
-    # should we include minimumAttendeePercentage?
-    SchedulingSlotsBody:
+    SchedulingSlotsReqBody:
       description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
       required: true
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              attendees:
-                type: array
-                items:
-                  $ref: "#/components/schemas/AttendeeBase"
-              meetingDuration:
-                type: string
-                description: >
-                  The length of the meeting, denoted in **ISO 8601** format.  
-                  - Example:  
-                    - **1 hour** → `'PT1H'`
-                    - **2 hours, 30 minutes** → `'PT2H30M'`
-                  - `'P'` is the duration designator.
-                  - `'T'` separates date and time components.
-                  - `'H'` (hours) and `'M'` (minutes) specify the time duration.
-                  - If omitted, the default duration is **30 minutes** (`'PT30M'`).
-                example: "PT2H30M"
-              isOrganizerOptional:
-                type: boolean
-              maxCandidates:
-                type: integer
-                format: uint32
-
-            required:
-              - attendees
-              - isOrganizerOptional
+            $ref: "#/components/schemas/SchedulingSlotsBodySchema"
 
   responses:
     SchedulingSlotsSuccessResponse:
@@ -727,6 +699,95 @@ components:
       description: Access token is missing or invalid
 
   schemas:
+    SchedulingSlotsBodySchema:
+      type: object
+      properties:
+        attendees:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendeeBase"
+        meetingName:
+          description: custom field, this is used for the AI model
+          type: string
+        meetingDuration:
+          type: string
+          description: >
+            The length of the meeting, denoted in **ISO 8601** format.
+            - Example:
+              - **1 hour** → `'PT1H'`
+              - **2 hours, 30 minutes** → `'PT2H30M'`
+            - `'P'` is the duration designator.
+            - `'T'` separates date and time components.
+            - `'H'` (hours) and `'M'` (minutes) specify the time duration.
+            - If omitted, the default duration is **30 minutes** (`'PT30M'`).
+          example: "PT2H30M"
+        isOrganizerOptional:
+          type: boolean
+        locationConstraint:
+          $ref: "#/components/schemas/LocationConstraint"
+        minimumAttendeePercentage:
+          type: number
+          format: double
+        maxCandidates:
+          type: integer
+          format: uint32
+
+      required:
+        - attendees
+        - isOrganizerOptional
+        - locationConstraint
+        - meetingDuration
+        - meetingName
+
+    PhysicalAddress:
+      description: Maps directly to [MSFT physicalAddress](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraintitem?view=graph-rest-1.0)
+      properties:
+        city:
+          type: string
+          description: The city.
+        countryOrRegion:
+          type: string
+          description: The country or region. It's a free-format string value, for example, "United States".
+        postalCode:
+          type: string
+          description: The postal code.
+        state:
+          type: string
+          description: The state.
+        street:
+          type: string
+          description: The street.
+
+    LocationConstraintItem:
+      description: Maps roughly to [MSFT locationConstraintItem](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraintitem?view=graph-rest-1.0)
+      type: object
+      properties:
+        displayName:
+          type: string
+        resolveAvailability:
+          type: boolean
+        locationEmailAddress:
+          type: string
+        address:
+          $ref: "#/components/schemas/PhysicalAddress"
+      required:
+        - displayName
+        - resolveAvailability
+        - address
+
+    LocationConstraint:
+      description: Maps directly to [MSFT locationConstraint](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraint?view=graph-rest-1.0)
+      type: object
+      properties:
+        isRequired:
+          type: boolean
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocationConstraintItem"
+        suggestLocation:
+          type: boolean
+
     EmptySuggestionsReason:
       description: Maps directly to [MSFT emptySuggestionsReason](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestionsresult?view=graph-rest-1.0)
       type: string
@@ -829,7 +890,7 @@ components:
 
     AttendeeBase:
       type: object
-      description: directly maps to MSFT attendeeBase, see info here:[MSFT attendeeBase Struct Docs](https://learn.microsoft.com/en-us/graph/api/resources/attendeebase?view=graph-rest-1.0)
+      description: directly maps to [MSFT attendeeBase](https://learn.microsoft.com/en-us/graph/api/resources/attendeebase?view=graph-rest-1.0)
       properties:
         emailAddress:
           $ref: "#/components/schemas/EmailAddress"
@@ -839,9 +900,8 @@ components:
         - emailAddress
         - attendeeType
 
-    # Microsoft Attendee
-    # see: https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0#properties
     Attendee:
+      description: Maps roughly to [MSFT Attendee](https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0#properties)
       type: object
       properties:
         # Attendee -> emailAddress
@@ -867,9 +927,8 @@ components:
             ]
           nullable: true
 
-    # Microsoft Calendar Event
-    # see: https://learn.microsoft.com/en-us/graph/api/resources/responsestatus?view=graph-rest-1.0#properties
     CalendarEvent:
+      description: Maps roughly to [MSFT event](https://learn.microsoft.com/en-us/graph/api/resources/event?view=graph-rest-1.0#properties)
       type: object
       properties:
         id:
@@ -891,17 +950,16 @@ components:
           nullable: true
         isCancelled:
           type: boolean
-        # OPTIONAL custom field: OnlineMeetingInfo->joinURL
-        # see: https://learn.microsoft.com/en-us/graph/api/resources/onlinemeetinginfo?view=graph-rest-1.0#json-representation
         joinURL:
+          description: Maps roughly to [MSFT OnlineMeetingInfo->joinURL](https://learn.microsoft.com/en-us/graph/api/resources/onlinemeetinginfo?view=graph-rest-1.0#json-representation)
           type: string
           nullable: true
         locations:
           type: array
           items:
             $ref: "#/components/schemas/Location"
-        # custom field: Recipient -> emailAddress
         organizer:
+          description: Maps roughly to [MSFT Recipient->emailAddress](https://learn.microsoft.com/en-us/graph/api/resources/recipient?view=graph-rest-1.0)
           type: string
           format: email
         # custom field: start
@@ -917,8 +975,6 @@ components:
         - attendees
         - locations
 
-    # Microsoft Location
-    # See:
     Location:
       description: Maps roughly to [MSFT Location](https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0)
       type: object
@@ -1019,62 +1075,3 @@ components:
       required:
         - id
         - name
-
-    SchedulingBody:
-      type: object
-      properties:
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-        eventName:
-          type: string
-        eventDuration:
-          type: integer
-          format: uint32
-        participants:
-          type: array
-          items:
-            type: string
-            format: email
-        location:
-          $ref: "#/components/schemas/Location"
-      required:
-        - startDate
-        - endDate
-        - eventName
-        - eventDuration
-        - participants
-
-    SchedulingResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          date:
-            type: string
-            format: date-time
-          startTime:
-            type: string
-            format: date-time
-          endTime:
-            type: string
-            format: date-time
-          overallRating:
-            type: number
-            format: float
-          reschedulingRequired:
-            type: boolean
-          ratingDistribution:
-            type: array
-            items:
-              type: object
-              properties:
-                userID:
-                  type: integer
-                  format: uint32
-                rating:
-                  type: number
-                  format: float
