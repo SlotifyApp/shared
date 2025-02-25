@@ -739,7 +739,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/GroupUser"
         "403":
           description: Bad request, group id is invalid
           content:
@@ -1174,3 +1174,18 @@ components:
       required:
         - id
         - name
+
+    GroupUser:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - email
+        - firstName
+        - lastName
