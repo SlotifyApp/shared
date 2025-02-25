@@ -299,7 +299,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid team ID)
+          description: Bad request (e.g., invalid slotifyGroup ID)
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
@@ -335,7 +335,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid team ID)
+          description: Bad request (e.g., invalid slotifyGroup ID)
     post:
       operationId: PostAPIUsers
       summary: Create a new user.
@@ -353,7 +353,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid team ID)
+          description: Bad request (e.g., invalid slotifyGroup ID)
 
   /api/users/{userID}:
     get:
@@ -375,7 +375,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Bad request (e.g., invalid team ID)
+          description: Bad request (e.g., invalid slotifyGroup ID)
         "403":
           description: User not found
     delete:
@@ -401,19 +401,19 @@ paths:
         "404":
           description: User not found
 
-  /api/teams/joinable/me:
+  /api/slotify-groups/joinable/me:
     get:
-      operationId: GetAPITeamsJoinableMe
-      summary: Get all joinable teams for a user excluding teams they are already a part of.
+      operationId: GetAPISlotifyGroupsJoinableMe
+      summary: Get all joinable slotify-groups for a user excluding slotify-groups they are already a part of.
       responses:
         "200":
-          description: Got all user's teams successfully
+          description: Got all user's slotify-groups successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Team"
+                  $ref: "#/components/schemas/SlotifyGroup"
         "400":
           description: Bad request
         "401":
@@ -421,19 +421,19 @@ paths:
         "404":
           description: User not found
 
-  /api/teams/me:
+  /api/slotify-groups/me:
     get:
-      operationId: GetAPITeamsMe
-      summary: Get all teams for current user.
+      operationId: GetAPISlotifyGroupsMe
+      summary: Get all slotify-groups for current user.
       responses:
         "200":
-          description: Got all user's teams successfully
+          description: Got all user's slotify-groups successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Team"
+                  $ref: "#/components/schemas/SlotifyGroup"
         "400":
           description: Bad request
         "401":
@@ -441,31 +441,31 @@ paths:
         "404":
           description: User not found
 
-  /api/teams:
+  /api/slotify-groups:
     get:
-      operationId: GetAPITeams
-      summary: Get a team by query params.
+      operationId: GetAPISlotifyGroups
+      summary: Get a slotifyGroup by query params.
       parameters:
         - in: query
           name: name
           schema:
             type: string
-          description: Team name
+          description: SlotifyGroup name
       responses:
         "200":
-          description: Teams matching the query parameters
+          description: slotify-groups matching the query parameters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Team"
+                  $ref: "#/components/schemas/SlotifyGroup"
 
         "400":
-          description: Bad request (e.g., invalid team name)
+          description: Bad request (e.g., invalid slotifyGroup name)
     options:
-      operationId: OptionsAPITeams
-      summary: Satisfy CORS preflight for creatingteams.
+      operationId: OptionsAPISlotifyGroups
+      summary: Satisfy CORS preflight for creatingslotify-groups.
       responses:
         "204":
           description: Successful CORS preflight
@@ -491,86 +491,86 @@ paths:
                 type: string
                 example: "true"
     post:
-      operationId: PostAPITeams
-      summary: Create a new team.
+      operationId: PostAPISlotifyGroups
+      summary: Create a new slotifyGroup.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TeamCreate"
+              $ref: "#/components/schemas/SlotifyGroupCreate"
       responses:
         "201":
-          description: Team created successfully
+          description: SlotifyGroup created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                $ref: "#/components/schemas/SlotifyGroup"
         "400":
-          description: Bad request (e.g., invalid team name)
+          description: Bad request (e.g., invalid slotifyGroup name)
           content:
             application/json:
               schema:
                 type: string
 
-  /api/teams/{teamID}:
+  /api/slotify-groups/{slotifyGroupID}:
     delete:
-      operationId: DeleteAPITeamsTeamID
-      summary: Delete a team by id.
+      operationId: DeleteAPISlotifyGroupsSlotifyGroupID
+      summary: Delete a slotifyGroup by id.
       parameters:
         - in: path
-          name: teamID
+          name: slotifyGroupID
           schema:
             type: integer
             format: uint32
           required: true
-          description: Numeric ID of the team to delete
+          description: Numeric ID of the slotifyGroup to delete
       responses:
         "200":
-          description: Deleted team successfully
+          description: Deleted slotifyGroup successfully
           content:
             application/json:
               schema:
                 type: string
         "400":
-          description: Bad request (e.g., invalid team id)
+          description: Bad request (e.g., invalid slotifyGroup id)
         "404":
-          description: Team not found
+          description: SlotifyGroup not found
     get:
-      operationId: GetAPITeamsTeamID
-      summary: Get a team by id.
+      operationId: GetAPISlotifyGroupsSlotifyGroupID
+      summary: Get a slotifyGroup by id.
       parameters:
         - in: path
-          name: teamID
+          name: slotifyGroupID
           schema:
             type: integer
             format: uint32
           required: true
-          description: Numeric ID of the team to get
+          description: Numeric ID of the slotifyGroup to get
       responses:
         "200":
-          description: Got team successfully
+          description: Got slotifyGroup successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                $ref: "#/components/schemas/SlotifyGroup"
         "404":
-          description: Team not found
+          description: SlotifyGroup not found
         "500":
           description: Something went wrong internally
 
-  /api/teams/{teamID}/users:
+  /api/slotify-groups/{slotifyGroupID}/users:
     get:
-      summary: Get all members of a team.
-      operationId: GetAPITeamsTeamIDUsers
+      summary: Get all members of a slotifyGroup.
+      operationId: GetAPISlotifyGroupsSlotifyGroupIDUsers
       parameters:
         - in: path
-          name: teamID
+          name: slotifyGroupID
           required: true
           schema:
             type: integer
             format: uint32
-          description: ID of the team
+          description: ID of the slotifyGroup
       responses:
         "200":
           description: Users successfully found
@@ -581,7 +581,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/User"
         "403":
-          description: Bad request, team id is invalid
+          description: Bad request, slotifyGroup id is invalid
           content:
             application/json:
               schema:
@@ -593,36 +593,36 @@ paths:
               schema:
                 type: string
 
-  /api/teams/{teamID}/users/me:
+  /api/slotify-groups/{slotifyGroupID}/users/me:
     post:
-      operationId: PostAPITeamsTeamIDUsersMe
-      summary: Add current user to a team.
+      operationId: PostAPISlotifyGroupsSlotifyGroupIDUsersMe
+      summary: Add current user to a slotifyGroup.
       parameters:
         - in: path
-          name: teamID
+          name: slotifyGroupID
           required: true
           schema:
             type: integer
             format: uint32
-          description: ID of the team
+          description: ID of the slotifyGroup
       responses:
         "201":
-          description: User successfully added to the team
+          description: User successfully added to the slotifyGroup
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                $ref: "#/components/schemas/SlotifyGroup"
         "400":
           description: Bad request
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "403":
-          description: User or team not found
+          description: User or slotifyGroup not found
 
-  /api/teams/{teamID}/users/{userID}:
+  /api/slotify-groups/{slotifyGroupID}/users/{userID}:
     post:
-      operationId: PostAPITeamsTeamIDUsersUserID
-      summary: Add a user to a team.
+      operationId: PostAPISlotifyGroupsSlotifyGroupIDUsersUserID
+      summary: Add a user to a slotifyGroup.
       parameters:
         - in: path
           name: userID
@@ -632,26 +632,26 @@ paths:
             format: uint32
           description: ID of the user
         - in: path
-          name: teamID
+          name: slotifyGroupID
           required: true
           schema:
             type: integer
             format: uint32
-          description: ID of the team
+          description: ID of the slotifyGroup
       responses:
         "201":
-          description: User successfully added to the team
+          description: User successfully added to the slotifyGroup
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                $ref: "#/components/schemas/SlotifyGroup"
         "400":
           description: Bad request
 
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "403":
-          description: User or team not found
+          description: User or slotifyGroup not found
 
   /api/scheduling/slots:
     post:
@@ -1071,7 +1071,7 @@ components:
         - firstName
         - lastName
 
-    TeamCreate:
+    SlotifyGroupCreate:
       type: object
       properties:
         name:
@@ -1079,7 +1079,7 @@ components:
       required:
         - name
 
-    Team:
+    SlotifyGroup:
       type: object
       properties:
         id:
