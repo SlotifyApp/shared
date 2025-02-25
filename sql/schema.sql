@@ -74,11 +74,11 @@ CREATE TABLE Invite (
         from_user_id INT UNSIGNED NOT NULL,
         to_user_id INT UNSIGNED NOT NULL,
 	message TEXT NOT NULL,
-	accepted BOOL DEFAULT NULL, --NULL represents hasn't been accepted/declined.
+	status ENUM('pending', 'accepted', 'declined', 'expired') DEFAULT 'pending' NOT NULL,
 	created_at TIMESTAMP NOT NULL,
         INDEX      (slotify_group_id),
         INDEX      (to_user_id),
 	CONSTRAINT fk_SlotifyGroup_Invite FOREIGN KEY (slotify_group_id) REFERENCES SlotifyGroup(id) ON DELETE CASCADE,
 	CONSTRAINT fk_User_Invite_from FOREIGN KEY (from_user_id) REFERENCES User(id) ON DELETE CASCADE,
-	CONSTRAINT fk_User_Invite_to FOREIGN KEY (to_user_id) REFERENCES User(id) ON DELETE CASCADE,
+	CONSTRAINT fk_User_Invite_to FOREIGN KEY (to_user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;

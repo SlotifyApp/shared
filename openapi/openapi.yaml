@@ -401,6 +401,293 @@ paths:
         "404":
           description: User not found
 
+  /api/invites/me:
+    get:
+      operationId: GetAPIInvitesMe
+      summary: Get all invites for logged in user.
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: "#/components/schemas/InviteStatus"
+          description: Invite status
+      responses:
+        "200":
+          description: Got all user's invites successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvitesMe"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
+
+  /api/invites/{inviteID}:
+    patch:
+      operationId: PatchAPIInvitesInviteID
+      summary: update a new invite with a new message
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+              required:
+                - message
+      responses:
+        "200":
+          description: Deleted the invite successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
+    delete:
+      operationId: DeleteAPIInvitesInviteID
+      summary: Delete an invite
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      responses:
+        "200":
+          description: Deleted the invite successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
+    options:
+      operationId: OptionsAPIInvitesInviteID
+      summary: Satisfy CORS preflight for invites.
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+
+  /api/invites/{inviteID}/status/{newStatus}:
+    patch:
+      operationId: PatchAPIInvitesInviteIDStatusNewStatus
+      summary: Update a new invite
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+        - in: path
+          name: newStatus
+          schema:
+            $ref: "#/components/schemas/InviteStatus"
+          required: true
+          description: Status of the invite to update to
+      responses:
+        "201":
+          description: Updated invite with new status successfully.
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
+    options:
+      operationId: OptionsAPIInvitesInviteIDStatusNewStatus
+      summary: Satisfy CORS preflight for creating invites.
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+        - in: path
+          name: newStatus
+          schema:
+            $ref: "#/components/schemas/InviteStatus"
+          required: true
+          description: Status of the invite to update to
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+
+  "/api/invites":
+    post:
+      operationId: PostAPIInvites
+      summary: Create a new invite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InviteCreate"
+      responses:
+        "201":
+          description: Created an invite successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Slotify group not found
+        "500":
+          description: Something went wrong internally
+    options:
+      operationId: OptionsAPIInvites
+      summary: Satisfy CORS preflight for creating invites.
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+
+  /api/slotify-groups/{slotifyGroupID}/invites:
+    get:
+      operationId: GetAPISlotifyGroupsSlotifyGroupIDInvites
+      summary: Get all invites for a slotify group
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: "#/components/schemas/InviteStatus"
+          description: Invite status
+        - in: path
+          name: slotifyGroupID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the slotifyGroup to delete
+      responses:
+        "200":
+          description: Got all a group's invites successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvitesGroup"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Slotify group not found
+
   /api/slotify-groups/joinable/me:
     get:
       operationId: GetAPISlotifyGroupsJoinableMe
@@ -989,6 +1276,114 @@ components:
       required:
         - attendees
         - locations
+
+    InviteCreate:
+      description: Invite create request body
+      type: object
+      properties:
+        slotify_group_id:
+          type: integer
+          format: uint32
+        to_user_id:
+          type: integer
+          format: uint32
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - slotify_group_id
+        - to_user_id
+        - message
+        - created_at
+
+    InviteStatus:
+      description: Invite status
+      type: string
+      enum:
+        - accepted
+        - declined
+        - expired
+        - pending
+
+    InvitesGroup:
+      description: References a Slotify Invite For a Group
+      type: object
+      properties:
+        invite_id:
+          type: integer
+          format: uint32
+        message:
+          type: string
+        status:
+          $ref: "#/components/schemas/InviteStatus"
+        from_user_email:
+          type: string
+          format: email
+        from_user_first_name:
+          type: string
+        from_user_last_name:
+          type: string
+        to_user_email:
+          type: string
+          format: email
+        to_user_first_name:
+          type: string
+        to_user_last_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - invite_id
+        - message
+        - from_user_email
+        - from_user_first_name
+        - from_user_last_name
+        - to_user_email
+        - to_user_first_name
+        - to_user_last_name
+        - status
+        - created_at
+
+    InvitesMe:
+      description: References a Slotify Invite
+      type: object
+      properties:
+        invite_id:
+          type: integer
+          format: uint32
+        message:
+          description: invite message
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        status:
+          $ref: "#/components/schemas/InviteStatus"
+        from_user_email:
+          description: from user email
+          type: string
+          format: email
+        slotify_group_name:
+          description: slotify group name
+          type: string
+        from_user_first_name:
+          description: from user first name
+          type: string
+        from_user_last_name:
+          description: from user last name
+          type: string
+      required:
+        - invite_id
+        - from_user_email
+        - slotify_group_name
+        - message
+        - from_user_first_name
+        - from_user_last_name
+        - status
+        - created_at
 
     Location:
       description: Maps roughly to [MSFT Location](https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0)
