@@ -1281,22 +1281,22 @@ components:
       description: Invite create request body
       type: object
       properties:
-        slotify_group_id:
+        slotifyGroupID:
           type: integer
           format: uint32
-        to_user_id:
+        toUserID:
           type: integer
           format: uint32
         message:
           type: string
-        created_at:
+        createdAt:
           type: string
           format: date-time
       required:
-        - slotify_group_id
-        - to_user_id
+        - slotifyGroupID
+        - toUserID
         - message
-        - created_at
+        - createdAt
 
     InviteStatus:
       description: Invite status
@@ -1311,79 +1311,79 @@ components:
       description: References a Slotify Invite For a Group
       type: object
       properties:
-        invite_id:
+        inviteID:
           type: integer
           format: uint32
         message:
           type: string
         status:
           $ref: "#/components/schemas/InviteStatus"
-        from_user_email:
+        fromUserEmail:
           type: string
           format: email
-        from_user_first_name:
+        fromUserFirstName:
           type: string
-        from_user_last_name:
+        fromUserLastName:
           type: string
-        to_user_email:
+        toUserEmail:
           type: string
           format: email
-        to_user_first_name:
+        toUserFirstName:
           type: string
-        to_user_last_name:
+        toUserLastName:
           type: string
-        created_at:
+        createdAt:
           type: string
           format: date-time
       required:
-        - invite_id
+        - inviteID
         - message
-        - from_user_email
-        - from_user_first_name
-        - from_user_last_name
-        - to_user_email
-        - to_user_first_name
-        - to_user_last_name
+        - fromUserEmail
+        - fromUserFirstName
+        - fromUserLastName
+        - toUserEmail
+        - toUserFirstName
+        - toUserLastName
         - status
-        - created_at
+        - createdAt
 
     InvitesMe:
       description: References a Slotify Invite
       type: object
       properties:
-        invite_id:
+        inviteID:
           type: integer
           format: uint32
         message:
           description: invite message
           type: string
-        created_at:
+        createdAt:
           type: string
           format: date-time
         status:
           $ref: "#/components/schemas/InviteStatus"
-        from_user_email:
+        fromUserEmail:
           description: from user email
           type: string
           format: email
-        slotify_group_name:
+        slotifyGroupName:
           description: slotify group name
           type: string
-        from_user_first_name:
+        fromUserFirstName:
           description: from user first name
           type: string
-        from_user_last_name:
+        fromUserLastName:
           description: from user last name
           type: string
       required:
-        - invite_id
-        - from_user_email
-        - slotify_group_name
+        - inviteID
+        - fromUserEmail
+        - slotifyGroupName
         - message
-        - from_user_first_name
-        - from_user_last_name
+        - fromUserFirstName
+        - fromUserLastName
         - status
-        - created_at
+        - createdAt
 
     Location:
       description: Maps roughly to [MSFT Location](https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0)
