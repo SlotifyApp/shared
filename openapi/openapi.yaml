@@ -1284,6 +1284,9 @@ components:
         slotifyGroupID:
           type: integer
           format: uint32
+        expiryDate:
+          type: string
+          format: date
         toUserID:
           type: integer
           format: uint32
@@ -1318,6 +1321,9 @@ components:
           type: string
         status:
           $ref: "#/components/schemas/InviteStatus"
+        expiryDate:
+          type: string
+          format: date
         fromUserEmail:
           type: string
           format: email
@@ -1357,6 +1363,9 @@ components:
         message:
           description: invite message
           type: string
+        expiryDate:
+          type: string
+          format: date
         createdAt:
           type: string
           format: date-time

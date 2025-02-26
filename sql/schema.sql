@@ -75,6 +75,7 @@ CREATE TABLE Invite (
         to_user_id INT UNSIGNED NOT NULL,
 	message TEXT NOT NULL,
 	status ENUM('pending', 'accepted', 'declined', 'expired') DEFAULT 'pending' NOT NULL,
+	expiry_date DATE NOT NULL,
 	created_at TIMESTAMP NOT NULL,
         INDEX      (slotify_group_id),
         INDEX      (to_user_id),
