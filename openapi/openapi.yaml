@@ -527,10 +527,10 @@ paths:
                 type: string
                 example: "true"
 
-  /api/invites/{inviteID}/status/{newStatus}:
+  /api/invites/{inviteID}/decline:
     patch:
-      operationId: PatchAPIInvitesInviteIDStatusNewStatus
-      summary: Update a new invite
+      operationId: PatchAPIInvitesInviteIDDecline
+      summary: Decline an invite
       parameters:
         - in: path
           name: inviteID
@@ -539,15 +539,9 @@ paths:
             format: uint32
           required: true
           description: Numeric ID of the invite to update
-        - in: path
-          name: newStatus
-          schema:
-            $ref: "#/components/schemas/InviteStatus"
-          required: true
-          description: Status of the invite to update to
       responses:
         "201":
-          description: Updated invite with new status successfully.
+          description: Decline invite successfully.
           content:
             application/json:
               schema:
@@ -561,8 +555,8 @@ paths:
         "500":
           description: Something went wrong internally
     options:
-      operationId: OptionsAPIInvitesInviteIDStatusNewStatus
-      summary: Satisfy CORS preflight for creating invites.
+      operationId: OptionsAPIInvitesInviteIDDecline
+      summary: Satisfy CORS preflight for declining invites.
       parameters:
         - in: path
           name: inviteID
@@ -571,12 +565,69 @@ paths:
             format: uint32
           required: true
           description: Numeric ID of the invite to update
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+
+  /api/invites/{inviteID}/accept:
+    patch:
+      operationId: PatchAPIInvitesInviteIDAccept
+      summary: Accept a new group invite and add member to slotify group.
+      parameters:
         - in: path
-          name: newStatus
+          name: inviteID
           schema:
-            $ref: "#/components/schemas/InviteStatus"
+            type: integer
+            format: uint32
           required: true
-          description: Status of the invite to update to
+          description: Numeric ID of the invite to update
+      responses:
+        "201":
+          description: Accepted invite successfully.
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
+    options:
+      operationId: OptionsAPIInvitesInviteIDAccept
+      summary: Satisfy CORS preflight for accepting invites.
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
       responses:
         "204":
           description: Successful CORS preflight
@@ -688,26 +739,6 @@ paths:
         "404":
           description: Slotify group not found
 
-  /api/slotify-groups/joinable/me:
-    get:
-      operationId: GetAPISlotifyGroupsJoinableMe
-      summary: Get all joinable slotify-groups for a user excluding slotify-groups they are already a part of.
-      responses:
-        "200":
-          description: Got all user's slotify-groups successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/SlotifyGroup"
-        "400":
-          description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          description: User not found
-
   /api/slotify-groups/me:
     get:
       operationId: GetAPISlotifyGroupsMe
@@ -729,54 +760,6 @@ paths:
           description: User not found
 
   /api/slotify-groups:
-    get:
-      operationId: GetAPISlotifyGroups
-      summary: Get a slotifyGroup by query params.
-      parameters:
-        - in: query
-          name: name
-          schema:
-            type: string
-          description: SlotifyGroup name
-      responses:
-        "200":
-          description: slotify-groups matching the query parameters
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/SlotifyGroup"
-
-        "400":
-          description: Bad request (e.g., invalid slotifyGroup name)
-    options:
-      operationId: OptionsAPISlotifyGroups
-      summary: Satisfy CORS preflight for creatingslotify-groups.
-      responses:
-        "204":
-          description: Successful CORS preflight
-          headers:
-            Access-Control-Allow-Origin:
-              description: The allowed origin for cross-origin requests
-              schema:
-                type: string
-                example: "http://localhost:3000"
-            Access-Control-Allow-Methods:
-              description: Allowed HTTP methods
-              schema:
-                type: string
-                example: "GET, POST, PATCH, OPTIONS"
-            Access-Control-Allow-Headers:
-              description: Allowed headers in the actual request
-              schema:
-                type: string
-                example: "Content-Type, Authorization"
-            Access-Control-Allow-Credentials:
-              description: Whether credentials (cookies, HTTP authentication) are allowed
-              schema:
-                type: string
-                example: "true"
     post:
       operationId: PostAPISlotifyGroups
       summary: Create a new slotifyGroup.
@@ -792,7 +775,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SlotifyGroup"
+                type: string
         "400":
           description: Bad request (e.g., invalid slotifyGroup name)
           content:
@@ -879,66 +862,6 @@ paths:
             application/json:
               schema:
                 type: string
-
-  /api/slotify-groups/{slotifyGroupID}/users/me:
-    post:
-      operationId: PostAPISlotifyGroupsSlotifyGroupIDUsersMe
-      summary: Add current user to a slotifyGroup.
-      parameters:
-        - in: path
-          name: slotifyGroupID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the slotifyGroup
-      responses:
-        "201":
-          description: User successfully added to the slotifyGroup
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SlotifyGroup"
-        "400":
-          description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "403":
-          description: User or slotifyGroup not found
-
-  /api/slotify-groups/{slotifyGroupID}/users/{userID}:
-    post:
-      operationId: PostAPISlotifyGroupsSlotifyGroupIDUsersUserID
-      summary: Add a user to a slotifyGroup.
-      parameters:
-        - in: path
-          name: userID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the user
-        - in: path
-          name: slotifyGroupID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the slotifyGroup
-      responses:
-        "201":
-          description: User successfully added to the slotifyGroup
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SlotifyGroup"
-        "400":
-          description: Bad request
-
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "403":
-          description: User or slotifyGroup not found
 
   /api/scheduling/slots:
     post:
