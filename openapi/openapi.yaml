@@ -739,6 +739,32 @@ paths:
         "404":
           description: Slotify group not found
 
+  /api/slotify-groups/{slotifyGroupID}/leave/me:
+    delete:
+      operationId: DeleteSlotifyGroupsSlotifyGroupIDLeaveMe
+      summary: Have a member leave from a slotify group
+      parameters:
+        - in: path
+          name: slotifyGroupID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the slotifyGroup to have the user leave from.
+      responses:
+        "200":
+          description: The user successfully left the slotify group
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Slotify group not found
+
   /api/slotify-groups/me:
     get:
       operationId: GetAPISlotifyGroupsMe
@@ -775,7 +801,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: "#/components/schemas/SlotifyGroup"
         "400":
           description: Bad request (e.g., invalid slotifyGroup name)
           content:
@@ -1223,6 +1249,7 @@ components:
         - toUserID
         - message
         - createdAt
+        - expiryDate
 
     InviteStatus:
       description: Invite status
@@ -1265,6 +1292,7 @@ components:
           type: string
           format: date-time
       required:
+        - expiryDate
         - inviteID
         - message
         - fromUserEmail
@@ -1308,6 +1336,7 @@ components:
           description: from user last name
           type: string
       required:
+        - expiryDate
         - inviteID
         - fromUserEmail
         - slotifyGroupName
