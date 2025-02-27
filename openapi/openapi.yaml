@@ -921,19 +921,19 @@ paths:
               schema:
                 type: string
   
-  /api/groups/me:
+  /api/msft-groups/me:
     get:
-      operationId: GetAPIGroupsMe
-      summary: Get all groups for current user.
+      operationId: GetAPIMSFTGroupsMe
+      summary: Get all Microsoft groups for current user.
       responses:
         '200':
-          description: Got all user's groups successfully
+          description: Got all user's Microsoft groups successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Group'
+                  $ref: '#/components/schemas/MSFTGroup'
         '400':
           description: Bad request
         '401':
@@ -941,32 +941,32 @@ paths:
         '404':
           description: User not found
   
-  /api/groups:
+  /api/msft-groups:
     get:
-      operationId: GetAPIGroups
-      summary: Get a group by query params.
+      operationId: GetAPIMSFTGroups
+      summary: Get a Microsoft group by query params.
       parameters:
         - in: query
           name: name
           schema:
             type: string
-          description: Group name
+          description: Microsoft group name
       responses:
         '200':
-          description: Groups matching the query parameters
+          description: Microsoft groups matching the query parameters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Group'
+                  $ref: '#/components/schemas/MSFTGroup'
         '400':
-          description: Bad request (e.g., invalid group name)
+          description: Bad request (e.g., invalid microsoft group name)
   
-  /api/groups/{groupID}:
+  /api/msft-groups/{groupID}:
     get:
-      operationId: GetAPIGroupsGroupID
-      summary: Get a group by id.
+      operationId: GetAPIMSFTGroupsGroupID
+      summary: Get a Microsoft group by id.
       parameters:
         - in: path
           name: groupID
@@ -974,23 +974,23 @@ paths:
             type: integer
             format: uint32
           required: true
-          description: Numeric ID of the group to get
+          description: Numeric ID of the Microsoft group to get
       responses:
         '200':
-          description: Got group successfully
+          description: Got Microsoft group successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Group'
+                $ref: '#/components/schemas/MSFTGroup'
         '404':
-          description: Group not found
+          description: Microsoft group not found
         '500':
           description: Something went wrong internally
   
-  /api/groups/{groupID}/users:
+  /api/msft-groups/{groupID}/users:
     get:
-      summary: Get all members of a group.
-      operationId: GetAPIGroupsGroupIDUsers
+      summary: Get all members of a Microsoft group.
+      operationId: GetAPIMSFTGroupsGroupIDUsers
       parameters:
         - in: path
           name: groupID
@@ -998,7 +998,7 @@ paths:
           schema:
             type: integer
             format: uint32
-          description: ID of the group
+          description: ID of the Microsoft group
       responses:
         '200':
           description: Users successfully found
@@ -1007,15 +1007,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GroupUser'
+                  $ref: '#/components/schemas/MSFTGroupUser'
         '403':
-          description: Bad request, group id is invalid
+          description: Bad request, Microsoft group id is invalid
           content:
             application/json:
               schema:
                 type: string
         '500':
-          description: Something went wrong
+          description: Something went wrong internally
           content:
             application/json:
               schema:
@@ -1550,7 +1550,7 @@ components:
         - id
         - name
   
-    Group:
+    MSFTGroup:
       type: object
       properties:
         id:
@@ -1562,7 +1562,7 @@ components:
         - id
         - name
  
-    GroupUser:
+    MSFTGroupUser:
       type: object
       properties:
         email:
