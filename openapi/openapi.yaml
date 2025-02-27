@@ -1,20 +1,19 @@
-openapi: "3.0.0"
+openapi: 3.0.0
 info:
   title: Slotify API
-  version: "1.0.0"
+  version: 1.0.0
   description: API to communicate and schedule meetings with Microsoft.
-
 servers:
   - url: http://localhost:8080
-
 paths:
   /api/events:
     get:
       summary: Subscribe to notifications eventstream.
-      description: Establishes a stream connection to receive real-time updates about rendering tasks via Server-Sent Events (SSE).
+      description: Establishes a stream connection to receive real-time updates about
+        rendering tasks via Server-Sent Events (SSE).
       operationId: renderEvent
       responses:
-        "200":
+        '200':
           description: A continuous stream of server-sent events.
           content:
             text/event-stream:
@@ -22,7 +21,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Notification"
+                    $ref: '#/components/schemas/Notification'
           headers:
             Cache-Control:
               schema:
@@ -42,24 +41,25 @@ paths:
       operationId: GetAPIUsersMeNotifications
       summary: Get user's unread notifications.
       responses:
-        "200":
+        '200':
           description: Successfully updated notification.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Notification"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "403":
+                  $ref: '#/components/schemas/Notification'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
           description: Notification not found.
-        "500":
+        '500':
           description: Something went wrong internally
           content:
             application/json:
               schema:
                 type: string
+
   /api/notifications/{notificationID}/read:
     options:
       operationId: OptionsAPINotificationsNotificationIDRead
@@ -72,29 +72,30 @@ paths:
             format: uint32
           required: true
       responses:
-        "204":
+        '204':
           description: Successful CORS preflight
           headers:
             Access-Control-Allow-Origin:
               description: The allowed origin for cross-origin requests
               schema:
                 type: string
-                example: "http://localhost:3000"
+                example: http://localhost:3000
             Access-Control-Allow-Methods:
               description: Allowed HTTP methods
               schema:
                 type: string
-                example: "GET, POST, PATCH, OPTIONS"
+                example: GET, POST, PATCH, OPTIONS
             Access-Control-Allow-Headers:
               description: Allowed headers in the actual request
               schema:
                 type: string
-                example: "Content-Type, Authorization"
+                example: Content-Type, Authorization
             Access-Control-Allow-Credentials:
-              description: Whether credentials (cookies, HTTP authentication) are allowed
+              description: Whether credentials (cookies, HTTP authentication) are
+                allowed
               schema:
                 type: string
-                example: "true"
+                example: 'true'
     patch:
       summary: Mark a notification as being read.
       operationId: PatchAPINotificationsNotificationIDRead
@@ -106,23 +107,23 @@ paths:
             format: uint32
           required: true
       responses:
-        "200":
+        '200':
           description: Successfully updated notification
           content:
             application/json:
               schema:
                 type: string
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "403":
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
           description: Notification not found.
-        "500":
+        '500':
           description: Something went wrong internally
           content:
             application/json:
               schema:
                 type: string
-
+  
   /api/calendar/me:
     get:
       operationId: GetAPICalendarMe
@@ -141,25 +142,25 @@ paths:
             format: date-time
           required: true
       responses:
-        "200":
+        '200':
           description: Successfully got user calendar events
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/CalendarEvent"
-        "400":
+                  $ref: '#/components/schemas/CalendarEvent'
+        '400':
           description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
           description: Something went wrong internally
           content:
             application/json:
               schema:
                 type: string
-        "502":
+        '502':
           description: Something went wrong with an external API
           content:
             application/json:
@@ -173,72 +174,72 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CalendarEvent"
+              $ref: '#/components/schemas/CalendarEvent'
       responses:
-        "201":
+        '201':
           description: Event successfully created
           content:
             application/json:
               schema:
                 type: string
-        "400":
+        '400':
           description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
           description: Something went wrong internally
           content:
             application/json:
               schema:
                 type: string
-        "502":
+        '502':
           description: Something went wrong with an external API
           content:
             application/json:
               schema:
                 type: string
-
     options:
       operationId: OptionsAPICalendarMe
       summary: CORS preflight for creating an event
       responses:
-        "204":
+        '204':
           description: Successful CORS preflight
           headers:
             Access-Control-Allow-Origin:
               description: The allowed origin for cross-origin requests
               schema:
                 type: string
-                example: "http://localhost:3000"
+                example: http://localhost:3000
             Access-Control-Allow-Methods:
               description: Allowed HTTP methods
               schema:
                 type: string
-                example: "GET, POST, OPTIONS"
+                example: GET, POST, OPTIONS
             Access-Control-Allow-Headers:
               description: Allowed headers in the actual request
               schema:
                 type: string
-                example: "Content-Type, Authorization"
+                example: Content-Type, Authorization
             Access-Control-Allow-Credentials:
-              description: Whether credentials (cookies, HTTP authentication) are allowed
+              description: Whether credentials (cookies, HTTP authentication) are
+                allowed
               schema:
                 type: string
-                example: "true"
+                example: 'true'
 
   /api/refresh:
     post:
       operationId: PostAPIRefresh
       summary: Refresh Slotify access token and refresh token.
       responses:
-        "201":
+        '201':
           description: Successfully refreshed access token
           content:
             application/json:
               schema:
                 type: string
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /api/auth/callback:
     get:
@@ -256,20 +257,21 @@ paths:
             type: string
           required: true
       responses:
-        "302":
+        '302':
           description: Successful auth
           headers:
             Location:
               description: The URL to redirect to after successful authentication
               schema:
                 type: string
-                example: "http://localhost:3000/dashboard"
+                example: http://localhost:3000/dashboard
+
   /api/healthcheck:
     get:
       operationId: GetAPIHealthcheck
       summary: Healthcheck route.
       responses:
-        "200":
+        '200':
           description: Healthcheck successful
           content:
             application/json:
@@ -281,29 +283,31 @@ paths:
       operationId: PostAPIUsersMeLogout
       summary: Logout user.
       responses:
-        "200":
+        '200':
           description: Successfully logged out on backend
           content:
             application/json:
               schema:
                 type: string
+
   /api/users/me:
     get:
       operationId: GetAPIUsersMe
       summary: Get current user's details.
       responses:
-        "200":
+        '200':
           description: Got user successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "400":
+                $ref: '#/components/schemas/User'
+        '400':
           description: Bad request (e.g., invalid team ID)
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
           description: User not found
+
   /api/users:
     get:
       operationId: GetAPIUsers
@@ -326,15 +330,15 @@ paths:
             type: string
           description: Last name of user
       responses:
-        "200":
+        '200':
           description: Users matching the query parameters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/User"
-        "400":
+                  $ref: '#/components/schemas/User'
+        '400':
           description: Bad request (e.g., invalid team ID)
     post:
       operationId: PostAPIUsers
@@ -344,17 +348,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserCreate"
+              $ref: '#/components/schemas/UserCreate'
       responses:
-        "201":
+        '201':
           description: User created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "400":
+                $ref: '#/components/schemas/User'
+        '400':
           description: Bad request (e.g., invalid team ID)
-
+  
   /api/users/{userID}:
     get:
       operationId: GetAPIUsersUserID
@@ -368,15 +372,15 @@ paths:
           required: true
           description: Numeric ID of the user to get
       responses:
-        "200":
+        '200':
           description: Got user successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "400":
+                $ref: '#/components/schemas/User'
+        '400':
           description: Bad request (e.g., invalid team ID)
-        "403":
+        '403':
           description: User not found
     delete:
       operationId: DeleteAPIUsersUserID
@@ -390,82 +394,118 @@ paths:
           required: true
           description: Numeric ID of the user to delete
       responses:
-        "200":
+        '200':
           description: Deleted user successfully
           content:
             application/json:
               schema:
                 type: string
-        "400":
+        '400':
           description: Bad request (e.g., invalid user ID)
-        "404":
+        '404':
           description: User not found
-
-  /api/teams/joinable/me:
+ 
+  /api/invites/me:
     get:
-      operationId: GetAPITeamsJoinableMe
-      summary: Get all joinable teams for a user excluding teams they are already a part of.
-      responses:
-        "200":
-          description: Got all user's teams successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Team"
-        "400":
-          description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          description: User not found
-
-  /api/teams/me:
-    get:
-      operationId: GetAPITeamsMe
-      summary: Get all teams for current user.
-      responses:
-        "200":
-          description: Got all user's teams successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Team"
-        "400":
-          description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          description: User not found
-
-  /api/teams:
-    get:
-      operationId: GetAPITeams
-      summary: Get a team by query params.
+      operationId: GetAPIInvitesMe
+      summary: Get all invites for logged in user.
       parameters:
         - in: query
-          name: name
+          name: status
           schema:
-            type: string
-          description: Team name
+            $ref: "#/components/schemas/InviteStatus"
+          description: Invite status
       responses:
         "200":
-          description: Teams matching the query parameters
+          description: Got all user's invites successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Team"
-
+                  $ref: "#/components/schemas/InvitesMe"
         "400":
-          description: Bad request (e.g., invalid team name)
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
+
+  /api/invites/{inviteID}:
+    patch:
+      operationId: PatchAPIInvitesInviteID
+      summary: Update an invite with a new message
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+              required:
+                - message
+      responses:
+        "200":
+          description: Updated the invite message successfully.
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
+    delete:
+      operationId: DeleteAPIInvitesInviteID
+      summary: Delete an invite
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      responses:
+        "200":
+          description: Deleted the invite successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
     options:
-      operationId: OptionsAPITeams
-      summary: Satisfy CORS preflight for creatingteams.
+      operationId: OptionsAPIInvitesInviteID
+      summary: Satisfy CORS preflight for invites.
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
       responses:
         "204":
           description: Successful CORS preflight
@@ -490,87 +530,347 @@ paths:
               schema:
                 type: string
                 example: "true"
+
+  /api/invites/{inviteID}/decline:
+    patch:
+      operationId: PatchAPIInvitesInviteIDDecline
+      summary: Decline an invite
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      responses:
+        "201":
+          description: Decline invite successfully.
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
+    options:
+      operationId: OptionsAPIInvitesInviteIDDecline
+      summary: Satisfy CORS preflight for declining invites.
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+
+  /api/invites/{inviteID}/accept:
+    patch:
+      operationId: PatchAPIInvitesInviteIDAccept
+      summary: Accept a new group invite and add member to slotify group.
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      responses:
+        "201":
+          description: Accepted invite successfully.
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
+    options:
+      operationId: OptionsAPIInvitesInviteIDAccept
+      summary: Satisfy CORS preflight for accepting invites.
+      parameters:
+        - in: path
+          name: inviteID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the invite to update
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+
+  "/api/invites":
     post:
-      operationId: PostAPITeams
-      summary: Create a new team.
+      operationId: PostAPIInvites
+      summary: Create a new invite
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TeamCreate"
+              $ref: "#/components/schemas/InviteCreate"
       responses:
         "201":
-          description: Team created successfully
+          description: Created an invite successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                type: string
         "400":
-          description: Bad request (e.g., invalid team name)
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Slotify group not found
+        "500":
+          description: Something went wrong internally
+    options:
+      operationId: OptionsAPIInvites
+      summary: Satisfy CORS preflight for creating invites.
+      responses:
+        "204":
+          description: Successful CORS preflight
+          headers:
+            Access-Control-Allow-Origin:
+              description: The allowed origin for cross-origin requests
+              schema:
+                type: string
+                example: "http://localhost:3000"
+            Access-Control-Allow-Methods:
+              description: Allowed HTTP methods
+              schema:
+                type: string
+                example: "GET, POST, PATCH, OPTIONS"
+            Access-Control-Allow-Headers:
+              description: Allowed headers in the actual request
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+            Access-Control-Allow-Credentials:
+              description: Whether credentials (cookies, HTTP authentication) are allowed
+              schema:
+                type: string
+                example: "true"
+
+  /api/slotify-groups/{slotifyGroupID}/invites:
+    get:
+      operationId: GetAPISlotifyGroupsSlotifyGroupIDInvites
+      summary: Get all invites for a slotify group
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: "#/components/schemas/InviteStatus"
+          description: Invite status
+        - in: path
+          name: slotifyGroupID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the slotifyGroup to delete
+      responses:
+        "200":
+          description: Got all a group's invites successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InvitesGroup"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Slotify group not found
+
+  /api/slotify-groups/{slotifyGroupID}/leave/me:
+    delete:
+      operationId: DeleteSlotifyGroupsSlotifyGroupIDLeaveMe
+      summary: Have a member leave from a slotify group
+      parameters:
+        - in: path
+          name: slotifyGroupID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the slotifyGroup to have the user leave from.
+      responses:
+        "200":
+          description: The user successfully left the slotify group
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Slotify group not found
+
+  /api/slotify-groups/me:
+    get:
+      operationId: GetAPISlotifyGroupsMe
+      summary: Get all slotify-groups for current user.
+      responses:
+        "200":
+          description: Got all user's slotify-groups successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SlotifyGroup"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: User not found
+
+  /api/slotify-groups:
+    post:
+      operationId: PostAPISlotifyGroups
+      summary: Create a new slotifyGroup.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SlotifyGroupCreate"
+      responses:
+        "201":
+          description: SlotifyGroup created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SlotifyGroup"
+        "400":
+          description: Bad request (e.g., invalid slotifyGroup name)
           content:
             application/json:
               schema:
                 type: string
 
-  /api/teams/{teamID}:
+  /api/slotify-groups/{slotifyGroupID}:
     delete:
-      operationId: DeleteAPITeamsTeamID
-      summary: Delete a team by id.
+      operationId: DeleteAPISlotifyGroupsSlotifyGroupID
+      summary: Delete a slotifyGroup by id.
       parameters:
         - in: path
-          name: teamID
+          name: slotifyGroupID
           schema:
             type: integer
             format: uint32
           required: true
-          description: Numeric ID of the team to delete
+          description: Numeric ID of the slotifyGroup to delete
       responses:
         "200":
-          description: Deleted team successfully
+          description: Deleted slotifyGroup successfully
           content:
             application/json:
               schema:
                 type: string
         "400":
-          description: Bad request (e.g., invalid team id)
+          description: Bad request (e.g., invalid slotifyGroup id)
         "404":
-          description: Team not found
+          description: SlotifyGroup not found
     get:
-      operationId: GetAPITeamsTeamID
-      summary: Get a team by id.
+      operationId: GetAPISlotifyGroupsSlotifyGroupID
+      summary: Get a slotifyGroup by id.
       parameters:
         - in: path
-          name: teamID
+          name: slotifyGroupID
           schema:
             type: integer
             format: uint32
           required: true
-          description: Numeric ID of the team to get
+          description: Numeric ID of the slotifyGroup to get
       responses:
         "200":
-          description: Got team successfully
+          description: Got slotifyGroup successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
+                $ref: "#/components/schemas/SlotifyGroup"
         "404":
-          description: Team not found
+          description: SlotifyGroup not found
         "500":
           description: Something went wrong internally
 
-  /api/teams/{teamID}/users:
+  /api/slotify-groups/{slotifyGroupID}/users:
     get:
-      summary: Get all members of a team.
-      operationId: GetAPITeamsTeamIDUsers
+      summary: Get all members of a slotifyGroup.
+      operationId: GetAPISlotifyGroupsSlotifyGroupIDUsers
       parameters:
         - in: path
-          name: teamID
+          name: slotifyGroupID
           required: true
           schema:
             type: integer
             format: uint32
-          description: ID of the team
+          description: ID of the slotifyGroup
       responses:
         "200":
           description: Users successfully found
@@ -580,8 +880,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/User"
-        "403":
-          description: Bad request, team id is invalid
+        "404":
+          description: Bad request, slotifyGroup id is invalid
           content:
             application/json:
               schema:
@@ -593,85 +893,54 @@ paths:
               schema:
                 type: string
 
-  /api/teams/{teamID}/users/me:
+  /api/scheduling/slots:
     post:
-      operationId: PostAPITeamsTeamIDUsersMe
-      summary: Add current user to a team.
-      parameters:
-        - in: path
-          name: teamID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the team
+      operationId: PostAPISchedulingFree
+      summary: Idempotent route, just returns appropriate time slots along with their respective ratings.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SchedulingSlotsBodySchema"
       responses:
-        "201":
-          description: User successfully added to the team
+        "200":
+          $ref: "#/components/responses/SchedulingSlotsSuccessResponse"
+        "400":
+          description: Bad request (e.g., invalid event data)
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
-        "400":
-          description: Bad request
+                type: string
         "401":
           $ref: "#/components/responses/UnauthorizedError"
-        "403":
-          description: User or team not found
-
-  /api/teams/{teamID}/users/{userID}:
-    post:
-      operationId: PostAPITeamsTeamIDUsersUserID
-      summary: Add a user to a team.
-      parameters:
-        - in: path
-          name: userID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the user
-        - in: path
-          name: teamID
-          required: true
-          schema:
-            type: integer
-            format: uint32
-          description: ID of the team
-      responses:
-        "201":
-          description: User successfully added to the team
+        "500":
+          description: Something went wrong internally
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Team"
-        "400":
-          description: Bad request
-
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "403":
-          description: User or team not found
-
+                type: string
+  
   /api/groups/me:
     get:
       operationId: GetAPIGroupsMe
       summary: Get all groups for current user.
       responses:
-        "200":
+        '200':
           description: Got all user's groups successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Group"
-        "400":
+                  $ref: '#/components/schemas/Group'
+        '400':
           description: Bad request
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
           description: User not found
+  
   /api/groups:
     get:
       operationId: GetAPIGroups
@@ -683,18 +952,17 @@ paths:
             type: string
           description: Group name
       responses:
-        "200":
+        '200':
           description: Groups matching the query parameters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Group"
-
-        "400":
+                  $ref: '#/components/schemas/Group'
+        '400':
           description: Bad request (e.g., invalid group name)
-          
+  
   /api/groups/{groupID}:
     get:
       operationId: GetAPIGroupsGroupID
@@ -708,17 +976,17 @@ paths:
           required: true
           description: Numeric ID of the group to get
       responses:
-        "200":
+        '200':
           description: Got group successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Group"
-        "404":
+                $ref: '#/components/schemas/Group'
+        '404':
           description: Group not found
-        "500":
+        '500':
           description: Something went wrong internally
-
+  
   /api/groups/{groupID}/users:
     get:
       summary: Get all members of a group.
@@ -732,21 +1000,21 @@ paths:
             format: uint32
           description: ID of the group
       responses:
-        "200":
+        '200':
           description: Users successfully found
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GroupUser"
-        "403":
+                  $ref: '#/components/schemas/GroupUser'
+        '403':
           description: Bad request, group id is invalid
           content:
             application/json:
               schema:
                 type: string
-        "500":
+        '500':
           description: Something went wrong
           content:
             application/json:
@@ -756,15 +1024,16 @@ paths:
 components:
   responses:
     SchedulingSlotsSuccessResponse:
-      description: Scheduling algorithm returns the valid time slots and their respective ratings.
+      description: Scheduling algorithm returns the valid time slots and their respective
+        ratings.
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/SchedulingSlotsSuccessResponseBody"
-
+            $ref: '#/components/schemas/SchedulingSlotsSuccessResponseBody'
+    
     UnauthorizedError:
       description: Access token is missing or invalid
-
+  
   schemas:
     TimeConstraint:
       description: Maps directly to [MSFT timeConstraint](https://learn.microsoft.com/en-us/graph/api/resources/timeconstraint?view=graph-rest-1.0)
@@ -775,10 +1044,10 @@ components:
         timeSlots:
           type: array
           items:
-            $ref: "#/components/schemas/MeetingTimeSlot"
+            $ref: '#/components/schemas/MeetingTimeSlot'
       required:
         - timeSlots
-
+    
     SchedulingSlotsBodySchema:
       description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
       type: object
@@ -786,26 +1055,23 @@ components:
         attendees:
           type: array
           items:
-            $ref: "#/components/schemas/AttendeeBase"
+            $ref: '#/components/schemas/AttendeeBase'
         meetingName:
           description: custom field, this is used for the AI model
           type: string
         meetingDuration:
           type: string
-          description: >
-            The length of the meeting, denoted in **ISO 8601** format.
-            - Example:
-              - **1 hour** → `'PT1H'`
-              - **2 hours, 30 minutes** → `'PT2H30M'`
-            - `'P'` is the duration designator.
-            - `'T'` separates date and time components.
-            - `'H'` (hours) and `'M'` (minutes) specify the time duration.
-            - If omitted, the default duration is **30 minutes** (`'PT30M'`).
-          example: "PT2H30M"
+          description: "The length of the meeting, denoted in **ISO 8601** format.\
+            \ - Example:\n  - **1 hour** → `'PT1H'`\n  - **2 hours, 30 minutes** →\
+            \ `'PT2H30M'`\n- `'P'` is the duration designator. - `'T'` separates date\
+            \ and time components. - `'H'` (hours) and `'M'` (minutes) specify the\
+            \ time duration. - If omitted, the default duration is **30 minutes**\
+            \ (`'PT30M'`).\n"
+          example: PT2H30M
         isOrganizerOptional:
           type: boolean
         locationConstraint:
-          $ref: "#/components/schemas/LocationConstraint"
+          $ref: '#/components/schemas/LocationConstraint'
         minimumAttendeePercentage:
           type: number
           format: double
@@ -813,8 +1079,7 @@ components:
           type: integer
           format: int32
         timeConstraint:
-          $ref: "#/components/schemas/TimeConstraint"
-
+          $ref: '#/components/schemas/TimeConstraint'
       required:
         - attendees
         - isOrganizerOptional
@@ -822,7 +1087,7 @@ components:
         - meetingDuration
         - meetingName
         - timeConstraint
-
+   
     PhysicalAddress:
       description: Maps directly to [MSFT physicalAddress](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraintitem?view=graph-rest-1.0)
       properties:
@@ -831,7 +1096,8 @@ components:
           description: The city.
         countryOrRegion:
           type: string
-          description: The country or region. It's a free-format string value, for example, "United States".
+          description: The country or region. It's a free-format string value, for
+            example, "United States".
         postalCode:
           type: string
           description: The postal code.
@@ -841,7 +1107,7 @@ components:
         street:
           type: string
           description: The street.
-
+  
     LocationConstraintItem:
       description: Maps roughly to [MSFT locationConstraintItem](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraintitem?view=graph-rest-1.0)
       type: object
@@ -853,12 +1119,12 @@ components:
         locationEmailAddress:
           type: string
         address:
-          $ref: "#/components/schemas/PhysicalAddress"
+          $ref: '#/components/schemas/PhysicalAddress'
       required:
         - displayName
         - resolveAvailability
         - address
-
+ 
     LocationConstraint:
       description: Maps directly to [MSFT locationConstraint](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraint?view=graph-rest-1.0)
       type: object
@@ -868,10 +1134,10 @@ components:
         locations:
           type: array
           items:
-            $ref: "#/components/schemas/LocationConstraintItem"
+            $ref: '#/components/schemas/LocationConstraintItem'
         suggestLocation:
           type: boolean
-
+   
     EmptySuggestionsReason:
       description: Maps directly to [MSFT emptySuggestionsReason](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestionsresult?view=graph-rest-1.0)
       type: string
@@ -881,7 +1147,7 @@ components:
         - locationsUnavailable
         - organizerUnavailable
         - unknown
-
+  
     FreeBusyStatus:
       description: Maps directly to [MSFT freebusyStatus](https://learn.microsoft.com/en-us/graph/api/resources/attendeeavailability?view=graph-rest-1.0)
       type: string
@@ -892,18 +1158,18 @@ components:
         - oof
         - workingElsewhere
         - unknown
-
+  
     AttendeeAvailability:
       description: Maps roughly to [MSFT attendeeAvailability](https://learn.microsoft.com/en-us/graph/api/resources/attendeeavailability?view=graph-rest-1.0)
       properties:
         availability:
-          $ref: "#/components/schemas/FreeBusyStatus"
+          $ref: '#/components/schemas/FreeBusyStatus'
         attendee:
-          $ref: "#/components/schemas/AttendeeBase"
+          $ref: '#/components/schemas/AttendeeBase'
       required:
         - availability
         - attendee
-
+  
     MeetingTimeSlot:
       description: Maps directly to [MSFT meetingTimeSlot](https://learn.microsoft.com/en-us/graph/api/resources/timeslot?view=graph-rest-1.0)
       type: object
@@ -925,16 +1191,16 @@ components:
         attendeeAvailability:
           type: array
           items:
-            $ref: "#/components/schemas/AttendeeAvailability"
+            $ref: '#/components/schemas/AttendeeAvailability'
         confidence:
           type: number
           format: double
         locations:
           type: array
           items:
-            $ref: "#/components/schemas/Location"
+            $ref: '#/components/schemas/Location'
         meetingTimeSlot:
-          $ref: "#/components/schemas/MeetingTimeSlot"
+          $ref: '#/components/schemas/MeetingTimeSlot'
         order:
           type: integer
           format: int32
@@ -942,18 +1208,18 @@ components:
           type: string
         suggestionReason:
           type: string
-
+   
     SchedulingSlotsSuccessResponseBody:
       description: Maps roughly to [MSFT meetingTimeSuggestionsResult](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestionsresult?view=graph-rest-1.0)
       type: object
       properties:
         emptySuggestionsReason:
-          $ref: "#/components/schemas/EmptySuggestionsReason"
+          $ref: '#/components/schemas/EmptySuggestionsReason'
         meetingTimeSuggestions:
           type: array
           items:
-            $ref: "#/components/schemas/MeetingTimeSuggestion"
-
+            $ref: '#/components/schemas/MeetingTimeSuggestion'
+  
     AttendeeType:
       description: Maps directly to [MSFT Attendee->type](https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0)
       type: string
@@ -961,10 +1227,11 @@ components:
         - required
         - optional
         - resource
-
+   
     EmailAddress:
       type: object
-      description: directly maps to MSFT Email Address, see info here:[MSFT EmailAddress Struct Docs](https://learn.microsoft.com/en-us/graph/api/resources/emailaddress?view=graph-rest-1.0)
+      description: directly maps to MSFT Email Address, see info here:[MSFT EmailAddress
+        Struct Docs](https://learn.microsoft.com/en-us/graph/api/resources/emailaddress?view=graph-rest-1.0)
       properties:
         address:
           type: string
@@ -974,19 +1241,19 @@ components:
       required:
         - address
         - name
-
+   
     AttendeeBase:
       type: object
       description: directly maps to [MSFT attendeeBase](https://learn.microsoft.com/en-us/graph/api/resources/attendeebase?view=graph-rest-1.0)
       properties:
         emailAddress:
-          $ref: "#/components/schemas/EmailAddress"
+          $ref: '#/components/schemas/EmailAddress'
         attendeeType:
-          $ref: "#/components/schemas/AttendeeType"
+          $ref: '#/components/schemas/AttendeeType'
       required:
         - emailAddress
         - attendeeType
-
+  
     Attendee:
       description: Maps roughly to [MSFT Attendee](https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0#properties)
       type: object
@@ -1057,10 +1324,129 @@ components:
           type: string
         webLink:
           type: string
-
       required:
         - attendees
         - locations
+   
+    InviteCreate:
+      description: Invite create request body
+      type: object
+      properties:
+        slotifyGroupID:
+          type: integer
+          format: uint32
+        expiryDate:
+          type: string
+          format: date
+        toUserID:
+          type: integer
+          format: uint32
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - slotifyGroupID
+        - toUserID
+        - message
+        - createdAt
+        - expiryDate
+
+    InviteStatus:
+      description: Invite status
+      type: string
+      enum:
+        - accepted
+        - declined
+        - expired
+        - pending
+
+    InvitesGroup:
+      description: References a Slotify Invite For a Group
+      type: object
+      properties:
+        inviteID:
+          type: integer
+          format: uint32
+        message:
+          type: string
+        status:
+          $ref: "#/components/schemas/InviteStatus"
+        expiryDate:
+          type: string
+          format: date
+        fromUserEmail:
+          type: string
+          format: email
+        fromUserFirstName:
+          type: string
+        fromUserLastName:
+          type: string
+        toUserEmail:
+          type: string
+          format: email
+        toUserFirstName:
+          type: string
+        toUserLastName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - expiryDate
+        - inviteID
+        - message
+        - fromUserEmail
+        - fromUserFirstName
+        - fromUserLastName
+        - toUserEmail
+        - toUserFirstName
+        - toUserLastName
+        - status
+        - createdAt
+
+    InvitesMe:
+      description: References a Slotify Invite
+      type: object
+      properties:
+        inviteID:
+          type: integer
+          format: uint32
+        message:
+          description: invite message
+          type: string
+        expiryDate:
+          type: string
+          format: date
+        createdAt:
+          type: string
+          format: date-time
+        status:
+          $ref: "#/components/schemas/InviteStatus"
+        fromUserEmail:
+          description: from user email
+          type: string
+          format: email
+        slotifyGroupName:
+          description: slotify group name
+          type: string
+        fromUserFirstName:
+          description: from user first name
+          type: string
+        fromUserLastName:
+          description: from user last name
+          type: string
+      required:
+        - expiryDate
+        - inviteID
+        - fromUserEmail
+        - slotifyGroupName
+        - message
+        - fromUserFirstName
+        - fromUserLastName
+        - status
+        - createdAt
 
     Location:
       description: Maps roughly to [MSFT Location](https://learn.microsoft.com/en-us/graph/api/resources/location?view=graph-rest-1.0)
@@ -1093,7 +1479,7 @@ components:
         street:
           type: string
           nullable: true
-
+    
     Notification:
       type: object
       properties:
@@ -1109,6 +1495,7 @@ components:
         - id
         - message
         - created
+    
     UserCreate:
       type: object
       properties:
@@ -1123,7 +1510,7 @@ components:
         - email
         - firstName
         - lastName
-
+  
     User:
       type: object
       properties:
@@ -1142,8 +1529,8 @@ components:
         - email
         - firstName
         - lastName
-
-    TeamCreate:
+ 
+    SlotifyGroupCreate:
       type: object
       properties:
         name:
@@ -1151,7 +1538,7 @@ components:
       required:
         - name
 
-    Team:
+    SlotifyGroup:
       type: object
       properties:
         id:
@@ -1162,7 +1549,7 @@ components:
       required:
         - id
         - name
-
+  
     Group:
       type: object
       properties:
@@ -1174,7 +1561,7 @@ components:
       required:
         - id
         - name
-
+ 
     GroupUser:
       type: object
       properties:

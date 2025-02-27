@@ -12,23 +12,23 @@ CREATE TABLE User (-- Stores user details
 	UNIQUE(email)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Team;
+DROP TABLE IF EXISTS SlotifyGroup;
 
-CREATE TABLE Team ( -- A group of users form a team
+CREATE TABLE SlotifyGroup ( -- A group of users form a slotify group
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	name VARCHAR(255) NOT NULL, -- team name
+	name VARCHAR(255) NOT NULL, -- slotifyGroup name
 	UNIQUE(name)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS UserToTeam;
+DROP TABLE IF EXISTS UserToSlotifyGroup;
 
-CREATE TABLE UserToTeam ( -- Many-to-many table linking users to teams
+CREATE TABLE UserToSlotifyGroup ( -- Many-to-many table linking users to slotifyGroups
         user_id INT UNSIGNED NOT NULL,
-        team_id INT UNSIGNED NOT NULL, 
-	PRIMARY KEY(user_id, team_id), -- When starting with User
-        INDEX      (team_id, user_id), -- When starting with Team
-	CONSTRAINT fk_User_UserToTeam FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
-	CONSTRAINT fk_Team_UserToTeam FOREIGN KEY (team_id) REFERENCES Team(id) ON DELETE CASCADE
+        slotify_group_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY(user_id, slotify_group_id), -- When starting with User
+        INDEX      (slotify_group_id, user_id), -- When starting with SlotifyGroup
+	CONSTRAINT fk_User_UserToSlotifyGroup FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+	CONSTRAINT fk_SlotifyGroup_UserToSlotifyGroup FOREIGN KEY (slotify_group_id) REFERENCES SlotifyGroup(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS RefreshToken;
@@ -63,4 +63,23 @@ CREATE TABLE UserToNotification (
         INDEX      (notification_id, user_id), -- When starting with Notification
 	CONSTRAINT fk_User_UserToNotification FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
 	CONSTRAINT fk_Notification_UserToNotification FOREIGN KEY (notification_id) REFERENCES Notification(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Invite;
+
+-- Table to represent a group join invite
+CREATE TABLE Invite (
+	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+        slotify_group_id INT UNSIGNED NOT NULL,
+        from_user_id INT UNSIGNED NOT NULL,
+        to_user_id INT UNSIGNED NOT NULL,
+	message TEXT NOT NULL,
+	status ENUM('pending', 'accepted', 'declined', 'expired') DEFAULT 'pending' NOT NULL,
+	expiry_date DATE NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+        INDEX      (slotify_group_id),
+        INDEX      (to_user_id),
+	CONSTRAINT fk_SlotifyGroup_Invite FOREIGN KEY (slotify_group_id) REFERENCES SlotifyGroup(id) ON DELETE CASCADE,
+	CONSTRAINT fk_User_Invite_from FOREIGN KEY (from_user_id) REFERENCES User(id) ON DELETE CASCADE,
+	CONSTRAINT fk_User_Invite_to FOREIGN KEY (to_user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
