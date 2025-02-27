@@ -13,7 +13,7 @@ paths:
         rendering tasks via Server-Sent Events (SSE).
       operationId: renderEvent
       responses:
-        '200':
+        "200":
           description: A continuous stream of server-sent events.
           content:
             text/event-stream:
@@ -21,7 +21,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Notification'
+                    $ref: "#/components/schemas/Notification"
           headers:
             Cache-Control:
               schema:
@@ -39,21 +39,21 @@ paths:
   /api/users/me/notifications:
     get:
       operationId: GetAPIUsersMeNotifications
-      summary: Get user's unread notifications.
+      summary: Get user"s unread notifications.
       responses:
-        '200':
+        "200":
           description: Successfully updated notification.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Notification'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '403':
+                  $ref: "#/components/schemas/Notification"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
           description: Notification not found.
-        '500':
+        "500":
           description: Something went wrong internally
           content:
             application/json:
@@ -72,7 +72,7 @@ paths:
             format: uint32
           required: true
       responses:
-        '204':
+        "204":
           description: Successful CORS preflight
           headers:
             Access-Control-Allow-Origin:
@@ -95,7 +95,7 @@ paths:
                 allowed
               schema:
                 type: string
-                example: 'true'
+                example: "true"
     patch:
       summary: Mark a notification as being read.
       operationId: PatchAPINotificationsNotificationIDRead
@@ -107,17 +107,17 @@ paths:
             format: uint32
           required: true
       responses:
-        '200':
+        "200":
           description: Successfully updated notification
           content:
             application/json:
               schema:
                 type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '403':
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
           description: Notification not found.
-        '500':
+        "500":
           description: Something went wrong internally
           content:
             application/json:
@@ -127,7 +127,7 @@ paths:
   /api/calendar/me:
     get:
       operationId: GetAPICalendarMe
-      summary: Get a user's calendar events for a given time range.
+      summary: Get a user"s calendar events for a given time range.
       parameters:
         - in: query
           name: start
@@ -142,25 +142,25 @@ paths:
             format: date-time
           required: true
       responses:
-        '200':
+        "200":
           description: Successfully got user calendar events
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CalendarEvent'
-        '400':
+                  $ref: "#/components/schemas/CalendarEvent"
+        "400":
           description: Bad request
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
           description: Something went wrong internally
           content:
             application/json:
               schema:
                 type: string
-        '502':
+        "502":
           description: Something went wrong with an external API
           content:
             application/json:
@@ -174,25 +174,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CalendarEvent'
+              $ref: "#/components/schemas/CalendarEvent"
       responses:
-        '201':
+        "201":
           description: Event successfully created
           content:
             application/json:
               schema:
                 type: string
-        '400':
+        "400":
           description: Bad request
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
           description: Something went wrong internally
           content:
             application/json:
               schema:
                 type: string
-        '502':
+        "502":
           description: Something went wrong with an external API
           content:
             application/json:
@@ -202,7 +202,7 @@ paths:
       operationId: OptionsAPICalendarMe
       summary: CORS preflight for creating an event
       responses:
-        '204':
+        "204":
           description: Successful CORS preflight
           headers:
             Access-Control-Allow-Origin:
@@ -225,21 +225,21 @@ paths:
                 allowed
               schema:
                 type: string
-                example: 'true'
+                example: "true"
 
   /api/refresh:
     post:
       operationId: PostAPIRefresh
       summary: Refresh Slotify access token and refresh token.
       responses:
-        '201':
+        "201":
           description: Successfully refreshed access token
           content:
             application/json:
               schema:
                 type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
 
   /api/auth/callback:
     get:
@@ -257,7 +257,7 @@ paths:
             type: string
           required: true
       responses:
-        '302':
+        "302":
           description: Successful auth
           headers:
             Location:
@@ -271,7 +271,7 @@ paths:
       operationId: GetAPIHealthcheck
       summary: Healthcheck route.
       responses:
-        '200':
+        "200":
           description: Healthcheck successful
           content:
             application/json:
@@ -283,7 +283,7 @@ paths:
       operationId: PostAPIUsersMeLogout
       summary: Logout user.
       responses:
-        '200':
+        "200":
           description: Successfully logged out on backend
           content:
             application/json:
@@ -293,19 +293,19 @@ paths:
   /api/users/me:
     get:
       operationId: GetAPIUsersMe
-      summary: Get current user's details.
+      summary: Get current user"s details.
       responses:
-        '200':
+        "200":
           description: Got user successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '400':
+                $ref: "#/components/schemas/User"
+        "400":
           description: Bad request (e.g., invalid team ID)
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '404':
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
           description: User not found
 
   /api/users:
@@ -330,15 +330,15 @@ paths:
             type: string
           description: Last name of user
       responses:
-        '200':
+        "200":
           description: Users matching the query parameters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
-        '400':
+                  $ref: "#/components/schemas/User"
+        "400":
           description: Bad request (e.g., invalid team ID)
     post:
       operationId: PostAPIUsers
@@ -348,15 +348,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreate'
+              $ref: "#/components/schemas/UserCreate"
       responses:
-        '201':
+        "201":
           description: User created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '400':
+                $ref: "#/components/schemas/User"
+        "400":
           description: Bad request (e.g., invalid team ID)
   
   /api/users/{userID}:
@@ -417,7 +417,7 @@ paths:
           description: Invite status
       responses:
         "200":
-          description: Got all user's invites successfully
+          description: Got all user"s invites successfully
           content:
             application/json:
               schema:
@@ -729,7 +729,7 @@ paths:
           description: Numeric ID of the slotifyGroup to delete
       responses:
         "200":
-          description: Got all a group's invites successfully
+          description: Got all a group"s invites successfully
           content:
             application/json:
               schema:
@@ -775,7 +775,7 @@ paths:
       summary: Get all slotify-groups for current user.
       responses:
         "200":
-          description: Got all user's slotify-groups successfully
+          description: Got all user"s slotify-groups successfully
           content:
             application/json:
               schema:
@@ -926,19 +926,19 @@ paths:
       operationId: GetAPIMSFTGroupsMe
       summary: Get all Microsoft groups for current user.
       responses:
-        '200':
-          description: Got all user's Microsoft groups successfully
+        "200":
+          description: Got all user"s Microsoft groups successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MSFTGroup'
-        '400':
+                  $ref: "#/components/schemas/MSFTGroup"
+        "400":
           description: Bad request
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '404':
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
           description: User not found
   
   /api/msft-groups:
@@ -952,15 +952,15 @@ paths:
             type: string
           description: Microsoft group name
       responses:
-        '200':
+        "200":
           description: Microsoft groups matching the query parameters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MSFTGroup'
-        '400':
+                  $ref: "#/components/schemas/MSFTGroup"
+        "400":
           description: Bad request (e.g., invalid microsoft group name)
   
   /api/msft-groups/{groupID}:
@@ -976,15 +976,15 @@ paths:
           required: true
           description: Numeric ID of the Microsoft group to get
       responses:
-        '200':
+        "200":
           description: Got Microsoft group successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MSFTGroup'
-        '404':
+                $ref: "#/components/schemas/MSFTGroup"
+        "404":
           description: Microsoft group not found
-        '500':
+        "500":
           description: Something went wrong internally
   
   /api/msft-groups/{groupID}/users:
@@ -1000,21 +1000,21 @@ paths:
             format: uint32
           description: ID of the Microsoft group
       responses:
-        '200':
+        "200":
           description: Users successfully found
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MSFTGroupUser'
-        '403':
+                  $ref: "#/components/schemas/MSFTGroupUser"
+        "403":
           description: Bad request, Microsoft group id is invalid
           content:
             application/json:
               schema:
                 type: string
-        '500':
+        "500":
           description: Something went wrong internally
           content:
             application/json:
@@ -1029,7 +1029,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SchedulingSlotsSuccessResponseBody'
+            $ref: "#/components/schemas/SchedulingSlotsSuccessResponseBody"
     
     UnauthorizedError:
       description: Access token is missing or invalid
@@ -1044,7 +1044,7 @@ components:
         timeSlots:
           type: array
           items:
-            $ref: '#/components/schemas/MeetingTimeSlot'
+            $ref: "#/components/schemas/MeetingTimeSlot"
       required:
         - timeSlots
     
@@ -1055,23 +1055,23 @@ components:
         attendees:
           type: array
           items:
-            $ref: '#/components/schemas/AttendeeBase'
+            $ref: "#/components/schemas/AttendeeBase"
         meetingName:
           description: custom field, this is used for the AI model
           type: string
         meetingDuration:
           type: string
           description: "The length of the meeting, denoted in **ISO 8601** format.\
-            \ - Example:\n  - **1 hour** → `'PT1H'`\n  - **2 hours, 30 minutes** →\
-            \ `'PT2H30M'`\n- `'P'` is the duration designator. - `'T'` separates date\
-            \ and time components. - `'H'` (hours) and `'M'` (minutes) specify the\
+            \ - Example:\n  - **1 hour** → `"PT1H"`\n  - **2 hours, 30 minutes** →\
+            \ `"PT2H30M"`\n- `"P"` is the duration designator. - `"T"` separates date\
+            \ and time components. - `"H"` (hours) and `"M"` (minutes) specify the\
             \ time duration. - If omitted, the default duration is **30 minutes**\
-            \ (`'PT30M'`).\n"
+            \ (`"PT30M"`).\n"
           example: PT2H30M
         isOrganizerOptional:
           type: boolean
         locationConstraint:
-          $ref: '#/components/schemas/LocationConstraint'
+          $ref: "#/components/schemas/LocationConstraint"
         minimumAttendeePercentage:
           type: number
           format: double
@@ -1079,7 +1079,7 @@ components:
           type: integer
           format: int32
         timeConstraint:
-          $ref: '#/components/schemas/TimeConstraint'
+          $ref: "#/components/schemas/TimeConstraint"
       required:
         - attendees
         - isOrganizerOptional
@@ -1096,7 +1096,7 @@ components:
           description: The city.
         countryOrRegion:
           type: string
-          description: The country or region. It's a free-format string value, for
+          description: The country or region. It"s a free-format string value, for
             example, "United States".
         postalCode:
           type: string
@@ -1119,7 +1119,7 @@ components:
         locationEmailAddress:
           type: string
         address:
-          $ref: '#/components/schemas/PhysicalAddress'
+          $ref: "#/components/schemas/PhysicalAddress"
       required:
         - displayName
         - resolveAvailability
@@ -1134,7 +1134,7 @@ components:
         locations:
           type: array
           items:
-            $ref: '#/components/schemas/LocationConstraintItem'
+            $ref: "#/components/schemas/LocationConstraintItem"
         suggestLocation:
           type: boolean
    
@@ -1163,9 +1163,9 @@ components:
       description: Maps roughly to [MSFT attendeeAvailability](https://learn.microsoft.com/en-us/graph/api/resources/attendeeavailability?view=graph-rest-1.0)
       properties:
         availability:
-          $ref: '#/components/schemas/FreeBusyStatus'
+          $ref: "#/components/schemas/FreeBusyStatus"
         attendee:
-          $ref: '#/components/schemas/AttendeeBase'
+          $ref: "#/components/schemas/AttendeeBase"
       required:
         - availability
         - attendee
@@ -1191,16 +1191,16 @@ components:
         attendeeAvailability:
           type: array
           items:
-            $ref: '#/components/schemas/AttendeeAvailability'
+            $ref: "#/components/schemas/AttendeeAvailability"
         confidence:
           type: number
           format: double
         locations:
           type: array
           items:
-            $ref: '#/components/schemas/Location'
+            $ref: "#/components/schemas/Location"
         meetingTimeSlot:
-          $ref: '#/components/schemas/MeetingTimeSlot'
+          $ref: "#/components/schemas/MeetingTimeSlot"
         order:
           type: integer
           format: int32
@@ -1214,11 +1214,11 @@ components:
       type: object
       properties:
         emptySuggestionsReason:
-          $ref: '#/components/schemas/EmptySuggestionsReason'
+          $ref: "#/components/schemas/EmptySuggestionsReason"
         meetingTimeSuggestions:
           type: array
           items:
-            $ref: '#/components/schemas/MeetingTimeSuggestion'
+            $ref: "#/components/schemas/MeetingTimeSuggestion"
   
     AttendeeType:
       description: Maps directly to [MSFT Attendee->type](https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0)
@@ -1247,9 +1247,9 @@ components:
       description: directly maps to [MSFT attendeeBase](https://learn.microsoft.com/en-us/graph/api/resources/attendeebase?view=graph-rest-1.0)
       properties:
         emailAddress:
-          $ref: '#/components/schemas/EmailAddress'
+          $ref: "#/components/schemas/EmailAddress"
         attendeeType:
-          $ref: '#/components/schemas/AttendeeType'
+          $ref: "#/components/schemas/AttendeeType"
       required:
         - emailAddress
         - attendeeType
