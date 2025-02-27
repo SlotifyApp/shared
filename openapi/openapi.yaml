@@ -372,15 +372,15 @@ paths:
           required: true
           description: Numeric ID of the user to get
       responses:
-        '200':
+        "200":
           description: Got user successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Bad request (e.g., invalid team ID)
-        '403':
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request (e.g., invalid slotifyGroup ID)
+        "404":
           description: User not found
     delete:
       operationId: DeleteAPIUsersUserID
@@ -394,15 +394,15 @@ paths:
           required: true
           description: Numeric ID of the user to delete
       responses:
-        '200':
+        "200":
           description: Deleted user successfully
           content:
             application/json:
               schema:
                 type: string
-        '400':
+        "400":
           description: Bad request (e.g., invalid user ID)
-        '404':
+        "404":
           description: User not found
  
   /api/invites/me:
