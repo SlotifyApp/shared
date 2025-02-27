@@ -820,6 +820,37 @@ paths:
               schema:
                 type: string
 
+  /api/msft-users:
+    get:
+      summary: Get all users from Microsoft
+      operationId: GetAPIMSFTUsers
+      responses:
+        "200":
+          description: Users successfully found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MSFTGroupUser"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Failed to get users from Microsoft
+        "500": 
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
+
+
 components:
   responses:
     SchedulingSlotsSuccessResponse:
