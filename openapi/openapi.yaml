@@ -52,7 +52,7 @@ paths:
                   $ref: "#/components/schemas/Notification"
         "401":
           $ref: "#/components/responses/UnauthorizedError"
-        "403":
+        "404":
           description: Notification not found.
         "500":
           description: Something went wrong internally
@@ -114,7 +114,7 @@ paths:
                 type: string
         "401":
           $ref: "#/components/responses/UnauthorizedError"
-        "403":
+        "404":
           description: Notification not found.
         "500":
           description: Something went wrong internally
@@ -376,7 +376,7 @@ paths:
                 $ref: "#/components/schemas/User"
         "400":
           description: Bad request (e.g., invalid slotifyGroup ID)
-        "403":
+        "404":
           description: User not found
     delete:
       operationId: DeleteAPIUsersUserID
@@ -430,7 +430,7 @@ paths:
   /api/invites/{inviteID}:
     patch:
       operationId: PatchAPIInvitesInviteID
-      summary: update a new invite with a new message
+      summary: Update an invite with a new message
       parameters:
         - in: path
           name: inviteID
@@ -452,7 +452,7 @@ paths:
                 - message
       responses:
         "200":
-          description: Deleted the invite successfully
+          description: Updated the invite message successfully.
           content:
             application/json:
               schema:
@@ -876,7 +876,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/User"
-        "403":
+        "404":
           description: Bad request, slotifyGroup id is invalid
           content:
             application/json:
