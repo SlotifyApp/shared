@@ -90,7 +90,8 @@ paths:
                 type: string
                 example: Content-Type, Authorization
             Access-Control-Allow-Credentials:
-              description: Whether credentials (cookies, HTTP authentication) are
+              description:
+                Whether credentials (cookies, HTTP authentication) are
                 allowed
               schema:
                 type: string
@@ -122,7 +123,7 @@ paths:
             application/json:
               schema:
                 type: string
-  
+
   /api/calendar/me:
     get:
       operationId: GetAPICalendarMe
@@ -220,7 +221,8 @@ paths:
                 type: string
                 example: Content-Type, Authorization
             Access-Control-Allow-Credentials:
-              description: Whether credentials (cookies, HTTP authentication) are
+              description:
+                Whether credentials (cookies, HTTP authentication) are
                 allowed
               schema:
                 type: string
@@ -310,24 +312,19 @@ paths:
   /api/users:
     get:
       operationId: GetAPIUsers
-      summary: Get users by query params.
+      summary: Search for users with by email and name. Only provide one of the query params or none.
       parameters:
         - in: query
           name: email
           schema:
             type: string
             format: email
-          description: Email of user
+          description: Email of user to search for
         - in: query
-          name: firstName
+          name: name
           schema:
             type: string
-          description: First name of user
-        - in: query
-          name: lastName
-          schema:
-            type: string
-          description: Last name of user
+          description: Name of user to search for
       responses:
         "200":
           description: Users matching the query parameters
@@ -403,7 +400,7 @@ paths:
           description: Bad request (e.g., invalid user ID)
         "404":
           description: User not found
-          
+
   /api/invites/me:
     get:
       operationId: GetAPIInvitesMe
@@ -919,7 +916,7 @@ paths:
             application/json:
               schema:
                 type: string
-  
+
   /api/msft-groups/me:
     get:
       operationId: GetAPIMSFTGroupsMe
@@ -939,7 +936,7 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         "404":
           description: User not found
-  
+
   /api/msft-groups:
     get:
       operationId: GetAPIMSFTGroups
@@ -961,7 +958,7 @@ paths:
                   $ref: "#/components/schemas/MSFTGroup"
         "400":
           description: Bad request (e.g., invalid microsoft group name)
-  
+
   /api/msft-groups/{groupID}:
     get:
       operationId: GetAPIMSFTGroupsGroupID
@@ -985,7 +982,7 @@ paths:
           description: Microsoft group not found
         "500":
           description: Something went wrong internally
-  
+
   /api/msft-groups/{groupID}/users:
     get:
       summary: Get all members of a Microsoft group.
@@ -1023,16 +1020,17 @@ paths:
 components:
   responses:
     SchedulingSlotsSuccessResponse:
-      description: Scheduling algorithm returns the valid time slots and their respective
+      description:
+        Scheduling algorithm returns the valid time slots and their respective
         ratings.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/SchedulingSlotsSuccessResponseBody"
-    
+
     UnauthorizedError:
       description: Access token is missing or invalid
-  
+
   schemas:
     TimeConstraint:
       description: Maps directly to [MSFT timeConstraint](https://learn.microsoft.com/en-us/graph/api/resources/timeconstraint?view=graph-rest-1.0)
@@ -1046,7 +1044,7 @@ components:
             $ref: "#/components/schemas/MeetingTimeSlot"
       required:
         - timeSlots
-    
+
     SchedulingSlotsBodySchema:
       description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
       type: object
@@ -1089,7 +1087,7 @@ components:
         - meetingDuration
         - meetingName
         - timeConstraint
-   
+
     PhysicalAddress:
       description: Maps directly to [MSFT physicalAddress](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraintitem?view=graph-rest-1.0)
       properties:
@@ -1108,7 +1106,7 @@ components:
         street:
           type: string
           description: The street.
-  
+
     LocationConstraintItem:
       description: Maps roughly to [MSFT locationConstraintItem](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraintitem?view=graph-rest-1.0)
       type: object
@@ -1125,7 +1123,7 @@ components:
         - displayName
         - resolveAvailability
         - address
- 
+
     LocationConstraint:
       description: Maps directly to [MSFT locationConstraint](https://learn.microsoft.com/en-us/graph/api/resources/locationconstraint?view=graph-rest-1.0)
       type: object
@@ -1138,7 +1136,7 @@ components:
             $ref: "#/components/schemas/LocationConstraintItem"
         suggestLocation:
           type: boolean
-   
+
     EmptySuggestionsReason:
       description: Maps directly to [MSFT emptySuggestionsReason](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestionsresult?view=graph-rest-1.0)
       type: string
@@ -1148,7 +1146,7 @@ components:
         - locationsUnavailable
         - organizerUnavailable
         - unknown
-  
+
     FreeBusyStatus:
       description: Maps directly to [MSFT freebusyStatus](https://learn.microsoft.com/en-us/graph/api/resources/attendeeavailability?view=graph-rest-1.0)
       type: string
@@ -1159,7 +1157,7 @@ components:
         - oof
         - workingElsewhere
         - unknown
-  
+
     AttendeeAvailability:
       description: Maps roughly to [MSFT attendeeAvailability](https://learn.microsoft.com/en-us/graph/api/resources/attendeeavailability?view=graph-rest-1.0)
       properties:
@@ -1170,7 +1168,7 @@ components:
       required:
         - availability
         - attendee
-  
+
     MeetingTimeSlot:
       description: Maps directly to [MSFT meetingTimeSlot](https://learn.microsoft.com/en-us/graph/api/resources/timeslot?view=graph-rest-1.0)
       type: object
@@ -1209,7 +1207,7 @@ components:
           type: string
         suggestionReason:
           type: string
-   
+
     SchedulingSlotsSuccessResponseBody:
       description: Maps roughly to [MSFT meetingTimeSuggestionsResult](https://learn.microsoft.com/en-us/graph/api/resources/meetingtimesuggestionsresult?view=graph-rest-1.0)
       type: object
@@ -1220,7 +1218,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/MeetingTimeSuggestion"
-  
+
     AttendeeType:
       description: Maps directly to [MSFT Attendee->type](https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0)
       type: string
@@ -1228,10 +1226,11 @@ components:
         - required
         - optional
         - resource
-   
+
     EmailAddress:
       type: object
-      description: directly maps to MSFT Email Address, see info here:[MSFT EmailAddress
+      description:
+        directly maps to MSFT Email Address, see info here:[MSFT EmailAddress
         Struct Docs](https://learn.microsoft.com/en-us/graph/api/resources/emailaddress?view=graph-rest-1.0)
       properties:
         address:
@@ -1242,7 +1241,7 @@ components:
       required:
         - address
         - name
-   
+
     AttendeeBase:
       type: object
       description: directly maps to [MSFT attendeeBase](https://learn.microsoft.com/en-us/graph/api/resources/attendeebase?view=graph-rest-1.0)
@@ -1254,7 +1253,7 @@ components:
       required:
         - emailAddress
         - attendeeType
-  
+
     Attendee:
       description: Maps roughly to [MSFT Attendee](https://learn.microsoft.com/en-us/graph/api/resources/attendee?view=graph-rest-1.0#properties)
       type: object
@@ -1328,7 +1327,7 @@ components:
       required:
         - attendees
         - locations
-   
+
     InviteCreate:
       description: Invite create request body
       type: object
@@ -1480,7 +1479,7 @@ components:
         street:
           type: string
           nullable: true
-    
+
     Notification:
       type: object
       properties:
@@ -1496,7 +1495,7 @@ components:
         - id
         - message
         - created
-    
+
     UserCreate:
       type: object
       properties:
@@ -1511,7 +1510,7 @@ components:
         - email
         - firstName
         - lastName
-  
+
     User:
       type: object
       properties:
@@ -1550,7 +1549,7 @@ components:
       required:
         - id
         - name
-  
+
     MSFTGroup:
       type: object
       properties:
@@ -1562,7 +1561,7 @@ components:
       required:
         - id
         - name
- 
+
     MSFTGroupUser:
       type: object
       properties:
