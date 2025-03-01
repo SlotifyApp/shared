@@ -1,0 +1,21 @@
+version: "3"
+services:
+  api:
+    build:
+      context: ../../
+      dockerfile: shared/docker/api.Dockerfile
+    image: slotify-api
+    container_name: slotify-api-container
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      MICROSOFT_TENANT_ID: ${MICROSOFT_TENANT_ID}
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
+      ACCESS_TOKEN_JWT_SECRET: ${ACCESS_TOKEN_JWT_SECRET}
+      REFRESH_TOKEN_JWT_SECRET: ${REFRESH_TOKEN_JWT_SECRET}
+    ports:
+      - "8080:8080"
