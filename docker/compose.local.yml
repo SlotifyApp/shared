@@ -5,11 +5,13 @@ services:
       dockerfile: shared/docker/api.Dockerfile
     container_name: slotify-api-container
     environment:
+      BACKEND_URL: "http://localhost:8080"
       DB_HOST: mariadb
       DB_PORT: 3306
       DB_USERNAME: root
       DB_PASSWORD: rootpassword
       DB_NAME: slotify
+      FRONTEND_URL: "http://localhost:3000"
       MICROSOFT_TENANT_ID: ${MICROSOFT_TENANT_ID}
       MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
       MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
@@ -38,4 +40,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
