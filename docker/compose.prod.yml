@@ -1,0 +1,27 @@
+services:
+  api:
+    image: ${AWS_ECR_URL}:${IMAGE_TAG}-amd64
+    container_name: slotify-api-container
+    environment:
+      BACKEND_URL: ${BACKEND_URL}
+      FRONTEND_URL: ${FRONTEND_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      MICROSOFT_TENANT_ID: ${MICROSOFT_TENANT_ID}
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
+      ACCESS_TOKEN_JWT_SECRET: ${ACCESS_TOKEN_JWT_SECRET}
+      REFRESH_TOKEN_JWT_SECRET: ${REFRESH_TOKEN_JWT_SECRET}
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-container
+    volumes:
+      - ${NGINX_CONF_PATH}:/etc/nginx/nginx.conf:ro
+    ports:
+      - "443:443"
+    depends_on:
+      - api
