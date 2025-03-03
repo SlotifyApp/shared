@@ -21,6 +21,8 @@ services:
     container_name: nginx-container
     volumes:
       - ${NGINX_CONF_PATH}:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt/live/api.slotify.saath.dev/fullchain.pem:/etc/letsencrypt/live/api.slotify.saath.dev/fullchain.pem:ro
+      - /etc/letsencrypt/live/api.slotify.saath.dev/privkey.pem:/etc/letsencrypt/live/api.slotify.saath.dev/privkey.pem:ro
     ports:
       - "443:443"
     depends_on:
