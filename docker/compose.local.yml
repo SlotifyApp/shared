@@ -17,12 +17,20 @@ services:
       MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
       ACCESS_TOKEN_JWT_SECRET: ${ACCESS_TOKEN_JWT_SECRET}
       REFRESH_TOKEN_JWT_SECRET: ${REFRESH_TOKEN_JWT_SECRET}
-    ports:
-      - "8080:8080"
     depends_on:
       mariadb:
         # Wait until mariadb has started before starting API
         condition: service_healthy
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-container
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
 
   mariadb:
     image: mariadb:latest
