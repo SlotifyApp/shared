@@ -83,3 +83,52 @@ CREATE TABLE Invite (
 	CONSTRAINT fk_User_Invite_from FOREIGN KEY (from_user_id) REFERENCES User(id) ON DELETE CASCADE,
 	CONSTRAINT fk_User_Invite_to FOREIGN KEY (to_user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS ReschedulingRequest;
+
+-- Table to represent a rescheduling request
+CREATE TABLE ReschedulingRequest (
+	request_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	old_meeting_id STRING NOT NULL,
+	status ENUM('pending', 'accepted', 'declined') DEFAULT 'pending' NOT NULL,
+	created_at TIMESTAMP NOT NULL
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS ReschedulingRequestToUser;
+
+-- Many-to-many table linking rescheduling requests to users
+CREATE TABLE ReschedulingRequestToUser (
+	request_id INT UNSIGNED NOT NULL,
+	user_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY(request_id, user_id), -- When starting with ReschedulingRequest
+		INDEX      (user_id, request_id), -- When starting with User
+	CONSTRAINT fk_ReschedulingRequest_ReschedulingRequestToUser FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE,
+	CONSTRAINT fk_User_ReschedulingRequestToUser FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS PlaceholderMeeting;
+
+-- Table to represent a placeholder meeting
+CREATE TABLE PlaceholderMeeting (
+	meeting_id STRING NOT NULL PRIMARY KEY,
+	ctitle STRING NOT NULL,
+	owner_id INT UNSIGNED NOT NULL,
+	start_time DATETIME NOT NULL,
+	end_time DATETIME NOT NULL,
+	location STRING NOT NULL,
+	duration INT NOT NULL,
+	startDateRange DATE NOT NULL,
+	endDateRange DATE NOT NULL,
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS PlaceholderMeetingAttendee;
+
+-- Many-to-many table linking placeholder meetings to users
+CREATE TABLE PlaceholderMeetingAttendee (
+	meeting_id STRING NOT NULL,
+	user_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY(meeting_id, user_id), -- When starting with PlaceholderMeeting
+		INDEX      (user_id, meeting_id), -- When starting with User
+	CONSTRAINT fk_PlaceholderMeeting_PlaceholderMeetingAttendee FOREIGN KEY (meeting_id) REFERENCES PlaceholderMeeting(meeting_id) ON DELETE CASCADE,
+	CONSTRAINT fk_User_PlaceholderMeetingAttendee FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
