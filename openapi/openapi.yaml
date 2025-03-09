@@ -1098,19 +1098,32 @@ components:
               description: Array of all the attendees
             startTime:
               type: string
+              format: date-time
               description: The start of the meeting denoted in *ISO 8601* format
             endTime:
               type: string
+              format: date-time
               description: The end of the meeting denoted in *ISO 8601* format
             location:
               type: string
               description: The location of the meeting
+            duration:
+              type: integer
+              description: The duration of the meeting in minutes
+            startRangeTime:
+              type: string
+              format: date-time
+              description: The start of the range of the meeting denoted in *ISO 8601* format
+            endRangeTime:
+              type: string
+              format: date-time
+              description: The end of the range of the meeting denoted in *ISO 8601* format
                 
         oldMeeting:
           type: object
           properties:
             meetingID:
-              type: string
+              type: integer
               description: The meeting ID of the old meeting
             meetingOwner:
               type: string
