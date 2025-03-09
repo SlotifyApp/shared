@@ -1059,6 +1059,9 @@ components:
         oldMeeting:
           type: object
           properties:
+            meetingID:
+              type: integer
+              description: The meeting ID of the old meeting
             title: 
               type: string
               description: name of the meeting
