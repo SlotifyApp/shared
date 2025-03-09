@@ -694,7 +694,7 @@ paths:
 
   /api/scheduling/slots:
     post:
-      operationId: PostAPISchedulingFree
+      operationId: PostAPISchedulingSlots
       summary: Idempotent route, just returns appropriate time slots along with their respective ratings.
       requestBody:
         required: true
