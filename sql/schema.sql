@@ -89,7 +89,7 @@ DROP TABLE IF EXISTS ReschedulingRequest;
 -- Table to represent a rescheduling request
 CREATE TABLE ReschedulingRequest (
 	request_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	old_meeting_id INT NOT NULL,
+	old_meeting_id INT UNSIGNED NOT NULL,
 	status ENUM('pending', 'accepted', 'declined') DEFAULT 'pending' NOT NULL,
 	created_at TIMESTAMP NOT NULL,
 	CONSTRAINT fk_Meeting_ReschedulingRequest FOREIGN KEY (old_meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE
