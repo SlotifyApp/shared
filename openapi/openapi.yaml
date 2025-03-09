@@ -806,7 +806,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/MSFTGroupUser"
+                  $ref: "#/components/schemas/MSFTUser"
         "403":
           description: Bad request, Microsoft group id is invalid
           content:
@@ -838,7 +838,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/MSFTGroupUser"
+                  $ref: "#/components/schemas/MSFTUser"
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
@@ -868,7 +868,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/MSFTGroupUser"
+                  $ref: "#/components/schemas/MSFTUser"
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
@@ -1431,8 +1431,8 @@ components:
       required:
         - id
         - name
-
-    MSFTGroupUser:
+ 
+    MSFTUser:
       type: object
       properties:
         email:
