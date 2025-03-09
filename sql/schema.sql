@@ -119,8 +119,8 @@ CREATE TABLE PlaceholderMeeting (
 	end_time DATETIME NOT NULL,
 	location VARCHAR(255) NOT NULL,
 	duration INT NOT NULL, -- in minutes
-	startDateRange DATETIME NOT NULL,
-	endDateRange DATETIME NOT NULL,
+	start_date_range DATETIME NOT NULL,
+	end_date_range DATETIME NOT NULL,
 	CONSTRAINT fk_User_PlaceholderMeeting FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE,
 	CONSTRAINT fk_RequestID_PlaceholderMeeting FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
