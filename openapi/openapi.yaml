@@ -88,6 +88,55 @@ paths:
               schema:
                 type: string
 
+  /api/calendar/{userID}:
+    get:
+      operationId: GetAPICalendarUserID
+      summary: Get a specific user's calendar events for a given time range.
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: string
+            format: date-time
+          required: true
+        - in: query
+          name: end
+          schema:
+            type: string
+            format: date-time
+          required: true
+        - in: path
+          name: userID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        "200":
+          description: Successfully got user calendar events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarEvent"
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
   /api/calendar/me:
     get:
       operationId: GetAPICalendarMe
