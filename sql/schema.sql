@@ -142,8 +142,9 @@ DROP TABLE IF EXISTS Meeting;
 -- Table to represent a meeting
 CREATE TABLE Meeting (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	meetingInfoId int UNSIGNED NOT NULL,
+	meetingInfoId INT UNSIGNED NOT NULL,
 	owner_id INT UNSIGNED NOT NULL,
+	msftMeetingID VARCHAR(255) NOT NULL,
 	CONSTRAINT fk_Meeting_MeetingPreferences FOREIGN KEY (meetingInfoId) REFERENCES MeetingPreferences(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -154,8 +155,7 @@ CREATE TABLE MeetingPreferences (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	meeting_start_time DATETIME NOT NULL,
 	start_date_range DATETIME NOT NULL,
-	end_date_range DATETIME NOT NULL,
-	msftMeetingID VARCHAR(255) NOT NULL
+	end_date_range DATETIME NOT NULL
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS UserPreferences;
