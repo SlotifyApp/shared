@@ -962,6 +962,10 @@ components:
               type: boolean
             locationConstraint:
               $ref: "#/components/schemas/LocationConstraint"
+            startTime:
+              type: string
+              format: date-time
+              description: The start of the meeting denoted in *ISO 8601* format
 
     ReschedulingRequestBodySchema:
       description: Request body of the details of the two meetings
