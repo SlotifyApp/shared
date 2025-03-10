@@ -89,22 +89,10 @@ DROP TABLE IF EXISTS ReschedulingRequest;
 -- Table to represent a rescheduling request
 CREATE TABLE ReschedulingRequest (
 	request_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	old_meeting_id INT UNSIGNED NOT NULL,
+	requested_by INT UNSIGNED NOT NULL,
 	status ENUM('pending', 'accepted', 'declined') DEFAULT 'pending' NOT NULL,
 	created_at TIMESTAMP NOT NULL,
-	CONSTRAINT fk_Meeting_ReschedulingRequest FOREIGN KEY (old_meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS ReschedulingRequestedByUser;
-
--- Many-to-many table linking rescheduling requests to users
-CREATE TABLE ReschedulingRequestedByUser (
-	request_id INT UNSIGNED NOT NULL,
-	user_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY(request_id, user_id), -- When starting with ReschedulingRequest
-		INDEX      (user_id, request_id), -- When starting with User
-	CONSTRAINT fk_ReschedulingRequest_ReschedulingRequestedByUser FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE,
-	CONSTRAINT fk_User_ReschedulingRequestedByUser FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+	CONSTRAINT fk_User_ReschedulingRequest FOREIGN KEY (requested_by) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS PlaceholderMeeting;
@@ -114,14 +102,12 @@ CREATE TABLE PlaceholderMeeting (
 	meeting_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	request_id INT UNSIGNED NOT NULL,
 	title VARCHAR(255) NOT NULL,
-	owner_id INT UNSIGNED NOT NULL,
 	start_time DATETIME NOT NULL,
 	end_time DATETIME NOT NULL,
 	location VARCHAR(255) NOT NULL,
-	duration INT NOT NULL, -- in minutes
+	duration INT UNSIGNED NOT NULL, -- in minutes
 	start_date_range DATETIME NOT NULL,
 	end_date_range DATETIME NOT NULL,
-	CONSTRAINT fk_User_PlaceholderMeeting FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE,
 	CONSTRAINT fk_RequestID_PlaceholderMeeting FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -129,12 +115,22 @@ DROP TABLE IF EXISTS PlaceholderMeetingAttendee;
 
 -- Many-to-many table linking placeholder meetings to users
 CREATE TABLE PlaceholderMeetingAttendee (
-	meeting_id INT NOT NULL,
+	meeting_id INT UNSIGNED NOT NULL,
 	user_id INT UNSIGNED NOT NULL,
 	PRIMARY KEY(meeting_id, user_id), -- When starting with PlaceholderMeeting
 		INDEX      (user_id, meeting_id), -- When starting with User
 	CONSTRAINT fk_PlaceholderMeeting_PlaceholderMeetingAttendee FOREIGN KEY (meeting_id) REFERENCES PlaceholderMeeting(meeting_id) ON DELETE CASCADE,
 	CONSTRAINT fk_User_PlaceholderMeetingAttendee FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS MeetingPreferences;
+
+-- Table to represent a meeting preferences
+CREATE TABLE MeetingPreferences (
+	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	meeting_start_time DATETIME NOT NULL,
+	start_date_range DATETIME NOT NULL,
+	end_date_range DATETIME NOT NULL
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Meeting;
@@ -148,14 +144,15 @@ CREATE TABLE Meeting (
 	CONSTRAINT fk_Meeting_MeetingPreferences FOREIGN KEY (meeting_pref_id) REFERENCES MeetingPreferences(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS MeetingPreferences;
 
--- Table to represent a meeting preferences
-CREATE TABLE MeetingPreferences (
-	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	meeting_start_time DATETIME NOT NULL,
-	start_date_range DATETIME NOT NULL,
-	end_date_range DATETIME NOT NULL
+DROP TABLE IF EXISTS RequestToMeeting;
+
+-- Table to create a one to one mapping between a request and a meeting
+CREATE TABLE RequestToMeeting (
+	request_id INT UNSIGNED NOT NULL PRIMARY KEY,
+	meeting_id INT UNSIGNED NOT NULL,
+	CONSTRAINT fk_RequestToMeeting_Request FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE,
+	CONSTRAINT fk_RequestToMeeting_Meeting FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS UserPreferences;
@@ -167,3 +164,4 @@ CREATE TABLE UserPreferences (
 	lunch_end_time TIME NOT NULL,
 	CONSTRAINT fk_User_UserPreferences FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+

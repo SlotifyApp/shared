@@ -760,9 +760,9 @@ paths:
               schema:
                 type: string
 
-  /api/reschedule/request:
+  /api/reschedule/request/replace:
     post:
-      operationId: PostAPIRescheduleRequest
+      operationId: PostAPIRescheduleRequestReplace
       summary: Request to reschedule the old meeting
       requestBody:
         required: true
@@ -946,7 +946,7 @@ components:
           properties:
             meetingID:
               type: integer
-              description: The meeting ID of the old meeting
+              description: The meeting ID of the old meeting if it exists
             title: 
               type: string
               description: name of the meeting
