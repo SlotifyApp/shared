@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS SlotifyGroup;
 
 CREATE TABLE SlotifyGroup ( -- A group of users form a slotify group
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	name VARCHAR(255) NOT NULL, -- slotifyGroup name
+	name TEXT NOT NULL, -- slotifyGroup name
 	UNIQUE(name)
 ) ENGINE=InnoDB;
 
@@ -101,10 +101,10 @@ DROP TABLE IF EXISTS PlaceholderMeeting;
 CREATE TABLE PlaceholderMeeting (
 	meeting_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	request_id INT UNSIGNED NOT NULL,
-	title VARCHAR(255) NOT NULL,
+	title TEXT NOT NULL,
 	start_time DATETIME NOT NULL,
 	end_time DATETIME NOT NULL,
-	location VARCHAR(255) NOT NULL,
+	location TEXT NOT NULL,
 	duration TIME NOT NULL,
 	start_date_range DATETIME NOT NULL,
 	end_date_range DATETIME NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE Meeting (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	meeting_pref_id INT UNSIGNED NOT NULL,
 	owner_id INT UNSIGNED NOT NULL,
-	msftMeetingID VARCHAR(255) NOT NULL,
+	msft_meeting_id TEXT NOT NULL,
 	CONSTRAINT fk_Meeting_MeetingPreferences FOREIGN KEY (meeting_pref_id) REFERENCES MeetingPreferences(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
