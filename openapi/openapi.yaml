@@ -733,6 +733,7 @@ paths:
 
       responses:
         "200":
+          description: Successfully checked reschedule status
           content:
             application/json:
               schema:
