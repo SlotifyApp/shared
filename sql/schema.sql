@@ -105,7 +105,7 @@ CREATE TABLE PlaceholderMeeting (
 	start_time DATETIME NOT NULL,
 	end_time DATETIME NOT NULL,
 	location VARCHAR(255) NOT NULL,
-	duration INT UNSIGNED NOT NULL, -- in minutes
+	duration TIME NOT NULL,
 	start_date_range DATETIME NOT NULL,
 	end_date_range DATETIME NOT NULL,
 	CONSTRAINT fk_RequestID_PlaceholderMeeting FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE

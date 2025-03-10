@@ -1050,7 +1050,16 @@ components:
               description: name of the meeting
             meetingDuration:
               type: string
-              description: The length of the meeting denoted in *ISO 8601* format
+              description: >
+                The length of the meeting, denoted in **ISO 8601** format.
+                - Example:
+                  - **1 hour** → `'PT1H'`
+                  - **2 hours, 30 minutes** → `'PT2H30M'`
+                - `'P'` is the duration designator.
+                - `'T'` separates date and time components.
+                - `'H'` (hours) and `'M'` (minutes) specify the time duration.
+                - If omitted, the default duration is **30 minutes** (`'PT30M'`).
+              example: "PT2H30M"
             attendees:
               type: array
               items:
@@ -1068,7 +1077,16 @@ components:
               description: name of the meeting
             meetingDuration:
               type: string
-              description: The length of the meeting denoted in *ISO 8601* format
+              description: >
+                The length of the meeting, denoted in **ISO 8601** format.
+                - Example:
+                  - **1 hour** → `'PT1H'`
+                  - **2 hours, 30 minutes** → `'PT2H30M'`
+                - `'P'` is the duration designator.
+                - `'T'` separates date and time components.
+                - `'H'` (hours) and `'M'` (minutes) specify the time duration.
+                - If omitted, the default duration is **30 minutes** (`'PT30M'`).
+              example: "PT2H30M"
             attendees:
               type: array
               items:
@@ -1095,7 +1113,16 @@ components:
               description: name of the meeting
             meetingDuration:
               type: string
-              description: The length of the meeting denoted in *ISO 8601* format
+              description: >
+                The length of the meeting, denoted in **ISO 8601** format.
+                - Example:
+                  - **1 hour** → `'PT1H'`
+                  - **2 hours, 30 minutes** → `'PT2H30M'`
+                - `'P'` is the duration designator.
+                - `'T'` separates date and time components.
+                - `'H'` (hours) and `'M'` (minutes) specify the time duration.
+                - If omitted, the default duration is **30 minutes** (`'PT30M'`).
+              example: "PT2H30M"
             attendees:
               type: array
               items:
@@ -1112,9 +1139,6 @@ components:
             location:
               type: string
               description: The location of the meeting
-            duration:
-              type: integer
-              description: The duration of the meeting in minutes
             startRangeTime:
               type: string
               format: date-time
