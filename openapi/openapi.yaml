@@ -782,6 +782,7 @@ paths:
 
       responses:
         "200":
+          description: Successfully checked reschedule status
           content:
             application/json:
               schema:
@@ -809,9 +810,9 @@ paths:
               schema:
                 type: string
 
-  /api/reschedule/request:
+  /api/reschedule/request/replace:
     post:
-      operationId: PostAPIRescheduleRequest
+      operationId: PostAPIRescheduleRequestReplace
       summary: Request to reschedule the old meeting
       requestBody:
         required: true
@@ -1061,7 +1062,7 @@ components:
           properties:
             meetingID:
               type: integer
-              description: The meeting ID of the old meeting
+              description: The meeting ID of the old meeting if it exists
             title: 
               type: string
               description: name of the meeting
@@ -1077,6 +1078,10 @@ components:
               type: boolean
             locationConstraint:
               $ref: "#/components/schemas/LocationConstraint"
+            startTime:
+              type: string
+              format: date-time
+              description: The start of the meeting denoted in *ISO 8601* format
 
     ReschedulingRequestBodySchema:
       description: Request body of the details of the two meetings
