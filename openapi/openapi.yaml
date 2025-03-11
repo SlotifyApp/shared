@@ -869,10 +869,10 @@ paths:
               schema:
                 type: string
 
-  /api/reschedule/request/{requestID}/decline:
+  /api/reschedule/request/{requestID}/reject:
     patch:
-      operationId: PatchAPIRescheduleRequestRequestIDDecline
-      summary: Decline a reschedule request
+      operationId: PatchAPIRescheduleRequestRequestIDReject
+      summary: Reject a reschedule request
       parameters:
         - in: path
           name: requestID
@@ -883,7 +883,7 @@ paths:
           description: Numeric ID of the reschedule request to get
       responses:
         "201":
-          description: Successfully declined rescheduling request.
+          description: Successfully rejected the rescheduling request.
           content:
             application/json:
               schema:
