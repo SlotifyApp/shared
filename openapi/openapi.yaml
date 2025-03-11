@@ -314,7 +314,7 @@ paths:
           name: pageToken
           schema:
             type: integer
-          required: true 
+          required: true
       responses:
         "200":
           description: Users matching the query parameters and a pagination token
@@ -410,7 +410,7 @@ paths:
           name: pageToken
           schema:
             type: integer
-          required: true 
+          required: true
       responses:
         "200":
           description: Got all user's invites successfully with pageToken.
@@ -600,7 +600,7 @@ paths:
           name: pageToken
           schema:
             type: integer
-          required: true 
+          required: true
       responses:
         "200":
           description: Got all a group's invites successfully
@@ -1051,6 +1051,12 @@ paths:
     get:
       operationId: GetAPIMSFTGroupsMe
       summary: Get all Microsoft groups for current user.
+      parameters:
+        - in: query
+          name: pageToken
+          schema:
+            type: integer
+          required: true
       responses:
         "200":
           description: Got all user's Microsoft groups successfully
