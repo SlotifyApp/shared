@@ -869,6 +869,35 @@ paths:
               schema:
                 type: string
 
+  /api/reschedule/request/{requestID}/decline:
+    patch:
+      operationId: PatchAPIRescheduleRequestRequestIDDecline
+      summary: Decline a reschedule request
+      parameters:
+        - in: path
+          name: requestID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the reschedule request to get
+      responses:
+        "201":
+          description: Successfully declined rescheduling request.
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
+
+
   /api/reschedule/request/replace:
     post:
       operationId: PostAPIRescheduleRequestReplace
