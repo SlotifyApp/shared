@@ -2073,3 +2073,11 @@ components:
       required:
         - email
         - name
+
+    PaginationToken:
+      type: object
+      properties:
+        page:
+          type: integer
+      required:
+        - page
