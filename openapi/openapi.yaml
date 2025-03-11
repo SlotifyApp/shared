@@ -1228,20 +1228,21 @@ components:
     ReschedulingRequestAcceptBodySchema:
       type: object
       properties:
-        msftMeetingID:
-          type: string
-          description: The microsoft meeting ID of the new meeting
-        meetingId:
-          type: integer
-          description: The meeting ID of the new meeting
         newStartTime:
           type: string
           format: date-time
-          description: The start of the new meeting denoted in *ISO 8601* format
+          description: >
+                The start of the meeting denoted in *ISO 8601* format
+                In the format: yyyy-mm-ddThh:mm:ssZ
+                Where lowercase letters are replaced by their numerical values
+
         newEndTime:
           type: string
           format: date-time
-          description: The end of the new meeting denoted in *ISO 8601* format
+          description: >
+                The start of the meeting denoted in *ISO 8601* format
+                In the format: yyyy-mm-ddThh:mm:ssZ
+                Where lowercase letters are replaced by their numerical values
         
     ReschedulingRequestOldMeeting:
       type: object
@@ -1274,11 +1275,17 @@ components:
         startTime:
           type: string
           format: date-time
-          description: The start of the meeting denoted in *ISO 8601* format
+          description: >
+            The start of the meeting denoted in *ISO 8601* format
+            In the format: yyyy-mm-ddThh:mm:ssZ
+            Where lowercase letters are replaced by their numerical values
         endTime:
           type: string
           format: date-time
-          description: The end of the meeting denoted in *ISO 8601* format
+          description: >
+            The start of the meeting denoted in *ISO 8601* format
+            In the format: yyyy-mm-ddThh:mm:ssZ
+            Where lowercase letters are replaced by their numerical values
         location:
           type: string
           description: The location of the meeting
@@ -1315,37 +1322,13 @@ components:
         oldMeeting:
           type: object
           properties:
-            meetingID:
-              type: integer
-              description: The meeting ID of the old meeting if it exists
-            title:
+            msftMeetingID:
               type: string
-              description: name of the meeting
-            meetingDuration:
-              type: string
-              description: >
-                The length of the meeting, denoted in **ISO 8601** format.
-                - Example:
-                  - **1 hour** → `'PT1H'`
-                  - **2 hours, 30 minutes** → `'PT2H30M'`
-                - `'P'` is the duration designator.
-                - `'T'` separates date and time components.
-                - `'H'` (hours) and `'M'` (minutes) specify the time duration.
-                - If omitted, the default duration is **30 minutes** (`'PT30M'`).
-              example: "PT2H30M"
-            attendees:
-              type: array
-              items:
-                $ref: "#/components/schemas/AttendeeBase"
-              description: Array of all the attendees
+              description: The microsoft meeting ID of the old meeting if it exists
             isOrganizerOptional:
               type: boolean
-            locationConstraint:
-              $ref: "#/components/schemas/LocationConstraint"
-            startTime:
-              type: string
-              format: date-time
-              description: The start of the meeting denoted in *ISO 8601* format
+              default: false
+              description: if organizer does not need to be there, then set true. If the organizer is the only person in the meeting, keep false
 
     ReschedulingRequestBodySchema:
       description: Request body of the details of the two meetings
@@ -1378,22 +1361,34 @@ components:
             startTime:
               type: string
               format: date-time
-              description: The start of the meeting denoted in *ISO 8601* format
+              description: >
+                The start of the meeting denoted in *ISO 8601* format
+                In the format: yyyy-mm-ddThh:mm:ssZ
+                Where lowercase letters are replaced by their numerical values
             endTime:
               type: string
               format: date-time
-              description: The end of the meeting denoted in *ISO 8601* format
+              description: >
+                The start of the meeting denoted in *ISO 8601* format
+                In the format: yyyy-mm-ddThh:mm:ssZ
+                Where lowercase letters are replaced by their numerical values
             location:
               type: string
               description: The location of the meeting
             startRangeTime:
               type: string
               format: date-time
-              description: The start of the range of the meeting denoted in *ISO 8601* format
+              description: >
+                The start of the meeting denoted in *ISO 8601* format
+                In the format: yyyy-mm-ddThh:mm:ssZ
+                Where lowercase letters are replaced by their numerical values
             endRangeTime:
               type: string
               format: date-time
-              description: The end of the range of the meeting denoted in *ISO 8601* format
+              description: >
+                The start of the meeting denoted in *ISO 8601* format
+                In the format: yyyy-mm-ddThh:mm:ssZ
+                Where lowercase letters are replaced by their numerical values
 
         oldMeeting:
           type: object
@@ -1413,19 +1408,9 @@ components:
       description: Request body of the details of the old meeting
       type: object
       properties:
-        oldMeeting:
-          type: object
-          properties:
-            msftMeetingID:
-              type: string
-              description: The microsoft meeting ID of the old meeting
-            meetingStartTime:
-              type: string
-              format: date-time
-              description: The start of the meeting denoted in *ISO 8601* format
-            meetingOwner:
-              type: integer
-              description: Meeting owner ID
+        msftMeetingID:
+          type: string
+          description: The microsoft meeting ID of the old meeting
 
     SchedulingSlotsBodySchema:
       description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
