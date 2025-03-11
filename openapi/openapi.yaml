@@ -896,6 +896,41 @@ paths:
           description: Invite not found
         "500":
           description: Something went wrong internally
+  
+  /api/reschedule/request/{requestID}/accept:
+    patch:
+      operationId: PatchAPIRescheduleRequestRequestIDAccept
+      summary: Accept a reschedule request
+      parameters:
+        - in: path
+          name: requestID
+          schema:
+            type: integer
+            format: uint32
+          required: true
+          description: Numeric ID of the reschedule request to get
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReschedulingRequestAcceptBodySchema"
+
+      responses:
+        "201":
+          description: Successfully accepted the rescheduling request.
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Invite not found
+        "500":
+          description: Something went wrong internally
 
 
   /api/reschedule/request/replace:
@@ -1190,6 +1225,24 @@ components:
         newMeeting:
           $ref: "#/components/schemas/ReschedulingRequestNewMeeting"
     
+    ReschedulingRequestAcceptBodySchema:
+      type: object
+      properties:
+        msftMeetingID:
+          type: string
+          description: The microsoft meeting ID of the new meeting
+        meetingId:
+          type: integer
+          description: The meeting ID of the new meeting
+        newStartTime:
+          type: string
+          format: date-time
+          description: The start of the new meeting denoted in *ISO 8601* format
+        newEndTime:
+          type: string
+          format: date-time
+          description: The end of the new meeting denoted in *ISO 8601* format
+        
     ReschedulingRequestOldMeeting:
       type: object
       properties:
