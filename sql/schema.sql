@@ -139,7 +139,7 @@ DROP TABLE IF EXISTS Meeting;
 CREATE TABLE Meeting (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	meeting_pref_id INT UNSIGNED NOT NULL,
-	owner_id INT UNSIGNED NOT NULL,
+	owner_email VARCHAR(255) NOT NULL,
 	msft_meeting_id TEXT NOT NULL,
 	CONSTRAINT fk_Meeting_MeetingPreferences FOREIGN KEY (meeting_pref_id) REFERENCES MeetingPreferences(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
