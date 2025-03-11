@@ -332,7 +332,7 @@ paths:
   /api/users:
     get:
       operationId: GetAPIUsers
-      summary: Search for users with by email and name. Only provide one of the query params or none.
+      summary: Search for users with by email and name. Only provide one of the query params or none as well as the page token.
       parameters:
         - in: query
           name: email
@@ -345,15 +345,24 @@ paths:
           schema:
             type: string
           description: Name of user to search for
+        - in: query
+          name: pageToken
+          schema:
+            $ref: '#/components/schemas/PaginationToken'
       responses:
         "200":
-          description: Users matching the query parameters
+          description: Users matching the query parameters and a pagination token
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/User"
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+                  nextPageToken:
+                    $ref: '#/components/schemas/PaginationToken'
         "400":
           description: Bad request (e.g., invalid slotifyGroup ID)
     post:
