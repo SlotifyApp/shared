@@ -313,7 +313,8 @@ paths:
         - in: query
           name: pageToken
           schema:
-            $ref: '#/components/schemas/PaginationToken'
+            type: integer
+          required: true 
       responses:
         "200":
           description: Users matching the query parameters and a pagination token
@@ -327,7 +328,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/User"
                   nextPageToken:
-                    $ref: '#/components/schemas/PaginationToken'
+                    type: integer
         "400":
           description: Bad request (e.g., invalid slotifyGroup ID)
     post:
