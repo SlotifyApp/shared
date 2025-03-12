@@ -932,7 +932,6 @@ paths:
         "500":
           description: Something went wrong internally
 
-
   /api/reschedule/request/replace:
     post:
       operationId: PostAPIRescheduleRequestReplace
@@ -1206,12 +1205,20 @@ components:
     RescheduleRequest:
       description: Reschedule request object
       type: object
+      required:
+        - request_id
+        - requested_by
+        - status
+        - requested_at
+        - oldMeeting
       properties:
         request_id: 
           type: integer
+          format: uint32
           description: The request ID
         requested_by:
           type: integer
+          format: uint32
           description: The user ID of the person who requested the reschedule
         status:
           type: string
@@ -1227,6 +1234,9 @@ components:
     
     ReschedulingRequestAcceptBodySchema:
       type: object
+      required:
+        - newStartTime
+        - newEndTime
       properties:
         newStartTime:
           type: string
@@ -1246,16 +1256,26 @@ components:
         
     ReschedulingRequestOldMeeting:
       type: object
+      required:
+        - msftMeetingID
+        - meetingId
       properties:
         msftMeetingID:
           type: string
           description: The microsoft meeting ID of the old meeting
         meetingId:
           type: integer
+          format: uint32
           description: The meeting ID of the old meeting
     
     ReschedulingRequestNewMeeting:
       type: object
+      required:
+        - title
+        - meetingDuration
+        - startTime
+        - endTime
+        - location
       properties:
         title:
           type: string
@@ -1294,9 +1314,16 @@ components:
     ReschedulingCheckBodySchema:
       description: Request body of the details of the two meetings
       type: object
+      required:
+        - newMeeting
+        - oldMeeting
       properties:
         newMeeting:
           type: object
+          required:
+            - title
+            - meetingDuration
+            - attendees
           properties:
             title:
               type: string
@@ -1321,6 +1348,8 @@ components:
 
         oldMeeting:
           type: object
+          required:
+            - msftMeetingID
           properties:
             msftMeetingID:
               type: string
@@ -1333,9 +1362,21 @@ components:
     ReschedulingRequestBodySchema:
       description: Request body of the details of the two meetings
       type: object
+      required:
+        - newMeeting
+        - oldMeeting
       properties:
         newMeeting:
           type: object
+          required:
+            - title
+            - meetingDuration
+            - attendees
+            - startTime
+            - endTime
+            - location
+            - startRangeTime
+            - endRangeTime
           properties:
             title:
               type: string
@@ -1392,6 +1433,10 @@ components:
 
         oldMeeting:
           type: object
+          required:
+            - msftMeetingID
+            - meetingStartTime
+            - meetingOwner
           properties:
             msftMeetingID:
               type: string
@@ -1407,6 +1452,8 @@ components:
     ReschedulingRequestSingleBodySchema:
       description: Request body of the details of the old meeting
       type: object
+      required:
+        - msftMeetingID
       properties:
         msftMeetingID:
           type: string
