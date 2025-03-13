@@ -399,22 +399,32 @@ paths:
   /api/invites/me:
     get:
       operationId: GetAPIInvitesMe
-      summary: Get all invites for logged in user.
+      summary: Get all invites for logged in user、requires pageToken.
       parameters:
         - in: query
           name: status
           schema:
             $ref: "#/components/schemas/InviteStatus"
           description: Invite status
+        - in: query
+          name: pageToken
+          schema:
+            type: integer
+          required: true 
       responses:
         "200":
-          description: Got all user's invites successfully
+          description: Got all user's invites successfully with pageToken.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/InvitesMe"
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/InvitesMe"
+                  nextPageToken:
+                    type: integer
         "400":
           description: Bad request
         "401":
