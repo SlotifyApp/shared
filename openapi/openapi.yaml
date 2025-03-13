@@ -1672,7 +1672,6 @@ components:
         email:
           type: string
           format: email
-          nullable: true
         # Attendee -> type
         attendeeType:
           $ref: "#/components/schemas/AttendeeType"
@@ -1690,6 +1689,8 @@ components:
               notResponded,
             ]
           nullable: true
+      required:
+        - email
 
     CalendarEvent:
       description: Maps roughly to [MSFT event](https://learn.microsoft.com/en-us/graph/api/resources/event?view=graph-rest-1.0#properties)
