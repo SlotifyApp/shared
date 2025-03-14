@@ -761,15 +761,25 @@ paths:
             type: integer
             format: uint32
           description: ID of the slotifyGroup
+        - in: query
+          name: pageToken
+          schema:
+            type: integer
+          required: true
       responses:
         "200":
           description: Users successfully found
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/User"
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+                  nextPageToken:
+                    type: integer
         "404":
           description: Bad request, slotifyGroup id is invalid
           content:
