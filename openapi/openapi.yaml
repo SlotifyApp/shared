@@ -1086,12 +1086,6 @@ paths:
     get:
       operationId: GetAPIMSFTGroupsMe
       summary: Get all Microsoft groups for current user.
-      parameters:
-        - in: query
-          name: pageToken
-          schema:
-            type: integer
-          required: true
       responses:
         "200":
           description: Got all user's Microsoft groups successfully
@@ -1104,8 +1098,6 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/MSFTGroup"
-                  nextPageToken:
-                    type: integer
         "400":
           description: Bad request
         "401":
@@ -2125,11 +2117,3 @@ components:
       required:
         - email
         - name
-
-    PaginationToken:
-      type: object
-      properties:
-        page:
-          type: integer
-      required:
-        - page
