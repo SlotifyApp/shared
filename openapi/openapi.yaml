@@ -349,11 +349,12 @@ paths:
           name: pageToken
           schema:
             type: integer
-          required: true
+          required: false
         - in: query
           name: limit
           schema:
             type: integer
+            format: int32
           required: true
       responses:
         "200":
@@ -450,11 +451,12 @@ paths:
           name: pageToken
           schema:
             type: integer
-          required: true
+          required: false
         - in: query
           name: limit
           schema:
             type: integer
+            format: int32
           required: true
       responses:
         "200":
@@ -645,11 +647,12 @@ paths:
           name: pageToken
           schema:
             type: integer
-          required: true
+          required: false
         - in: query
           name: limit
           schema:
             type: integer
+            format: int32
           required: true
       responses:
         "200":
@@ -707,11 +710,12 @@ paths:
           name: pageToken
           schema:
             type: integer
-          required: true
+          required: false
         - in: query
           name: limit
           schema:
             type: integer
+            format: int32
           required: true
       responses:
         "200":
@@ -820,11 +824,12 @@ paths:
           name: pageToken
           schema:
             type: integer
-          required: true
+          required: false
         - in: query
           name: limit
           schema:
             type: integer
+            format: int32
           required: true
       responses:
         "200":
@@ -1157,8 +1162,7 @@ paths:
         - in: path
           name: groupID
           schema:
-            type: integer
-            format: uint32
+            type: string
           required: true
           description: Numeric ID of the Microsoft group to get
       responses:
@@ -1182,14 +1186,13 @@ paths:
           name: groupID
           required: true
           schema:
-            type: integer
-            format: uint32
+            type: string
           description: ID of the Microsoft group
         - in: query
-          name: skip
+          name: nextLink
           schema:
-            type: integer
-          required: true
+            type: string
+          required: false
         - in: query
           name: limit
           schema:
@@ -1207,8 +1210,9 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/MSFTUser"
-                  skip:
-                    type: integer
+                  nextLink:
+                    type: string
+                    nullable: true
         "403":
           description: Bad request, Microsoft group id is invalid
           content:
@@ -1266,7 +1270,7 @@ paths:
           name: nextLink
           schema:
             type: string
-          required: true
+          required: false
         - in: query
           name: limit
           schema:
@@ -1312,7 +1316,7 @@ paths:
           name: nextLink
           schema:
             type: string
-          required: true
+          required: false
         - in: query
           name: limit
           schema:
@@ -1332,6 +1336,7 @@ paths:
                       $ref: "#/components/schemas/MSFTUser"
                   nextLink:
                     type: string
+                    nullable: true
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
@@ -2152,8 +2157,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: uint32
+          type: string
         name:
           type: string
       required:
