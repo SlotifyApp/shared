@@ -1088,9 +1088,9 @@ paths:
       summary: Get all Microsoft groups for current user.
       parameters:
         - in: query
-          name: pageToken
+          name: nextLink
           schema:
-            type: integer
+            type: string
           required: true
       responses:
         "200":
@@ -1104,6 +1104,8 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/MSFTGroup"
+                  nextLink:
+                    type: string
         "400":
           description: Bad request
         "401":
@@ -1169,15 +1171,25 @@ paths:
             type: integer
             format: uint32
           description: ID of the Microsoft group
+        - in: query
+          name: nextLink
+          schema:
+            type: string
+          required: true
       responses:
         "200":
-          description: Users successfully found
+          description: Users successfully found 
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/MSFTUser"
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MSFTUser"
+                  nextLink:
+                    type: string
         "403":
           description: Bad request, Microsoft group id is invalid
           content:
@@ -1231,15 +1243,25 @@ paths:
           schema:
             type: string
           description: Search parameter for Microsoft users, can be first name, surname, or email
+        - in: query
+          name: nextLink
+          schema:
+            type: string
+          required: true
       responses:
         "200":
           description: Users successfully found
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/MSFTUser"
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MSFTUser"
+                  nextLink:
+                    type: string
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
@@ -1261,15 +1283,26 @@ paths:
     get:
       summary: Get all users from Microsoft
       operationId: GetAPIMSFTUsers
+      parameters:
+        - in: query
+          name: nextLink
+          schema:
+            type: string
+          required: true
       responses:
         "200":
           description: Users successfully found
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/MSFTUser"
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MSFTUser"
+                  nextLink:
+                    type: string
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
