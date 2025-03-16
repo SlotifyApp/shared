@@ -349,6 +349,7 @@ paths:
           name: pageToken
           schema:
             type: integer
+            format: uint32
           required: false
         - in: query
           name: limit
@@ -370,6 +371,7 @@ paths:
                       $ref: "#/components/schemas/User"
                   nextPageToken:
                     type: integer
+                    format: uint32
         "400":
           description: Bad request (e.g., invalid slotifyGroup ID)
     post:
@@ -451,6 +453,7 @@ paths:
           name: pageToken
           schema:
             type: integer
+            format: uint32
           required: false
         - in: query
           name: limit
@@ -472,6 +475,7 @@ paths:
                       $ref: "#/components/schemas/InvitesMe"
                   nextPageToken:
                     type: integer
+                    format: uint32
         "400":
           description: Bad request
         "401":
@@ -647,6 +651,7 @@ paths:
           name: pageToken
           schema:
             type: integer
+            format: uint32
           required: false
         - in: query
           name: limit
@@ -668,6 +673,7 @@ paths:
                       $ref: "#/components/schemas/InvitesGroup"
                   nextPageToken:
                     type: integer
+                    format: uint32
         "400":
           description: Bad request
         "401":
@@ -710,6 +716,7 @@ paths:
           name: pageToken
           schema:
             type: integer
+            format: uint32
           required: false
         - in: query
           name: limit
@@ -731,6 +738,7 @@ paths:
                       $ref: "#/components/schemas/SlotifyGroup"
                   nextPageToken:
                     type: integer
+                    format: uint32
         "400":
           description: Bad request
         "401":
@@ -824,6 +832,7 @@ paths:
           name: pageToken
           schema:
             type: integer
+            format: uint32
           required: false
         - in: query
           name: limit
@@ -845,6 +854,7 @@ paths:
                       $ref: "#/components/schemas/User"
                   nextPageToken:
                     type: integer
+                    format: uint32
         "404":
           description: Bad request, slotifyGroup id is invalid
           content:
@@ -1197,6 +1207,7 @@ paths:
           name: limit
           schema:
             type: integer
+            format: int32
           required: true
       responses:
         "200":
