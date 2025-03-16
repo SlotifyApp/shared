@@ -350,6 +350,11 @@ paths:
           schema:
             type: integer
           required: true
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: true
       responses:
         "200":
           description: Users matching the query parameters and a pagination token
@@ -443,6 +448,11 @@ paths:
           description: Invite status
         - in: query
           name: pageToken
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: limit
           schema:
             type: integer
           required: true
@@ -636,6 +646,11 @@ paths:
           schema:
             type: integer
           required: true
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: true
       responses:
         "200":
           description: Got all a group's invites successfully
@@ -690,6 +705,11 @@ paths:
       parameters:
         - in: query
           name: pageToken
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: limit
           schema:
             type: integer
           required: true
@@ -798,6 +818,11 @@ paths:
           description: ID of the slotifyGroup
         - in: query
           name: pageToken
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: limit
           schema:
             type: integer
           required: true
@@ -1085,27 +1110,16 @@ paths:
   /api/msft-groups/me:
     get:
       operationId: GetAPIMSFTGroupsMe
-      summary: Get all Microsoft groups for current user.
-      parameters:
-        - in: query
-          name: nextLink
-          schema:
-            type: string
-          required: true
+      summary: Get all Microsoft groups's id for current user.
       responses:
         "200":
           description: Got all user's Microsoft groups successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  users:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/MSFTGroup"
-                  nextLink:
-                    type: string
+                type: array
+                items:
+                  type: string
         "400":
           description: Bad request
         "401":
@@ -1172,9 +1186,14 @@ paths:
             format: uint32
           description: ID of the Microsoft group
         - in: query
-          name: nextLink
+          name: skip
           schema:
-            type: string
+            type: integer
+          required: true
+        - in: query
+          name: limit
+          schema:
+            type: integer
           required: true
       responses:
         "200":
@@ -1188,8 +1207,8 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/MSFTUser"
-                  nextLink:
-                    type: string
+                  skip:
+                    type: integer
         "403":
           description: Bad request, Microsoft group id is invalid
           content:
@@ -1248,6 +1267,11 @@ paths:
           schema:
             type: string
           required: true
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: true
       responses:
         "200":
           description: Users successfully found
@@ -1288,6 +1312,11 @@ paths:
           name: nextLink
           schema:
             type: string
+          required: true
+        - in: query
+          name: limit
+          schema:
+            type: integer
           required: true
       responses:
         "200":
