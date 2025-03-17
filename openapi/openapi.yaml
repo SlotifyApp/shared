@@ -1503,6 +1503,7 @@ components:
         - startTime
         - endTime
         - location
+        - attendees
       properties:
         title:
           type: string
@@ -1536,7 +1537,12 @@ components:
         location:
           type: string
           description: The location of the meeting
-
+        attendees:
+          type: array
+          items:
+            type: integer
+            format: uint32
+            description: The user ID of the person
     ReschedulingCheckBodySchema:
       description: Request body of the details of the two meetings
       type: object
