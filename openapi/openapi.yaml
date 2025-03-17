@@ -924,7 +924,7 @@ paths:
   /api/reschedule/requests/me:
     get:
       operationId: GetAPIRescheduleRequestsMe
-      summary: Get all reschedule requests for current user.
+      summary: Get all reschedule requests for the meetings where the current user is the owner.
       responses:
         "200":
           $ref: "#/components/responses/RescheduleRequests"
