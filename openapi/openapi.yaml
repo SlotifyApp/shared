@@ -1398,9 +1398,19 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/RescheduleRequest"
+            type: object
+            required:
+              - pending
+              - responses
+            properties:
+              pending:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RescheduleRequest"
+              responses:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RescheduleRequest"
 
     UnauthorizedError:
       description: Access token is missing or invalid
