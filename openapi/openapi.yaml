@@ -723,10 +723,10 @@ paths:
               schema:
                 type: object
                 required:
-                  - groups
+                  - slotifyGroups
                   - nextPageToken
                 properties:
-                  groups:
+                  slotifyGroups:
                     type: array
                     items:
                       $ref: "#/components/schemas/SlotifyGroup"
