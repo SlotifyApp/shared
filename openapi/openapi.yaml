@@ -364,6 +364,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - users
+                  - nextPageToken
                 properties:
                   users:
                     type: array
@@ -468,8 +471,11 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - invites
+                  - nextPageToken
                 properties:
-                  users:
+                  invites:
                     type: array
                     items:
                       $ref: "#/components/schemas/InvitesMe"
@@ -666,8 +672,11 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - groups
+                  - nextPageToken
                 properties:
-                  users:
+                  groups:
                     type: array
                     items:
                       $ref: "#/components/schemas/InvitesGroup"
@@ -731,8 +740,11 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - groups
+                  - nextPageToken
                 properties:
-                  users:
+                  groups:
                     type: array
                     items:
                       $ref: "#/components/schemas/SlotifyGroup"
@@ -847,6 +859,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - users
+                  - nextPageToken
                 properties:
                   users:
                     type: array
@@ -1216,6 +1231,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - users
+                  - nextPageToken
                 properties:
                   users:
                     type: array
@@ -1294,6 +1312,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - users
+                  - nextPageToken
                 properties:
                   users:
                     type: array
@@ -1340,6 +1361,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - users
+                  - nextPageToken
                 properties:
                   users:
                     type: array
