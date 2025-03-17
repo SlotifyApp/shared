@@ -338,16 +338,15 @@ paths:
           name: email
           schema:
             type: string
-            format: email
-          description: Email of user to search for
+          description: Partial email of user to search for
         - in: query
           name: name
           schema:
             type: string
-          description: Name of user to search for
+          description: Partial name of user to search for
       responses:
         "200":
-          description: Users matching the query parameters and a pagination token
+          description: Users matching the given query parameter.
           content:
             application/json:
               schema:
@@ -356,6 +355,10 @@ paths:
                   $ref: "#/components/schemas/User"
         "400":
           description: Bad request (e.g., invalid slotifyGroup ID)
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          description: Something went wrong internally
     post:
       operationId: PostAPIUsers
       summary: Create a new user.
