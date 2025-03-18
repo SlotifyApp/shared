@@ -1486,6 +1486,9 @@ components:
       required:
         - msftMeetingID
         - meetingId
+        - meetingStartTime
+        - timeRangeStart
+        - timeRangeEnd
       properties:
         msftMeetingID:
           type: string
@@ -1494,7 +1497,30 @@ components:
           type: integer
           format: uint32
           description: The meeting ID of the old meeting
-
+        meetingStartTime:
+          type: string
+          format: date-time
+          description: >
+            The start of the meeting denoted in *ISO 8601* format
+            In the format: yyyy-mm-ddThh:mm:ssZ
+            Where lowercase letters are replaced by their numerical values
+        timeRangeStart:
+          type: string
+          format: date-time
+          description: >
+            The start of the meeting denoted in *ISO 8601* format
+            In the format: yyyy-mm-ddThh:mm:ssZ
+            Where lowercase letters are replaced by their numerical values
+        timeRangeEnd:
+          type: string
+          format: date-time
+          description: >
+            The start of the meeting denoted in *ISO 8601* format
+            In the format: yyyy-mm-ddThh:mm:ssZ
+            Where lowercase letters are replaced by their numerical values
+            
+    
+    
     ReschedulingRequestNewMeeting:
       type: object
       required:
@@ -1543,6 +1569,7 @@ components:
             type: integer
             format: uint32
             description: The user ID of the person
+    
     ReschedulingCheckBodySchema:
       description: Request body of the details of the two meetings
       type: object
