@@ -632,18 +632,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - invites
-                  - nextPageToken
-                properties:
-                  invites:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/InvitesGroup"
-                  nextPageToken:
-                    type: integer
-                    format: uint32
+                $ref: "#/components/schemas/UsersAndPagination"
         "400":
           description: Bad request
         "401":
@@ -2270,3 +2259,17 @@ components:
       required:
         - email
         - name
+
+    UsersAndPagination:
+      type: object
+      required:
+        - users
+        - nextPageToken
+      properties:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        nextPageToken:
+          type: integer
+          format: uint32
