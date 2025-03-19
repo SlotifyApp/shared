@@ -1775,13 +1775,7 @@ components:
             msftMeetingID:
               type: string
               description: The microsoft meeting ID of the old meeting
-            meetingStartTime:
-              type: string
-              format: date-time
-              description: The start of the meeting denoted in *ISO 8601* format
-            meetingOwner:
-              type: integer
-              description: Meeting owner ID
+            
 
     ReschedulingRequestSingleBodySchema:
       description: Request body of the details of the old meeting
