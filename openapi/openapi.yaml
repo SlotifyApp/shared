@@ -757,6 +757,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SlotifyGroup"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "400":
           description: Bad request (e.g., invalid slotifyGroup name)
           content:
@@ -783,6 +785,8 @@ paths:
             application/json:
               schema:
                 type: string
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "400":
           description: Bad request (e.g., invalid slotifyGroup id)
         "404":
@@ -805,6 +809,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SlotifyGroup"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "404":
           description: SlotifyGroup not found
         "500":
@@ -852,6 +858,8 @@ paths:
                   nextPageToken:
                     type: integer
                     format: uint32
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "404":
           description: Bad request, slotifyGroup id is invalid
           content:
@@ -1160,6 +1168,14 @@ paths:
                   $ref: "#/components/schemas/MSFTGroup"
         "400":
           description: Bad request (e.g., invalid microsoft group name)
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
 
   /api/msft-groups/{groupID}:
     get:
@@ -1179,10 +1195,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MSFTGroup"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "404":
           description: Microsoft group not found
         "500":
           description: Something went wrong internally
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
 
   /api/msft-groups/{groupID}/users:
     get:
@@ -1224,6 +1248,8 @@ paths:
                   nextLink:
                     type: string
                     nullable: true
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "403":
           description: Bad request, Microsoft group id is invalid
           content:
@@ -1232,6 +1258,12 @@ paths:
                 type: string
         "500":
           description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+        "502":
+          description: Something went wrong with an external API
           content:
             application/json:
               schema:
