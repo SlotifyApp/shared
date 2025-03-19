@@ -655,10 +655,10 @@ paths:
               schema:
                 type: object
                 required:
-                  - groups
+                  - invites
                   - nextPageToken
                 properties:
-                  groups:
+                  invites:
                     type: array
                     items:
                       $ref: "#/components/schemas/InvitesGroup"
