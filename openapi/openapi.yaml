@@ -632,7 +632,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UsersAndPagination"
+                $ref: "#/components/schemas/InvitesGroupsAndPagination"
         "400":
           description: Bad request
         "401":
@@ -824,18 +824,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - users
-                  - nextPageToken
-                properties:
-                  users:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/User"
-                  nextPageToken:
-                    type: integer
-                    format: uint32
+                $ref: "#/components/schemas/UsersAndPagination"
         "401":
           $ref: "#/components/responses/UnauthorizedError"
         "404":
@@ -1083,10 +1072,10 @@ paths:
                 type: string
 
   /api/reschedule/request/{requestID}/close:
-   get:
-    operationId: GetAPIRescheduleRequestRequestIDClose
-    summary: Delete the request
-    parameters:
+    get:
+      operationId: GetAPIRescheduleRequestRequestIDClose
+      summary: Delete the request
+      parameters:
         - in: path
           name: requestID
           schema:
@@ -1094,29 +1083,29 @@ paths:
             format: uint32
           required: true
           description: Numeric ID of the reschedule request to get
-    responses:
-      "200":
-        description: Request closes
-        content:
-          application/json:
-            schema:
-              type: string
-      "400":
-        description: Bad request
-      "401":
-        $ref: "#/components/responses/UnauthorizedError"
-      "500":
-        description: Something went wrong internally
-        content:
-          application/json:
-            schema:
-              type: string
-      "502":
-        description: Something went wrong with an external API
-        content:
-          application/json:
-            schema:
-              type: string
+      responses:
+        "200":
+          description: Request closes
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          description: Something went wrong internally
+          content:
+            application/json:
+              schema:
+                type: string
+        "502":
+          description: Something went wrong with an external API
+          content:
+            application/json:
+              schema:
+                type: string
 
   /api/reschedule/request/replace:
     post:
@@ -1595,7 +1584,7 @@ components:
             The start of the meeting denoted in *ISO 8601* format
             In the format: yyyy-mm-ddThh:mm:ssZ
             Where lowercase letters are replaced by their numerical values
-    
+
     ReschedulingRequestNewMeeting:
       type: object
       required:
@@ -1644,7 +1633,7 @@ components:
             type: integer
             format: uint32
             description: The user ID of the person
-    
+
     ReschedulingCheckBodySchema:
       description: Request body of the details of the two meetings
       type: object
@@ -1775,7 +1764,6 @@ components:
             msftMeetingID:
               type: string
               description: The microsoft meeting ID of the old meeting
-            
 
     ReschedulingRequestSingleBodySchema:
       description: Request body of the details of the old meeting
@@ -2330,11 +2318,22 @@ components:
         - email
         - name
 
+    InvitesGroupsAndPagination:
+      type: object
+      properties:
+        invites:
+          type: array
+          items:
+            $ref: "#/components/schemas/InvitesGroup"
+        nextPageToken:
+          type: integer
+          format: uint32
+      required:
+        - invites
+        - nextPageToken
+
     UsersAndPagination:
       type: object
-      required:
-        - users
-        - nextPageToken
       properties:
         users:
           type: array
@@ -2343,3 +2342,6 @@ components:
         nextPageToken:
           type: integer
           format: uint32
+      required:
+        - users
+        - nextPageToken
