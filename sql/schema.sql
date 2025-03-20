@@ -149,7 +149,7 @@ DROP TABLE IF EXISTS RequestToMeeting;
 
 -- Table to create a one to one mapping between a request and a meeting
 CREATE TABLE RequestToMeeting (
-	request_id INT UNSIGNED NOT NULL PRIMARY KEY,
+	request_id INT UNSIGNED NOT NULL,
 	meeting_id INT UNSIGNED NOT NULL,
 	CONSTRAINT fk_RequestToMeeting_Request FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE,
 	CONSTRAINT fk_RequestToMeeting_Meeting FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE
