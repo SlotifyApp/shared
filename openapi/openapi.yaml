@@ -229,7 +229,7 @@ paths:
           schema:
             type: boolean
           required: true
-          default: false
+
       responses:
         "200":
           description: Successfully got user calendar events
