@@ -1615,14 +1615,14 @@ components:
             - `'H'` (hours) and `'M'` (minutes) specify the time duration.
             - If omitted, the default duration is **30 minutes** (`'PT30M'`).
           example: "PT2H30M"
-        startTime:
+        startRangeTime:
           type: string
           format: date-time
           description: >
             The start of the meeting denoted in *ISO 8601* format
             In the format: yyyy-mm-ddThh:mm:ssZ
             Where lowercase letters are replaced by their numerical values
-        endTime:
+        endRangeTime:
           type: string
           format: date-time
           description: >

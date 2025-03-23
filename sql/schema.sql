@@ -102,8 +102,6 @@ CREATE TABLE PlaceholderMeeting (
 	meeting_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	request_id INT UNSIGNED NOT NULL,
 	title TEXT NOT NULL,
-	start_time DATETIME NOT NULL,
-	end_time DATETIME NOT NULL,
 	location TEXT NOT NULL,
 	duration TIME NOT NULL,
 	start_date_range DATETIME NOT NULL,
