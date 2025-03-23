@@ -899,7 +899,6 @@ paths:
                   canBeRescheduled:
                     type: boolean
                     description: true if there are valid meeting slots for the old meeting to change to
-
         "400":
           description: Bad request (e.g., invalid event data)
           content:
@@ -1645,7 +1644,6 @@ components:
       description: Request body of the details of the two meetings
       type: object
       required:
-        - newMeeting
         - oldMeeting
       properties:
         newMeeting:
@@ -1680,10 +1678,15 @@ components:
           type: object
           required:
             - msftMeetingID
+            - ownerEmail
           properties:
+            ownerEmail:
+              type: string
+              format: email
+              description: The email of the owner of the old meeting
             msftMeetingID:
               type: string
-              description: The microsoft meeting ID of the old meeting if it exists
+              description: The microsoft iCalUId meeting ID of the old meeting
             isOrganizerOptional:
               type: boolean
               default: false
@@ -1765,22 +1768,29 @@ components:
           type: object
           required:
             - msftMeetingID
-            - meetingStartTime
-            - meetingOwner
+            - ownerEmail
           properties:
+            ownerEmail:
+              type: string
+              format: email
+              description: The email of the owner of the old meeting
             msftMeetingID:
               type: string
-              description: The microsoft meeting ID of the old meeting
+              description: The microsoft iCalUId meeting ID of the old meeting
 
     ReschedulingRequestSingleBodySchema:
       description: Request body of the details of the old meeting
       type: object
       required:
         - msftMeetingID
+        - ownerEmail
       properties:
+        ownerEmail:
+          type: string
+          format: email
         msftMeetingID:
           type: string
-          description: The microsoft meeting ID of the old meeting
+          description: The microsoft iCalUId meeting ID of the old meeting
 
     SchedulingSlotsBodySchema:
       description: Roughly maps to [MSFT Find Meeting Schema](https://learn.microsoft.com/en-us/graph/api/user-findmeetingtimes?view=graph-rest-1.0&tabs=http#request-body)
@@ -2024,6 +2034,8 @@ components:
       type: object
       properties:
         id:
+          type: string
+        iCalUId:
           type: string
         attendees:
           type: array
