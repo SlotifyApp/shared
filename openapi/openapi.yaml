@@ -1595,10 +1595,10 @@ components:
       required:
         - title
         - meetingDuration
-        - startTime
-        - endTime
         - location
         - attendees
+        - endRangeTime
+        - startRangeTime
       properties:
         title:
           type: string
@@ -1705,8 +1705,6 @@ components:
             - title
             - meetingDuration
             - attendees
-            - startTime
-            - endTime
             - location
             - startRangeTime
             - endRangeTime
