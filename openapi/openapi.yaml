@@ -1128,7 +1128,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                type: number
         "400":
           description: Bad request (e.g., invalid event data)
           content:
@@ -1604,17 +1604,9 @@ components:
           type: string
           description: name of the meeting
         meetingDuration:
-          type: string
-          description: >
-            The length of the meeting, denoted in **ISO 8601** format.
-            - Example:
-              - **1 hour** → `'PT1H'`
-              - **2 hours, 30 minutes** → `'PT2H30M'`
-            - `'P'` is the duration designator.
-            - `'T'` separates date and time components.
-            - `'H'` (hours) and `'M'` (minutes) specify the time duration.
-            - If omitted, the default duration is **30 minutes** (`'PT30M'`).
-          example: "PT2H30M"
+          type: integer
+          format: int32
+          description: The length of the meeting in minutes
         startRangeTime:
           type: string
           format: date-time
@@ -1713,17 +1705,9 @@ components:
               type: string
               description: name of the meeting
             meetingDuration:
-              type: string
-              description: >
-                The length of the meeting, denoted in **ISO 8601** format.
-                - Example:
-                  - **1 hour** → `'PT1H'`
-                  - **2 hours, 30 minutes** → `'PT2H30M'`
-                - `'P'` is the duration designator.
-                - `'T'` separates date and time components.
-                - `'H'` (hours) and `'M'` (minutes) specify the time duration.
-                - If omitted, the default duration is **30 minutes** (`'PT30M'`).
-              example: "PT2H30M"
+              type: integer
+              format: int32
+              description: The length of the meeting in minutes
             attendees:
               type: array
               items:
