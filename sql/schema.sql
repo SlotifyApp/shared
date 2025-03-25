@@ -106,7 +106,7 @@ CREATE TABLE PlaceholderMeeting (
 	duration INT NOT NULL,
 	start_date_range DATETIME NOT NULL,
 	end_date_range DATETIME NOT NULL,
-	CONSTRAINT fk_RequestID_PlaceholderMeeting FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE
+	CONSTRAINT fk_ReschedulingRequest_PlaceholderMeeting FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS PlaceholderMeetingAttendee;
@@ -116,7 +116,6 @@ CREATE TABLE PlaceholderMeetingAttendee (
 	meeting_id INT UNSIGNED NOT NULL,
 	user_id INT UNSIGNED NOT NULL,
 	PRIMARY KEY(meeting_id, user_id), -- When starting with PlaceholderMeeting
-		INDEX      (user_id, meeting_id), -- When starting with User
 	CONSTRAINT fk_PlaceholderMeeting_PlaceholderMeetingAttendee FOREIGN KEY (meeting_id) REFERENCES PlaceholderMeeting(meeting_id) ON DELETE CASCADE,
 	CONSTRAINT fk_User_PlaceholderMeetingAttendee FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -139,18 +138,17 @@ CREATE TABLE Meeting (
 	meeting_pref_id INT UNSIGNED NOT NULL,
 	owner_email VARCHAR(255) NOT NULL,
 	msft_meeting_id TEXT NOT NULL,
-	CONSTRAINT fk_Meeting_MeetingPreferences FOREIGN KEY (meeting_pref_id) REFERENCES MeetingPreferences(id) ON DELETE CASCADE
+	CONSTRAINT fk_MeetingPreferences_Meeting FOREIGN KEY (meeting_pref_id) REFERENCES MeetingPreferences(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
 
 DROP TABLE IF EXISTS RequestToMeeting;
 
 -- Table to create a one to one mapping between a request and a meeting
 CREATE TABLE RequestToMeeting (
-	request_id INT UNSIGNED NOT NULL,
+	request_id INT UNSIGNED NOT NULL PRIMARY KEY,
 	meeting_id INT UNSIGNED NOT NULL,
-	CONSTRAINT fk_RequestToMeeting_Request FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE,
-	CONSTRAINT fk_RequestToMeeting_Meeting FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE
+	CONSTRAINT fk_ReschedulingRequest_RequestToMeeting FOREIGN KEY (request_id) REFERENCES ReschedulingRequest(request_id) ON DELETE CASCADE,
+	CONSTRAINT fk_Meeting_RequestToMeeting FOREIGN KEY (meeting_id) REFERENCES Meeting(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS UserPreferences;
@@ -162,4 +160,3 @@ CREATE TABLE UserPreferences (
 	lunch_end_time TIME NOT NULL,
 	CONSTRAINT fk_User_UserPreferences FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
